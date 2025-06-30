@@ -102,3 +102,25 @@ h1, h2, h3, h4, h5, h6 {
     padding: 2rem 0;
   }
 }
+
+/* Hide the default cursor */
+body, * {
+  cursor: none !important;
+}
+
+/* Custom cursor style */
+.custom-cursor-invert {
+  pointer-events: none;
+  position: fixed;
+  z-index: 9999;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  backdrop-filter: invert(1);
+  -webkit-backdrop-filter: invert(1);
+  mix-blend-mode: difference;
+  transition: background 0.2s, border 0.2s;
+}
