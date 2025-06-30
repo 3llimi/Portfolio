@@ -188,7 +188,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://www.behance.net/bahaallimi1"
                   className={styles.socialLink}
                   data-platform="behance"
                   aria-label="Behance"
@@ -204,7 +204,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://github.com/3llimi"
                   className={styles.socialLink}
                   data-platform="github"
                   aria-label="GitHub"
@@ -220,7 +220,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://www.linkedin.com/in/ahmed-baha-eddine-alimi/"
                   className={styles.socialLink}
                   data-platform="linkedin"
                   aria-label="LinkedIn"
@@ -236,7 +236,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="#"
+                  href="https://www.instagram.com/3llimi/"
                   className={styles.socialLink}
                   data-platform="instagram"
                   aria-label="Instagram"
