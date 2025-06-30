@@ -65,20 +65,25 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            .next/cache
+            myportfolio/.next/cache
           # Generate a new cache whenever packages or source files change.
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/myportfolio/package-lock.json', '**/myportfolio/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('myportfolio/package-lock.json', 'myportfolio/yarn.lock') }}-${{ hashFiles('myportfolio/**/*.[jt]s', 'myportfolio/**/*.[jt]sx') }}
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/myportfolio/package-lock.json', '**/myportfolio/yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('myportfolio/package-lock.json', 'myportfolio/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        working-directory: myportfolio
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        working-directory: myportfolio
+      - name: Export static site
+        run: ${{ steps.detect-package-manager.outputs.runner }} next export
+        working-directory: myportfolio
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: myportfolio/out
 
   # Deployment job
   deploy:
