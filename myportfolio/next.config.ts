@@ -4,8 +4,8 @@ const isProd = process.env.NODE_ENV === "production";
 const repoName = "Portfolio"; // Your repository name
 
 const nextConfig: NextConfig = {
-  basePath: isProd ? `/${repoName}` : "",
-  assetPrefix: isProd ? `/${repoName}/myportfolio/` : "",
+  basePath: isProd ? `/${repoName}/myportfolio` : "",
+  assetPrefix: isProd ? `/${repoName}/` : "",
   output: "export",
   distDir: "dist",
   trailingSlash: true,
