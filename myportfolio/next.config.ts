@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Ensure static files are served correctly
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : "",
+  },
 };
 
 export default nextConfig;

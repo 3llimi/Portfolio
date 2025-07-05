@@ -4,6 +4,12 @@ import styles from "./page.module.css";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+// Helper function to get the correct image path for GitHub Pages
+const getImagePath = (path: string) => {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+  return `${basePath}${path}`;
+};
+
 export default function Home() {
   const paData = [
     {
@@ -106,7 +112,7 @@ export default function Home() {
           {/* Background Image */}
           <div className={styles.heroBackground}>
             <Image
-              src="/images/hero-bg.jpg"
+              src={getImagePath("/images/hero-bg.jpg")}
               alt="Hero background"
               fill
               className={styles.heroImage}
@@ -129,7 +135,7 @@ export default function Home() {
                   style={{ margin: '0.7rem auto 0.3rem auto' }}
                 >
                   <Image
-                    src="/images/profile-photo.png"
+                    src={getImagePath("/images/profile-photo.png")}
                     alt="Ahmed Baha Eddine Alimi"
                     width={110}
                     height={110}
@@ -188,12 +194,12 @@ export default function Home() {
                 >
                   <div className={styles.socialLinks} style={{ justifyContent: 'center', width: '100%', gap: 14 }}>
                     {[
-                      { href: "#", platform: "upwork", icon: "/icons/upwork.svg", alt: "Upwork" },
-                      { href: "https://t.me/Allimi3", platform: "telegram", icon: "/icons/telegram.svg", alt: "Telegram" },
-                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: "/icons/behance.svg", alt: "Behance" },
-                      { href: "https://github.com/3llimi", platform: "github", icon: "/icons/github.svg", alt: "GitHub" },
-                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: "/icons/linkedin.svg", alt: "LinkedIn" },
-                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: "/icons/instagram.svg", alt: "Instagram" }
+                      { href: "#", platform: "upwork", icon: getImagePath("/icons/upwork.svg"), alt: "Upwork" },
+                      { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
+                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: getImagePath("/icons/behance.svg"), alt: "Behance" },
+                      { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
+                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
+                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: getImagePath("/icons/instagram.svg"), alt: "Instagram" }
                     ].map((social, index) => (
                       <motion.a
                         key={social.platform}
@@ -273,7 +279,7 @@ export default function Home() {
                   transition={{ duration: 0.7, delay: 0.5 }}
                 >
                   <Image
-                    src="/images/profile-photo.png"
+                    src={getImagePath("/images/profile-photo.png")}
                     alt="Ahmed Baha Eddine Alimi"
                     width={500}
                     height={500}
@@ -291,12 +297,12 @@ export default function Home() {
                 >
                   <div className={styles.socialLinks}>
                     {[
-                      { href: "#", platform: "upwork", icon: "/icons/upwork.svg", alt: "Upwork" },
-                      { href: "https://t.me/Allimi3", platform: "telegram", icon: "/icons/telegram.svg", alt: "Telegram" },
-                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: "/icons/behance.svg", alt: "Behance" },
-                      { href: "https://github.com/3llimi", platform: "github", icon: "/icons/github.svg", alt: "GitHub" },
-                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: "/icons/linkedin.svg", alt: "LinkedIn" },
-                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: "/icons/instagram.svg", alt: "Instagram" }
+                      { href: "#", platform: "upwork", icon: getImagePath("/icons/upwork.svg"), alt: "Upwork" },
+                      { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
+                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: getImagePath("/icons/behance.svg"), alt: "Behance" },
+                      { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
+                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
+                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: getImagePath("/icons/instagram.svg"), alt: "Instagram" }
                     ].map((social, index) => (
                       <motion.a
                         key={social.platform}
@@ -459,7 +465,7 @@ export default function Home() {
                     }}
                   >
                     <div className={styles.skillIconLarge}>
-                      <Image src="/icons/figma.svg" alt="Figma" width={40} height={40} />
+                      <Image src={getImagePath("/icons/figma.svg")} alt="Figma" width={40} height={40} />
                     </div>
                     <span className={styles.skillLabel}>*Figma</span>
                   </motion.div>
@@ -485,12 +491,12 @@ export default function Home() {
                 </motion.h3>
                 <div className={styles.skillsRow}>
                   {[
-                    { icon: "/icons/html5.svg", alt: "HTML5", label: "*HTML5" },
-                    { icon: "/icons/css3.svg", alt: "CSS3", label: "*CSS3" },
-                    { icon: "/icons/javascript.svg", alt: "JavaScript", label: "*JavaScript" },
-                    { icon: "/icons/typescript.svg", alt: "TypeScript", label: "*TypeScript" },
-                    { icon: "/icons/angular.svg", alt: "Angular", label: "*Angular" },
-                    { icon: "/icons/flutter.svg", alt: "flutter", label: "*Flutter" }
+                    { icon: getImagePath("/icons/html5.svg"), alt: "HTML5", label: "*HTML5" },
+                    { icon: getImagePath("/icons/css3.svg"), alt: "CSS3", label: "*CSS3" },
+                    { icon: getImagePath("/icons/javascript.svg"), alt: "JavaScript", label: "*JavaScript" },
+                    { icon: getImagePath("/icons/typescript.svg"), alt: "TypeScript", label: "*TypeScript" },
+                    { icon: getImagePath("/icons/angular.svg"), alt: "Angular", label: "*Angular" },
+                    { icon: getImagePath("/icons/flutter.svg"), alt: "flutter", label: "*Flutter" }
                   ].map((skill, index) => (
                     <motion.div
                       key={skill.alt}
@@ -538,13 +544,13 @@ export default function Home() {
                 </motion.h3>
                 <div className={styles.skillsRow}>
                   {[
-                    { icon: "/icons/nodejs.svg", alt: "Node.js", label: "*Node.js" },
-                    { icon: "/icons/postgresql.svg", alt: "PostgreSQL", label: "*PostgreSQL" },
-                    { icon: "/icons/mongodb.svg", alt: "MongoDB", label: "*MongoDB" },
-                    { icon: "/icons/mysql.svg", alt: "MySQL", label: "*MySQL" },
-                    { icon: "/icons/php.svg", alt: "PHP", label: "*PHP" },
-                    { icon: "/icons/docker.svg", alt: "Docker", label: "*Docker" },
-                    { icon: "/icons/go.svg", alt: "Go", label: "*GoLang" }
+                    { icon: getImagePath("/icons/nodejs.svg"), alt: "Node.js", label: "*Node.js" },
+                    { icon: getImagePath("/icons/postgresql.svg"), alt: "PostgreSQL", label: "*PostgreSQL" },
+                    { icon: getImagePath("/icons/mongodb.svg"), alt: "MongoDB", label: "*MongoDB" },
+                    { icon: getImagePath("/icons/mysql.svg"), alt: "MySQL", label: "*MySQL" },
+                    { icon: getImagePath("/icons/php.svg"), alt: "PHP", label: "*PHP" },
+                    { icon: getImagePath("/icons/docker.svg"), alt: "Docker", label: "*Docker" },
+                    { icon: getImagePath("/icons/go.svg"), alt: "Go", label: "*GoLang" }
                   ].map((skill, index) => (
                     <motion.div
                       key={skill.alt}
@@ -592,12 +598,12 @@ export default function Home() {
                 </motion.h3>
                 <div className={styles.skillsRow}>
                   {[
-                    { icon: "/icons/python.svg", alt: "Python", label: "*Python" },
-                    { icon: "/icons/csharp.svg", alt: "C#", label: "*C#" },
-                    { icon: "/icons/cpp.svg", alt: "C++", label: "*C++" },
-                    { icon: "/icons/c.svg", alt: "C", label: "*C" },
-                    { icon: "/icons/java.svg", alt: "Java", label: "*Java" },
-                    { icon: "/icons/arduino.svg", alt: "Arduino", label: "*Arduino" }
+                    { icon: getImagePath("/icons/python.svg"), alt: "Python", label: "*Python" },
+                    { icon: getImagePath("/icons/csharp.svg"), alt: "C#", label: "*C#" },
+                    { icon: getImagePath("/icons/cpp.svg"), alt: "C++", label: "*C++" },
+                    { icon: getImagePath("/icons/c.svg"), alt: "C", label: "*C" },
+                    { icon: getImagePath("/icons/java.svg"), alt: "Java", label: "*Java" },
+                    { icon: getImagePath("/icons/arduino.svg"), alt: "Arduino", label: "*Arduino" }
                   ].map((skill, index) => (
                     <motion.div
                       key={skill.alt}
@@ -662,7 +668,7 @@ export default function Home() {
                     }}
                   >
                     <div className={styles.skillIconLarge}>
-                      <Image src="/icons/lightroom.svg" alt="Lightroom" width={40} height={40} />
+                      <Image src={getImagePath("/icons/lightroom.svg")} alt="Lightroom" width={40} height={40} />
                     </div>
                     <span className={styles.skillLabel}>*Lightroom</span>
                   </motion.div>
