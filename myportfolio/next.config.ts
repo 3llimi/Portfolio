@@ -5,7 +5,7 @@ const repoName = "Portfolio"; // Your repository name
 
 const nextConfig: NextConfig = {
   basePath: isProd ? `/${repoName}` : "",
-  assetPrefix: isProd ? `/${repoName}/` : "",
+  assetPrefix: isProd ? `/${repoName}/myportfolio/` : "",
   output: "export",
   distDir: "dist",
   trailingSlash: true,
