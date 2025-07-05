@@ -146,7 +146,9 @@ export default function Home() {
                   transition={{ duration: 0.7, delay: 0.2 }}
                   style={{ marginBottom: '0.08rem', marginTop: '0.3rem', gap: '0.05rem' }}
                 >
-                  <span className={styles.lastName}>Alimi</span>
+                  <span className={styles.lastName}>
+                    <span className={styles.rotatingStar}>*</span>Alimi
+                  </span>
                   <span className={styles.firstName}>Ahmed Baha Eddine</span>
                 </motion.h1>
                 <motion.p
@@ -172,103 +174,59 @@ export default function Home() {
                 {/* Social Links Container (Mobile) */}
                 <motion.div
                   className={styles.socialLinksContainer}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.6 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.6,
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 10
+                  }}
                   style={{ position: 'static', margin: '0.4rem auto 0 auto', width: '100%', maxWidth: 320, background: 'rgba(30,30,30,0.97)' }}
                 >
                   <div className={styles.socialLinks} style={{ justifyContent: 'center', width: '100%', gap: 14 }}>
-                    <a
-                      href="#"
-                      className={styles.socialLink}
-                      data-platform="upwork"
-                      aria-label="Upwork"
-                    >
-                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
-                        <Image
-                          src="/icons/upwork.svg"
-                          alt="Upwork"
-                          width={20}
-                          height={12}
-                        />
-                      </div>
-                    </a>
-                    <a
-                      href="https://t.me/Allimi3"
-                      className={styles.socialLink}
-                      data-platform="telegram"
-                      aria-label="Telegram"
-                    >
-                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
-                        <Image
-                          src="/icons/telegram.svg"
-                          alt="Telegram"
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </a>
-                    <a
-                      href="https://www.behance.net/bahaallimi1"
-                      className={styles.socialLink}
-                      data-platform="behance"
-                      aria-label="Behance"
-                    >
-                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
-                        <Image
-                          src="/icons/behance.svg"
-                          alt="Behance"
-                          width={20}
-                          height={13}
-                        />
-                      </div>
-                    </a>
-                    <a
-                      href="https://github.com/3llimi"
-                      className={styles.socialLink}
-                      data-platform="github"
-                      aria-label="GitHub"
-                    >
-                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
-                        <Image
-                          src="/icons/github.svg"
-                          alt="GitHub"
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/ahmed-baha-eddine-alimi/"
-                      className={styles.socialLink}
-                      data-platform="linkedin"
-                      aria-label="LinkedIn"
-                    >
-                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
-                        <Image
-                          src="/icons/linkedin.svg"
-                          alt="LinkedIn"
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </a>
-                    <a
-                      href="https://www.instagram.com/3llimi/"
-                      className={styles.socialLink}
-                      data-platform="instagram"
-                      aria-label="Instagram"
-                    >
-                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
-                        <Image
-                          src="/icons/instagram.svg"
-                          alt="Instagram"
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </a>
+                    {[
+                      { href: "#", platform: "upwork", icon: "/icons/upwork.svg", alt: "Upwork" },
+                      { href: "https://t.me/Allimi3", platform: "telegram", icon: "/icons/telegram.svg", alt: "Telegram" },
+                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: "/icons/behance.svg", alt: "Behance" },
+                      { href: "https://github.com/3llimi", platform: "github", icon: "/icons/github.svg", alt: "GitHub" },
+                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: "/icons/linkedin.svg", alt: "LinkedIn" },
+                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: "/icons/instagram.svg", alt: "Instagram" }
+                    ].map((social, index) => (
+                      <motion.a
+                        key={social.platform}
+                        href={social.href}
+                        className={styles.socialLink}
+                        data-platform={social.platform}
+                        aria-label={social.alt}
+                        initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                        viewport={{ once: true, amount: 0.7 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.8 + index * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15
+                        }}
+                        whileHover={{
+                          scale: 1.2,
+                          rotate: 10,
+                          transition: { duration: 0.2 }
+                        }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <div className={styles.socialIcon}>
+                          <Image
+                            src={social.icon}
+                            alt={social.alt}
+                            fill
+                          />
+                        </div>
+                      </motion.a>
+                    ))}
                   </div>
                 </motion.div>
               </>
@@ -282,7 +240,9 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.7 }}
                   transition={{ duration: 0.7, delay: 0.2 }}
                 >
-                  <span className={styles.lastName}>Alimi</span>
+                  <span className={styles.lastName}>
+                    <span className={styles.rotatingStar}>*</span>Alimi
+                  </span>
                   <span className={styles.firstName}>Ahmed Baha Eddine</span>
                 </motion.h1>
                 {/* Subtitle Text */}
@@ -330,101 +290,46 @@ export default function Home() {
                   transition={{ duration: 0.7, delay: 0.6 }}
                 >
                   <div className={styles.socialLinks}>
-                    <a
-                      href="#"
-                      className={styles.socialLink}
-                      data-platform="upwork"
-                      aria-label="Upwork"
-                    >
-                      <div className={styles.socialIcon}>
-                        <Image
-                          src="/icons/upwork.svg"
-                          alt="Upwork"
-                          width={25}
-                          height={15}
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      href="https://t.me/Allimi3"
-                      className={styles.socialLink}
-                      data-platform="telegram"
-                      aria-label="Telegram"
-                    >
-                      <div className={styles.socialIcon}>
-                        <Image
-                          src="/icons/telegram.svg"
-                          alt="Telegram"
-                          width={25}
-                          height={25}
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      href="https://www.behance.net/bahaallimi1"
-                      className={styles.socialLink}
-                      data-platform="behance"
-                      aria-label="Behance"
-                    >
-                      <div className={styles.socialIcon}>
-                        <Image
-                          src="/icons/behance.svg"
-                          alt="Behance"
-                          width={25}
-                          height={16}
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      href="https://github.com/3llimi"
-                      className={styles.socialLink}
-                      data-platform="github"
-                      aria-label="GitHub"
-                    >
-                      <div className={styles.socialIcon}>
-                        <Image
-                          src="/icons/github.svg"
-                          alt="GitHub"
-                          width={25}
-                          height={25}
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      href="https://www.linkedin.com/in/ahmed-baha-eddine-alimi/"
-                      className={styles.socialLink}
-                      data-platform="linkedin"
-                      aria-label="LinkedIn"
-                    >
-                      <div className={styles.socialIcon}>
-                        <Image
-                          src="/icons/linkedin.svg"
-                          alt="LinkedIn"
-                          width={25}
-                          height={25}
-                        />
-                      </div>
-                    </a>
-
-                    <a
-                      href="https://www.instagram.com/3llimi/"
-                      className={styles.socialLink}
-                      data-platform="instagram"
-                      aria-label="Instagram"
-                    >
-                      <div className={styles.socialIcon}>
-                        <Image
-                          src="/icons/instagram.svg"
-                          alt="Instagram"
-                          width={25}
-                          height={25}
-                        />
-                      </div>
-                    </a>
+                    {[
+                      { href: "#", platform: "upwork", icon: "/icons/upwork.svg", alt: "Upwork" },
+                      { href: "https://t.me/Allimi3", platform: "telegram", icon: "/icons/telegram.svg", alt: "Telegram" },
+                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: "/icons/behance.svg", alt: "Behance" },
+                      { href: "https://github.com/3llimi", platform: "github", icon: "/icons/github.svg", alt: "GitHub" },
+                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: "/icons/linkedin.svg", alt: "LinkedIn" },
+                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: "/icons/instagram.svg", alt: "Instagram" }
+                    ].map((social, index) => (
+                      <motion.a
+                        key={social.platform}
+                        href={social.href}
+                        className={styles.socialLink}
+                        data-platform={social.platform}
+                        aria-label={social.alt}
+                        initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                        viewport={{ once: true, amount: 0.7 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.8 + index * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15
+                        }}
+                        whileHover={{
+                          scale: 1.2,
+                          rotate: 10,
+                          transition: { duration: 0.2 }
+                        }}
+                        whileTap={{ scale: 0.9 }}
+                      >
+                        <div className={styles.socialIcon}>
+                          <Image
+                            src={social.icon}
+                            alt={social.alt}
+                            fill
+                          />
+                        </div>
+                      </motion.a>
+                    ))}
                   </div>
                 </motion.div>
                 {/* Caption (desktop only) */}
@@ -480,7 +385,7 @@ export default function Home() {
                 </h3>
 
                 <h4 className={styles.aboutLocation}>
-                  A Tunisian Computer Science Student Currently Based in Russia
+                  A Tunisian Computer Science Student Currently Based in <span className={styles.russiaText}><span className={styles.russiaRu}>Ru</span><span className={styles.russiaS}>ss</span><span className={styles.russiaIa}>ia</span></span>
                 </h4>
 
                 <div className={styles.aboutDescription}>
@@ -524,16 +429,40 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
+                transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
               >
-                <h3 className={styles.groupTitle}>*UI/UX Design</h3>
+                <motion.h3
+                  className={styles.groupTitle}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  *UI/UX Design
+                </motion.h3>
                 <div className={styles.skillsRow}>
-                  <div className={styles.skillItem}>
+                  <motion.div
+                    className={styles.skillItem}
+                    initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                    whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.4,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 15
+                    }}
+                    whileHover={{
+                      rotateY: 10,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
                     <div className={styles.skillIconLarge}>
                       <Image src="/icons/figma.svg" alt="Figma" width={40} height={40} />
                     </div>
                     <span className={styles.skillLabel}>*Figma</span>
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
 
@@ -543,46 +472,50 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.3, type: "spring", stiffness: 100 }}
               >
-                <h3 className={styles.groupTitle}>*Front-End Development</h3>
+                <motion.h3
+                  className={styles.groupTitle}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  *Front-End Development
+                </motion.h3>
                 <div className={styles.skillsRow}>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/html5.svg" alt="HTML5" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*HTML5</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/css3.svg" alt="CSS3" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*CSS3</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/javascript.svg" alt="JavaScript" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*JavaScript</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/typescript.svg" alt="TypeScript" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*TypeScript</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/angular.svg" alt="Angular" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Angular</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/flutter.svg" alt="flutter" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Flutter</span>
-                  </div>
+                  {[
+                    { icon: "/icons/html5.svg", alt: "HTML5", label: "*HTML5" },
+                    { icon: "/icons/css3.svg", alt: "CSS3", label: "*CSS3" },
+                    { icon: "/icons/javascript.svg", alt: "JavaScript", label: "*JavaScript" },
+                    { icon: "/icons/typescript.svg", alt: "TypeScript", label: "*TypeScript" },
+                    { icon: "/icons/angular.svg", alt: "Angular", label: "*Angular" },
+                    { icon: "/icons/flutter.svg", alt: "flutter", label: "*Flutter" }
+                  ].map((skill, index) => (
+                    <motion.div
+                      key={skill.alt}
+                      className={styles.skillItem}
+                      initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      viewport={{ once: true, amount: 0.7 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.5 + index * 0.1,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15
+                      }}
+                      whileHover={{
+                        rotateY: 10,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      <div className={styles.skillIconLarge}>
+                        <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                      </div>
+                      <span className={styles.skillLabel}>{skill.label}</span>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
 
@@ -592,52 +525,51 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
+                transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
               >
-                <h3 className={styles.groupTitle}>*Back-End Development</h3>
+                <motion.h3
+                  className={styles.groupTitle}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  *Back-End Development
+                </motion.h3>
                 <div className={styles.skillsRow}>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/nodejs.svg" alt="Node.js" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Node.js</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/postgresql.svg" alt="PostgreSQL" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*PostgreSQL</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/mongodb.svg" alt="MongoDB" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*MongoDB</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/mysql.svg" alt="MySQL" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*MySQL</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/php.svg" alt="PHP" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*PHP</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/docker.svg" alt="Docker" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Docker</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/go.svg" alt="Go" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*GoLang</span>
-                  </div>
+                  {[
+                    { icon: "/icons/nodejs.svg", alt: "Node.js", label: "*Node.js" },
+                    { icon: "/icons/postgresql.svg", alt: "PostgreSQL", label: "*PostgreSQL" },
+                    { icon: "/icons/mongodb.svg", alt: "MongoDB", label: "*MongoDB" },
+                    { icon: "/icons/mysql.svg", alt: "MySQL", label: "*MySQL" },
+                    { icon: "/icons/php.svg", alt: "PHP", label: "*PHP" },
+                    { icon: "/icons/docker.svg", alt: "Docker", label: "*Docker" },
+                    { icon: "/icons/go.svg", alt: "Go", label: "*GoLang" }
+                  ].map((skill, index) => (
+                    <motion.div
+                      key={skill.alt}
+                      className={styles.skillItem}
+                      initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      viewport={{ once: true, amount: 0.7 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.6 + index * 0.1,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15
+                      }}
+                      whileHover={{
+                        rotateY: 10,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      <div className={styles.skillIconLarge}>
+                        <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                      </div>
+                      <span className={styles.skillLabel}>{skill.label}</span>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
 
@@ -647,46 +579,50 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
+                transition={{ duration: 0.8, delay: 0.5, type: "spring", stiffness: 100 }}
               >
-                <h3 className={styles.groupTitle}>*Programming</h3>
+                <motion.h3
+                  className={styles.groupTitle}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  *Programming
+                </motion.h3>
                 <div className={styles.skillsRow}>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/python.svg" alt="Python" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Python</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/csharp.svg" alt="C#" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*C#</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/cpp.svg" alt="C++" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*C++</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/c.svg" alt="C" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*C</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/java.svg" alt="Java" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Java</span>
-                  </div>
-                  <div className={styles.skillItem}>
-                    <div className={styles.skillIconLarge}>
-                      <Image src="/icons/arduino.svg" alt="Arduino" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Arduino</span>
-                  </div>
+                  {[
+                    { icon: "/icons/python.svg", alt: "Python", label: "*Python" },
+                    { icon: "/icons/csharp.svg", alt: "C#", label: "*C#" },
+                    { icon: "/icons/cpp.svg", alt: "C++", label: "*C++" },
+                    { icon: "/icons/c.svg", alt: "C", label: "*C" },
+                    { icon: "/icons/java.svg", alt: "Java", label: "*Java" },
+                    { icon: "/icons/arduino.svg", alt: "Arduino", label: "*Arduino" }
+                  ].map((skill, index) => (
+                    <motion.div
+                      key={skill.alt}
+                      className={styles.skillItem}
+                      initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      viewport={{ once: true, amount: 0.7 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.7 + index * 0.1,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15
+                      }}
+                      whileHover={{
+                        rotateY: 10,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      <div className={styles.skillIconLarge}>
+                        <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                      </div>
+                      <span className={styles.skillLabel}>{skill.label}</span>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
 
@@ -696,16 +632,40 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
+                transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
               >
-                <h3 className={styles.groupTitle}>*Photography</h3>
+                <motion.h3
+                  className={styles.groupTitle}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.6, delay: 0.7 }}
+                >
+                  *Photography
+                </motion.h3>
                 <div className={styles.skillsRow}>
-                  <div className={styles.skillItem}>
+                  <motion.div
+                    className={styles.skillItem}
+                    initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                    whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 0.8,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 15
+                    }}
+                    whileHover={{
+                      rotateY: 10,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
                     <div className={styles.skillIconLarge}>
                       <Image src="/icons/lightroom.svg" alt="Lightroom" width={40} height={40} />
                     </div>
                     <span className={styles.skillLabel}>*Lightroom</span>
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             </div>
@@ -774,12 +734,40 @@ export default function Home() {
         </motion.section>
 
         {/* Footer */}
-        <footer className={styles.footer}>
+        <motion.footer
+          className={styles.footer}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
+        >
           <div className={styles.footerContent}>
-            <h3 className={styles.contactTitle}>GET IN TOUCH</h3>
-            <p className={styles.copyright}>© 2024 Designed and Developed by Ahmed Baha Eddine Alimi</p>
+            <motion.h3
+              className={styles.contactTitle}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{
+                duration: 0.6,
+                delay: 0.4,
+                type: "spring",
+                stiffness: 200,
+                damping: 15
+              }}
+            >
+              GET IN TOUCH
+            </motion.h3>
+            <motion.p
+              className={styles.copyright}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              © 2024 Designed and Developed by Ahmed Baha Eddine Alimi
+            </motion.p>
           </div>
-        </footer>
+        </motion.footer>
       </div>
     </>
   );

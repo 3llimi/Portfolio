@@ -20,6 +20,11 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -100,6 +105,41 @@ h1, h2, h3, h4, h5, h6 {
 
   .section {
     padding: 2rem 0;
+  }
+}
+
+/* Additional responsive improvements */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  .section {
+    padding: 1.5rem 0;
+  }
+}
+
+@media (max-width: 320px) {
+  .container {
+    padding: 0 0.25rem;
+  }
+
+  .section {
+    padding: 1rem 0;
+  }
+}
+
+/* Ensure proper scaling on all devices */
+@media (orientation: landscape) and (max-height: 500px) {
+  .section {
+    padding: 1rem 0;
+  }
+}
+
+/* High-DPI display support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  html {
+    font-size: 16px;
   }
 }
 
