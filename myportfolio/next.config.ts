@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Ensure proper environment detection
+  env: {
+    NODE_ENV: process.env.NODE_ENV,
+  },
 };
 
 export default nextConfig;
