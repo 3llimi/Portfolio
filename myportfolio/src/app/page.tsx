@@ -58,25 +58,42 @@ export default function Home() {
 
   // Custom cursor state
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const [showCursor, setShowCursor] = useState(true);
+
+  // Helper to detect mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
 
   useEffect(() => {
+    // Hide cursor on mobile (<=600px)
+    const handleResize = () => {
+      setShowCursor(window.innerWidth > 600);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!showCursor) return;
     const move = (e: MouseEvent) => {
       setCursor({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
-  }, []);
+  }, [showCursor]);
 
   return (
     <>
       {/* Custom Cursor */}
-      <div
-        className="custom-cursor-invert"
-        style={{
-          left: `${cursor.x}px`,
-          top: `${cursor.y}px`,
-        }}
-      />
+      {showCursor && (
+        <div
+          className="custom-cursor-invert"
+          style={{
+            left: `${cursor.x}px`,
+            top: `${cursor.y}px`,
+          }}
+        />
+      )}
       <div className={styles.portfolio}>
         {/* Hero Section - Exact Figma Match */}
         <motion.section
@@ -99,169 +116,329 @@ export default function Home() {
           </div>
           {/* Content Container */}
           <div className={styles.heroContent}>
-            {/* Name Text - Exact Positioning */}
-            <motion.h1
-              className={styles.heroName}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <span className={styles.lastName}>Alimi</span>
-              <span className={styles.firstName}>Ahmed Baha Eddine</span>
-            </motion.h1>
-            {/* Subtitle Text */}
-            <motion.p
-              className={styles.heroTitle}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              Comp Sci Student
-            </motion.p>
-            <motion.p
-              className={styles.heroSubtitle}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-            >
-              At Innopolis University
-            </motion.p>
-            {/* Profile Image */}
-            <motion.div
-              className={styles.heroImageContainer}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-            >
-              <Image
-                src="/images/profile-photo.png"
-                alt="Ahmed Baha Eddine Alimi"
-                width={500}
-                height={500}
-                className={styles.profileImage}
-                priority
-              />
-            </motion.div>
-            {/* Social Links Container */}
-            <motion.div
-              className={styles.socialLinksContainer}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.6 }}
-            >
-              <div className={styles.socialLinks}>
-                <a
-                  href="#"
-                  className={styles.socialLink}
-                  data-platform="upwork"
-                  aria-label="Upwork"
+            {/* Mobile: Picture first, then writing, then social links */}
+            {isMobile ? (
+              <>
+                {/* Profile Image */}
+                <motion.div
+                  className={styles.heroImageContainer}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.5 }}
+                  style={{ margin: '0.7rem auto 0.3rem auto' }}
                 >
-                  <div className={styles.socialIcon}>
-                    <Image
-                      src="/icons/upwork.svg"
-                      alt="Upwork"
-                      width={25}
-                      height={15}
-                    />
+                  <Image
+                    src="/images/profile-photo.png"
+                    alt="Ahmed Baha Eddine Alimi"
+                    width={110}
+                    height={110}
+                    className={styles.profileImage}
+                    priority
+                  />
+                </motion.div>
+                {/* Name, Title, Subtitle */}
+                <motion.h1
+                  className={styles.heroName}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                  style={{ marginBottom: '0.08rem', marginTop: '0.3rem', gap: '0.05rem' }}
+                >
+                  <span className={styles.lastName}>Alimi</span>
+                  <span className={styles.firstName}>Ahmed Baha Eddine</span>
+                </motion.h1>
+                <motion.p
+                  className={styles.heroTitle}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.3 }}
+                  style={{ marginBottom: '0.05rem' }}
+                >
+                  Comp Sci Student
+                </motion.p>
+                <motion.p
+                  className={styles.heroSubtitle}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                  style={{ marginBottom: '0.05rem' }}
+                >
+                  At Innopolis University
+                </motion.p>
+                {/* Social Links Container (Mobile) */}
+                <motion.div
+                  className={styles.socialLinksContainer}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.6 }}
+                  style={{ position: 'static', margin: '0.4rem auto 0 auto', width: '100%', maxWidth: 320, background: 'rgba(30,30,30,0.97)' }}
+                >
+                  <div className={styles.socialLinks} style={{ justifyContent: 'center', width: '100%', gap: 14 }}>
+                    <a
+                      href="#"
+                      className={styles.socialLink}
+                      data-platform="upwork"
+                      aria-label="Upwork"
+                    >
+                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
+                        <Image
+                          src="/icons/upwork.svg"
+                          alt="Upwork"
+                          width={20}
+                          height={12}
+                        />
+                      </div>
+                    </a>
+                    <a
+                      href="https://t.me/Allimi3"
+                      className={styles.socialLink}
+                      data-platform="telegram"
+                      aria-label="Telegram"
+                    >
+                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
+                        <Image
+                          src="/icons/telegram.svg"
+                          alt="Telegram"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </a>
+                    <a
+                      href="https://www.behance.net/bahaallimi1"
+                      className={styles.socialLink}
+                      data-platform="behance"
+                      aria-label="Behance"
+                    >
+                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
+                        <Image
+                          src="/icons/behance.svg"
+                          alt="Behance"
+                          width={20}
+                          height={13}
+                        />
+                      </div>
+                    </a>
+                    <a
+                      href="https://github.com/3llimi"
+                      className={styles.socialLink}
+                      data-platform="github"
+                      aria-label="GitHub"
+                    >
+                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
+                        <Image
+                          src="/icons/github.svg"
+                          alt="GitHub"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/ahmed-baha-eddine-alimi/"
+                      className={styles.socialLink}
+                      data-platform="linkedin"
+                      aria-label="LinkedIn"
+                    >
+                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
+                        <Image
+                          src="/icons/linkedin.svg"
+                          alt="LinkedIn"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </a>
+                    <a
+                      href="https://www.instagram.com/3llimi/"
+                      className={styles.socialLink}
+                      data-platform="instagram"
+                      aria-label="Instagram"
+                    >
+                      <div className={styles.socialIcon} style={{ width: 22, height: 22 }}>
+                        <Image
+                          src="/icons/instagram.svg"
+                          alt="Instagram"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    </a>
                   </div>
-                </a>
+                </motion.div>
+              </>
+            ) : (
+              <>
+                {/* Name Text - Exact Positioning */}
+                <motion.h1
+                  className={styles.heroName}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.2 }}
+                >
+                  <span className={styles.lastName}>Alimi</span>
+                  <span className={styles.firstName}>Ahmed Baha Eddine</span>
+                </motion.h1>
+                {/* Subtitle Text */}
+                <motion.p
+                  className={styles.heroTitle}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.3 }}
+                >
+                  Comp Sci Student
+                </motion.p>
+                <motion.p
+                  className={styles.heroSubtitle}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.4 }}
+                >
+                  At Innopolis University
+                </motion.p>
+                {/* Profile Image */}
+                <motion.div
+                  className={styles.heroImageContainer}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.5 }}
+                >
+                  <Image
+                    src="/images/profile-photo.png"
+                    alt="Ahmed Baha Eddine Alimi"
+                    width={500}
+                    height={500}
+                    className={styles.profileImage}
+                    priority
+                  />
+                </motion.div>
+                {/* Social Links Container */}
+                <motion.div
+                  className={styles.socialLinksContainer}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.6 }}
+                >
+                  <div className={styles.socialLinks}>
+                    <a
+                      href="#"
+                      className={styles.socialLink}
+                      data-platform="upwork"
+                      aria-label="Upwork"
+                    >
+                      <div className={styles.socialIcon}>
+                        <Image
+                          src="/icons/upwork.svg"
+                          alt="Upwork"
+                          width={25}
+                          height={15}
+                        />
+                      </div>
+                    </a>
 
-                <a
-                  href="#"
-                  className={styles.socialLink}
-                  data-platform="telegram"
-                  aria-label="Telegram"
-                >
-                  <div className={styles.socialIcon}>
-                    <Image
-                      src="/icons/telegram.svg"
-                      alt="Telegram"
-                      width={25}
-                      height={25}
-                    />
-                  </div>
-                </a>
+                    <a
+                      href="https://t.me/Allimi3"
+                      className={styles.socialLink}
+                      data-platform="telegram"
+                      aria-label="Telegram"
+                    >
+                      <div className={styles.socialIcon}>
+                        <Image
+                          src="/icons/telegram.svg"
+                          alt="Telegram"
+                          width={25}
+                          height={25}
+                        />
+                      </div>
+                    </a>
 
-                <a
-                  href="https://www.behance.net/bahaallimi1"
-                  className={styles.socialLink}
-                  data-platform="behance"
-                  aria-label="Behance"
-                >
-                  <div className={styles.socialIcon}>
-                    <Image
-                      src="/icons/behance.svg"
-                      alt="Behance"
-                      width={25}
-                      height={16}
-                    />
-                  </div>
-                </a>
+                    <a
+                      href="https://www.behance.net/bahaallimi1"
+                      className={styles.socialLink}
+                      data-platform="behance"
+                      aria-label="Behance"
+                    >
+                      <div className={styles.socialIcon}>
+                        <Image
+                          src="/icons/behance.svg"
+                          alt="Behance"
+                          width={25}
+                          height={16}
+                        />
+                      </div>
+                    </a>
 
-                <a
-                  href="https://github.com/3llimi"
-                  className={styles.socialLink}
-                  data-platform="github"
-                  aria-label="GitHub"
-                >
-                  <div className={styles.socialIcon}>
-                    <Image
-                      src="/icons/github.svg"
-                      alt="GitHub"
-                      width={25}
-                      height={25}
-                    />
-                  </div>
-                </a>
+                    <a
+                      href="https://github.com/3llimi"
+                      className={styles.socialLink}
+                      data-platform="github"
+                      aria-label="GitHub"
+                    >
+                      <div className={styles.socialIcon}>
+                        <Image
+                          src="/icons/github.svg"
+                          alt="GitHub"
+                          width={25}
+                          height={25}
+                        />
+                      </div>
+                    </a>
 
-                <a
-                  href="https://www.linkedin.com/in/ahmed-baha-eddine-alimi/"
-                  className={styles.socialLink}
-                  data-platform="linkedin"
-                  aria-label="LinkedIn"
-                >
-                  <div className={styles.socialIcon}>
-                    <Image
-                      src="/icons/linkedin.svg"
-                      alt="LinkedIn"
-                      width={25}
-                      height={25}
-                    />
-                  </div>
-                </a>
+                    <a
+                      href="https://www.linkedin.com/in/ahmed-baha-eddine-alimi/"
+                      className={styles.socialLink}
+                      data-platform="linkedin"
+                      aria-label="LinkedIn"
+                    >
+                      <div className={styles.socialIcon}>
+                        <Image
+                          src="/icons/linkedin.svg"
+                          alt="LinkedIn"
+                          width={25}
+                          height={25}
+                        />
+                      </div>
+                    </a>
 
-                <a
-                  href="https://www.instagram.com/3llimi/"
-                  className={styles.socialLink}
-                  data-platform="instagram"
-                  aria-label="Instagram"
-                >
-                  <div className={styles.socialIcon}>
-                    <Image
-                      src="/icons/instagram.svg"
-                      alt="Instagram"
-                      width={25}
-                      height={25}
-                    />
+                    <a
+                      href="https://www.instagram.com/3llimi/"
+                      className={styles.socialLink}
+                      data-platform="instagram"
+                      aria-label="Instagram"
+                    >
+                      <div className={styles.socialIcon}>
+                        <Image
+                          src="/icons/instagram.svg"
+                          alt="Instagram"
+                          width={25}
+                          height={25}
+                        />
+                      </div>
+                    </a>
                   </div>
-                </a>
-              </div>
-            </motion.div>
-            {/* Caption */}
-            <motion.div
-              className={styles.heroCaption}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
-            >
-              Shot in Innopolis University&apos;s Robotics Lab: By Me
-            </motion.div>
+                </motion.div>
+                {/* Caption (desktop only) */}
+                <motion.div
+                  className={styles.heroCaption}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.7, delay: 0.7 }}
+                >
+                  Shot in Innopolis University&apos;s Robotics Lab: By Me
+                </motion.div>
+              </>
+            )}
           </div>
         </motion.section>
 
@@ -333,6 +510,12 @@ export default function Home() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
+          {isMobile ? (
+            <div className={styles.skillsTitleBlock + ' ' + styles.skillsTitleBlockMobile}>
+              <div className={styles.skillsTitleMain}>SKILLS</div>
+              <div className={styles.skillsTitleSub}>TECHNOLOGIES</div>
+            </div>
+          ) : null}
           <div className={styles.skillsScrollContainer}>
             <div className={styles.skillsGroups}>
               {/* UI/UX Design Group */}
@@ -528,10 +711,12 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.skillsHeadingRight}>
-            <div className={styles.skillsTitleBlock}>
-              <div className={styles.skillsTitleMain}>{/* paProjects style */}SKILLS</div>
-              <div className={styles.skillsTitleSub}>{/* paAchievements style */}TECHNOLOGIES</div>
-            </div>
+            {!isMobile && (
+              <div className={styles.skillsTitleBlock}>
+                <div className={styles.skillsTitleMain}>{/* paProjects style */}SKILLS</div>
+                <div className={styles.skillsTitleSub}>{/* paAchievements style */}TECHNOLOGIES</div>
+              </div>
+            )}
           </div>
         </motion.section>
 
