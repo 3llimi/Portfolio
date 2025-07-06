@@ -1606,16 +1606,40 @@
 }
 
 .verticalCarousel {
-  max-height: 550px; /* 3 cards * 120px each, adjust if needed */
+  max-height: 60vh;
   overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #FFD700 #181818;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
 }
 .verticalCarousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  width: 12px;
+  background: linear-gradient(180deg, #181818 60%, #232323 100%);
+  border-radius: 10px;
+}
+.verticalCarousel::-webkit-scrollbar-thumb {
+  background: linear-gradient(120deg, #FFD700 60%, #fffbe6 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 8px 2px #FFD70099;
+  border: 2px solid #232323;
+  min-height: 40px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.verticalCarousel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(120deg, #ffe066 60%, #fffbe6 100%);
+  box-shadow: 0 0 16px 4px #FFD700cc;
+}
+.verticalCarousel::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #181818 60%, #232323 100%);
+  border-radius: 10px;
+}
+@media (max-width: 900px) {
+  .verticalCarousel {
+    max-height: 80vh;
+  }
 }
 
 .footer {
@@ -2194,5 +2218,173 @@
 
   .copyright {
     font-size: 14px;
+  }
+}
+
+/* Navigation Bubbles */
+.navigationBubble {
+  position: fixed;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.navigationBubble:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+.navigationBubble:active {
+  transform: scale(0.95);
+}
+
+.navigationBubbleDown {
+  bottom: 100px;
+}
+
+.navigationBubbleUp {
+  bottom: 170px;
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevron::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transition: all 0.3s ease;
+}
+
+.chevronDown::before {
+  transform: rotate(45deg);
+  top: -2px;
+}
+
+.chevronUp::before {
+  transform: rotate(-135deg);
+  top: 2px;
+}
+
+.navigationBubble:hover .chevron::before {
+  border-color: #FFD700;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+}
+
+.bubbleSkillsActive {
+  background: rgba(0,0,0,0.92) !important;
+  border-color: #FFD700 !important;
+}
+.bubbleSkillsActive .chevron::before {
+  border-color: #FFD700 !important; /* golden for visibility */
+  filter: drop-shadow(0 0 8px #FFD700);
+}
+
+/* Hide navigation bubbles on mobile */
+@media (max-width: 768px) {
+  .navigationBubble {
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .navigationBubbleDown {
+    bottom: 80px;
+  }
+
+  .navigationBubbleUp {
+    bottom: 140px;
+  }
+
+  .chevron {
+    width: 18px;
+    height: 18px;
+  }
+
+  .chevron::before {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigationBubble {
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .navigationBubbleDown {
+    bottom: 60px;
+  }
+
+  .navigationBubbleUp {
+    bottom: 110px;
+  }
+
+  .chevron {
+    width: 16px;
+    height: 16px;
+  }
+
+  .chevron::before {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+.skillsVerticalCarousel {
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-right: 8px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+.skillsVerticalCarousel::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.skillsVerticalCarousel::-webkit-scrollbar-thumb {
+  background: linear-gradient(120deg, #FFD700 60%, #fffbe6 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 8px 2px #FFD70099;
+  border: 2px solid #232323;
+  min-height: 40px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.skillsVerticalCarousel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(120deg, #ffe066 60%, #fffbe6 100%);
+  box-shadow: 0 0 16px 4px #FFD700cc;
+}
+.skillsVerticalCarousel::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #181818 60%, #232323 100%);
+  border-radius: 10px;
+}
+@media (max-width: 900px) {
+  .skillsVerticalCarousel {
+    max-height: 80vh;
   }
 }

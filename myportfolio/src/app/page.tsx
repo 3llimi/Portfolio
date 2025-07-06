@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 // Helper function to get the correct image path for GitHub Pages
@@ -62,6 +62,8 @@ export default function Home() {
     },
   ];
 
+
+
   // Custom cursor state
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [showCursor, setShowCursor] = useState(true);
@@ -87,6 +89,142 @@ export default function Home() {
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
   }, [showCursor]);
+
+    // Navigation functions
+  const scrollToNextSection = () => {
+    const currentScrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const nextScrollPosition = currentScrollY + windowHeight;
+
+    window.scrollTo({
+      top: nextScrollPosition,
+      behavior: 'smooth'
+    });
+  };
+
+  const scrollToPreviousSection = () => {
+    const currentScrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const prevScrollPosition = Math.max(0, currentScrollY - windowHeight);
+
+    window.scrollTo({
+      top: prevScrollPosition,
+      behavior: 'smooth'
+    });
+  };
+
+  // State for showing/hiding navigation bubbles
+  const [atTop, setAtTop] = useState(true);
+  const [atBottom, setAtBottom] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      setAtTop(scrollY <= 10);
+      setAtBottom(scrollY + windowHeight >= docHeight - 10);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
+  // Ref for skills section
+  const skillsSectionRef = useRef<HTMLDivElement | null>(null);
+  const [skillsActive, setSkillsActive] = useState(false);
+
+  useEffect(() => {
+    const handleSkillsSection = () => {
+      if (!skillsSectionRef.current) return;
+      const rect = skillsSectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      // Section is considered active if at least 40% is visible
+      const visible = rect.top < windowHeight * 0.6 && rect.bottom > windowHeight * 0.4;
+      setSkillsActive(visible);
+    };
+    handleSkillsSection();
+    window.addEventListener('scroll', handleSkillsSection);
+    window.addEventListener('resize', handleSkillsSection);
+    return () => {
+      window.removeEventListener('scroll', handleSkillsSection);
+      window.removeEventListener('resize', handleSkillsSection);
+    };
+  }, []);
+
+  // Ref for auto-scroll in Projects section
+  const projectsCarouselRef = useRef<HTMLDivElement | null>(null);
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
+
+  useEffect(() => {
+    const carousel = projectsCarouselRef.current;
+    if (!carousel) return;
+    let animationFrame: number | null = null;
+    let lastTimestamp: number | null = null;
+    const speed = 0.2; // px per ms (much faster, running effect)
+
+    const step = (timestamp: number) => {
+      if (isCarouselHovered) return;
+      if (lastTimestamp === null) lastTimestamp = timestamp;
+      const elapsed = timestamp - lastTimestamp;
+      lastTimestamp = timestamp;
+      // Scroll by speed * elapsed ms
+      carousel.scrollTop += speed * elapsed;
+      // If at or past bottom, scroll to top
+      if (carousel.scrollTop + carousel.clientHeight >= carousel.scrollHeight - 1) {
+        carousel.scrollTop = 0;
+      }
+      animationFrame = requestAnimationFrame(step);
+    };
+
+    if (!isCarouselHovered) {
+      animationFrame = requestAnimationFrame(step);
+    }
+    return () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      lastTimestamp = null;
+    };
+  }, [isCarouselHovered]);
+
+  // Ref for auto-scroll in Skills section
+  const skillsGroupsRef = useRef<HTMLDivElement | null>(null);
+  const [isSkillsHovered, setIsSkillsHovered] = useState(false);
+
+  useEffect(() => {
+    const container = skillsGroupsRef.current;
+    if (!container) return;
+    let animationFrame: number | null = null;
+    let lastTimestamp: number | null = null;
+    const speed = 0.2; // px per ms (same as Projects)
+
+    const step = (timestamp: number) => {
+      if (isSkillsHovered) return;
+      if (lastTimestamp === null) lastTimestamp = timestamp;
+      const elapsed = timestamp - lastTimestamp;
+      lastTimestamp = timestamp;
+      container.scrollTop += speed * elapsed;
+      if (container.scrollTop + container.clientHeight >= container.scrollHeight - 1) {
+        container.scrollTop = 0;
+      }
+      animationFrame = requestAnimationFrame(step);
+    };
+
+    if (!isSkillsHovered) {
+      animationFrame = requestAnimationFrame(step);
+    }
+    return () => {
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      lastTimestamp = null;
+    };
+  }, [isSkillsHovered]);
+
+  // Hydration fix: only render browser-dependent UI after mount
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => { setHasMounted(true); }, []);
 
   return (
     <>
@@ -415,6 +553,7 @@ export default function Home() {
 
         {/* Skills & Technologies Section */}
         <motion.section
+          ref={skillsSectionRef}
           className={styles.skillsSection}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -428,85 +567,41 @@ export default function Home() {
             </div>
           ) : null}
           <div className={styles.skillsScrollContainer}>
-            <div className={styles.skillsGroups}>
-              {/* UI/UX Design Group */}
-              <motion.div
-                className={styles.skillGroup}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
+            {hasMounted && (
+              <div
+                className={styles.skillsVerticalCarousel}
+                ref={skillsGroupsRef}
+                onMouseEnter={() => setIsSkillsHovered(true)}
+                onMouseLeave={() => setIsSkillsHovered(false)}
+                onTouchStart={() => setIsSkillsHovered(true)}
+                onTouchEnd={() => setIsSkillsHovered(false)}
               >
-                <motion.h3
-                  className={styles.groupTitle}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                {/* UI/UX Design Group */}
+                <motion.div
+                  className={styles.skillGroup}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
+                  transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
                 >
-                  *UI/UX Design
-                </motion.h3>
-                <div className={styles.skillsRow}>
-                  <motion.div
-                    className={styles.skillItem}
-                    initial={{ opacity: 0, scale: 0, rotateY: 90 }}
-                    whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  <motion.h3
+                    className={styles.groupTitle}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.7 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.4,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15
-                    }}
-                    whileHover={{
-                      rotateY: 10,
-                      transition: { duration: 0.2 }
-                    }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    <div className={styles.skillIconLarge}>
-                      <Image src={getImagePath("/icons/figma.svg")} alt="Figma" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Figma</span>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Front-End Development Group */}
-              <motion.div
-                className={styles.skillGroup}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.8, delay: 0.3, type: "spring", stiffness: 100 }}
-              >
-                <motion.h3
-                  className={styles.groupTitle}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                  *Front-End Development
-                </motion.h3>
-                <div className={styles.skillsRow}>
-                  {[
-                    { icon: getImagePath("/icons/html5.svg"), alt: "HTML5", label: "*HTML5" },
-                    { icon: getImagePath("/icons/css3.svg"), alt: "CSS3", label: "*CSS3" },
-                    { icon: getImagePath("/icons/javascript.svg"), alt: "JavaScript", label: "*JavaScript" },
-                    { icon: getImagePath("/icons/typescript.svg"), alt: "TypeScript", label: "*TypeScript" },
-                    { icon: getImagePath("/icons/angular.svg"), alt: "Angular", label: "*Angular" },
-                    { icon: getImagePath("/icons/flutter.svg"), alt: "flutter", label: "*Flutter" }
-                  ].map((skill, index) => (
+                    *UI/UX Design
+                  </motion.h3>
+                  <div className={styles.skillsRow}>
                     <motion.div
-                      key={skill.alt}
                       className={styles.skillItem}
                       initial={{ opacity: 0, scale: 0, rotateY: 90 }}
                       whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
                       viewport={{ once: true, amount: 0.7 }}
                       transition={{
                         duration: 0.6,
-                        delay: 0.5 + index * 0.1,
+                        delay: 0.4,
                         type: "spring",
                         stiffness: 200,
                         damping: 15
@@ -517,164 +612,217 @@ export default function Home() {
                       }}
                     >
                       <div className={styles.skillIconLarge}>
-                        <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                        <Image src={getImagePath("/icons/figma.svg")} alt="Figma" width={40} height={40} />
                       </div>
-                      <span className={styles.skillLabel}>{skill.label}</span>
+                      <span className={styles.skillLabel}>*Figma</span>
                     </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+                  </div>
+                </motion.div>
 
-              {/* Back-End Development Group */}
-              <motion.div
-                className={styles.skillGroup}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
-              >
-                <motion.h3
-                  className={styles.groupTitle}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                {/* Front-End Development Group */}
+                <motion.div
+                  className={styles.skillGroup}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
+                  transition={{ duration: 0.8, delay: 0.3, type: "spring", stiffness: 100 }}
                 >
-                  *Back-End Development
-                </motion.h3>
-                <div className={styles.skillsRow}>
-                  {[
-                    { icon: getImagePath("/icons/nodejs.svg"), alt: "Node.js", label: "*Node.js" },
-                    { icon: getImagePath("/icons/postgresql.svg"), alt: "PostgreSQL", label: "*PostgreSQL" },
-                    { icon: getImagePath("/icons/mongodb.svg"), alt: "MongoDB", label: "*MongoDB" },
-                    { icon: getImagePath("/icons/mysql.svg"), alt: "MySQL", label: "*MySQL" },
-                    { icon: getImagePath("/icons/php.svg"), alt: "PHP", label: "*PHP" },
-                    { icon: getImagePath("/icons/docker.svg"), alt: "Docker", label: "*Docker" },
-                    { icon: getImagePath("/icons/go.svg"), alt: "Go", label: "*GoLang" }
-                  ].map((skill, index) => (
-                    <motion.div
-                      key={skill.alt}
-                      className={styles.skillItem}
-                      initial={{ opacity: 0, scale: 0, rotateY: 90 }}
-                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                      viewport={{ once: true, amount: 0.7 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: 0.6 + index * 0.1,
-                        type: "spring",
-                        stiffness: 200,
-                        damping: 15
-                      }}
-                      whileHover={{
-                        rotateY: 10,
-                        transition: { duration: 0.2 }
-                      }}
-                    >
-                      <div className={styles.skillIconLarge}>
-                        <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
-                      </div>
-                      <span className={styles.skillLabel}>{skill.label}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Programming Group */}
-              <motion.div
-                className={styles.skillGroup}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.8, delay: 0.5, type: "spring", stiffness: 100 }}
-              >
-                <motion.h3
-                  className={styles.groupTitle}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                >
-                  *Programming
-                </motion.h3>
-                <div className={styles.skillsRow}>
-                  {[
-                    { icon: getImagePath("/icons/python.svg"), alt: "Python", label: "*Python" },
-                    { icon: getImagePath("/icons/csharp.svg"), alt: "C#", label: "*C#" },
-                    { icon: getImagePath("/icons/cpp.svg"), alt: "C++", label: "*C++" },
-                    { icon: getImagePath("/icons/c.svg"), alt: "C", label: "*C" },
-                    { icon: getImagePath("/icons/java.svg"), alt: "Java", label: "*Java" },
-                    { icon: getImagePath("/icons/arduino.svg"), alt: "Arduino", label: "*Arduino" }
-                  ].map((skill, index) => (
-                    <motion.div
-                      key={skill.alt}
-                      className={styles.skillItem}
-                      initial={{ opacity: 0, scale: 0, rotateY: 90 }}
-                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                      viewport={{ once: true, amount: 0.7 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: 0.7 + index * 0.1,
-                        type: "spring",
-                        stiffness: 200,
-                        damping: 15
-                      }}
-                      whileHover={{
-                        rotateY: 10,
-                        transition: { duration: 0.2 }
-                      }}
-                    >
-                      <div className={styles.skillIconLarge}>
-                        <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
-                      </div>
-                      <span className={styles.skillLabel}>{skill.label}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Photography Group */}
-              <motion.div
-                className={styles.skillGroup}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
-              >
-                <motion.h3
-                  className={styles.groupTitle}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.6, delay: 0.7 }}
-                >
-                  *Photography
-                </motion.h3>
-                <div className={styles.skillsRow}>
-                  <motion.div
-                    className={styles.skillItem}
-                    initial={{ opacity: 0, scale: 0, rotateY: 90 }}
-                    whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  <motion.h3
+                    className={styles.groupTitle}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.7 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.8,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15
-                    }}
-                    whileHover={{
-                      rotateY: 10,
-                      transition: { duration: 0.2 }
-                    }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    <div className={styles.skillIconLarge}>
-                      <Image src={getImagePath("/icons/lightroom.svg")} alt="Lightroom" width={40} height={40} />
-                    </div>
-                    <span className={styles.skillLabel}>*Lightroom</span>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </div>
+                    *Front-End Development
+                  </motion.h3>
+                  <div className={styles.skillsRow}>
+                    {[
+                      { icon: getImagePath("/icons/html5.svg"), alt: "HTML5", label: "*HTML5" },
+                      { icon: getImagePath("/icons/css3.svg"), alt: "CSS3", label: "*CSS3" },
+                      { icon: getImagePath("/icons/javascript.svg"), alt: "JavaScript", label: "*JavaScript" },
+                      { icon: getImagePath("/icons/typescript.svg"), alt: "TypeScript", label: "*TypeScript" },
+                      { icon: getImagePath("/icons/angular.svg"), alt: "Angular", label: "*Angular" },
+                      { icon: getImagePath("/icons/flutter.svg"), alt: "flutter", label: "*Flutter" }
+                    ].map((skill, index) => (
+                      <motion.div
+                        key={skill.alt}
+                        className={styles.skillItem}
+                        initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        viewport={{ once: true, amount: 0.7 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.5 + index * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15
+                        }}
+                        whileHover={{
+                          rotateY: 10,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        <div className={styles.skillIconLarge}>
+                          <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                        </div>
+                        <span className={styles.skillLabel}>{skill.label}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Back-End Development Group */}
+                <motion.div
+                  className={styles.skillGroup}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 100 }}
+                >
+                  <motion.h3
+                    className={styles.groupTitle}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                  >
+                    *Back-End Development
+                  </motion.h3>
+                  <div className={styles.skillsRow}>
+                    {[
+                      { icon: getImagePath("/icons/nodejs.svg"), alt: "Node.js", label: "*Node.js" },
+                      { icon: getImagePath("/icons/postgresql.svg"), alt: "PostgreSQL", label: "*PostgreSQL" },
+                      { icon: getImagePath("/icons/mongodb.svg"), alt: "MongoDB", label: "*MongoDB" },
+                      { icon: getImagePath("/icons/mysql.svg"), alt: "MySQL", label: "*MySQL" },
+                      { icon: getImagePath("/icons/php.svg"), alt: "PHP", label: "*PHP" },
+                      { icon: getImagePath("/icons/docker.svg"), alt: "Docker", label: "*Docker" },
+                      { icon: getImagePath("/icons/go.svg"), alt: "Go", label: "*GoLang" }
+                    ].map((skill, index) => (
+                      <motion.div
+                        key={skill.alt}
+                        className={styles.skillItem}
+                        initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        viewport={{ once: true, amount: 0.7 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.6 + index * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15
+                        }}
+                        whileHover={{
+                          rotateY: 10,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        <div className={styles.skillIconLarge}>
+                          <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                        </div>
+                        <span className={styles.skillLabel}>{skill.label}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Programming Group */}
+                <motion.div
+                  className={styles.skillGroup}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.8, delay: 0.5, type: "spring", stiffness: 100 }}
+                >
+                  <motion.h3
+                    className={styles.groupTitle}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                  >
+                    *Programming
+                  </motion.h3>
+                  <div className={styles.skillsRow}>
+                    {[
+                      { icon: getImagePath("/icons/python.svg"), alt: "Python", label: "*Python" },
+                      { icon: getImagePath("/icons/csharp.svg"), alt: "C#", label: "*C#" },
+                      { icon: getImagePath("/icons/cpp.svg"), alt: "C++", label: "*C++" },
+                      { icon: getImagePath("/icons/c.svg"), alt: "C", label: "*C" },
+                      { icon: getImagePath("/icons/java.svg"), alt: "Java", label: "*Java" },
+                      { icon: getImagePath("/icons/arduino.svg"), alt: "Arduino", label: "*Arduino" }
+                    ].map((skill, index) => (
+                      <motion.div
+                        key={skill.alt}
+                        className={styles.skillItem}
+                        initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        viewport={{ once: true, amount: 0.7 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.7 + index * 0.1,
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 15
+                        }}
+                        whileHover={{
+                          rotateY: 10,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        <div className={styles.skillIconLarge}>
+                          <Image src={skill.icon} alt={skill.alt} width={40} height={40} />
+                        </div>
+                        <span className={styles.skillLabel}>{skill.label}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Photography Group */}
+                <motion.div
+                  className={styles.skillGroup}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 100 }}
+                >
+                  <motion.h3
+                    className={styles.groupTitle}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.7 }}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                  >
+                    *Photography
+                  </motion.h3>
+                  <div className={styles.skillsRow}>
+                    <motion.div
+                      className={styles.skillItem}
+                      initial={{ opacity: 0, scale: 0, rotateY: 90 }}
+                      whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                      viewport={{ once: true, amount: 0.7 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 0.8,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15
+                      }}
+                      whileHover={{
+                        rotateY: 10,
+                        transition: { duration: 0.2 }
+                      }}
+                    >
+                      <div className={styles.skillIconLarge}>
+                        <Image src={getImagePath("/icons/lightroom.svg")} alt="Lightroom" width={40} height={40} />
+                      </div>
+                      <span className={styles.skillLabel}>*Lightroom</span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </div>
+            )}
           </div>
           <div className={styles.skillsHeadingRight}>
             {!isMobile && (
@@ -715,26 +863,35 @@ export default function Home() {
               viewport={{ once: true, amount: 0.7 }}
               transition={{ duration: 0.7, delay: 0.3 }}
             >
-              <div className={styles.verticalCarousel}>
-                {paData.map((item, idx) => (
-                  <motion.div
-                    className={styles.paBlock}
-                    key={idx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.7 }}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  >
-                    <div className={styles.paTitleRow}>
-                      <div className={styles.paMainTitle + (item.scholarship ? ' ' + styles.paScholarshipTitle : '')}>
-                        {item.title}
+              {hasMounted && (
+                <div
+                  className={styles.verticalCarousel}
+                  ref={projectsCarouselRef}
+                  onMouseEnter={() => setIsCarouselHovered(true)}
+                  onMouseLeave={() => setIsCarouselHovered(false)}
+                  onTouchStart={() => setIsCarouselHovered(true)}
+                  onTouchEnd={() => setIsCarouselHovered(false)}
+                >
+                  {paData.map((item, idx) => (
+                    <motion.div
+                      className={styles.paBlock}
+                      key={idx}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.7 }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                    >
+                      <div className={styles.paTitleRow}>
+                        <div className={styles.paMainTitle + (item.scholarship ? ' ' + styles.paScholarshipTitle : '')}>
+                          {item.title}
+                        </div>
+                        <div className={styles.paRightLabel}>{item.rightLabel}</div>
                       </div>
-                      <div className={styles.paRightLabel}>{item.rightLabel}</div>
-                    </div>
-                    <div className={styles.paSubtitle}>{item.subtitle}</div>
-                  </motion.div>
-                ))}
-              </div>
+                      <div className={styles.paSubtitle}>{item.subtitle}</div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
             </motion.div>
           </div>
         </motion.section>
@@ -774,6 +931,39 @@ export default function Home() {
             </motion.p>
           </div>
         </motion.footer>
+
+        {/* Navigation Bubbles */}
+        {hasMounted && (
+          <>
+            {!atBottom && (
+              <motion.div
+                className={`${styles.navigationBubble} ${styles.navigationBubbleDown} ${skillsActive ? styles.bubbleSkillsActive : ''}`}
+                onClick={scrollToNextSection}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.5, type: "spring", stiffness: 200 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className={`${styles.chevron} ${styles.chevronDown}`}></div>
+              </motion.div>
+            )}
+
+            {!atTop && (
+              <motion.div
+                className={`${styles.navigationBubble} ${styles.navigationBubbleUp} ${skillsActive ? styles.bubbleSkillsActive : ''}`}
+                onClick={scrollToPreviousSection}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.7, type: "spring", stiffness: 200 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className={`${styles.chevron} ${styles.chevronUp}`}></div>
+              </motion.div>
+            )}
+          </>
+        )}
       </div>
     </>
   );
