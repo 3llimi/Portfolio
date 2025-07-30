@@ -60,6 +60,12 @@ export default function Home() {
       subtitle: "Contestant",
       scholarship: false,
     },
+    {
+      title: "*InnoSync",
+      rightLabel: "Innopolis University 25",
+      subtitle: "Team Lead - Frontend Dev - Designer",
+      scholarship: false,
+    },
   ];
 
 
