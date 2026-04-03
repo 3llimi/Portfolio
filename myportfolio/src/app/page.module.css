@@ -6,6 +6,11 @@
   color: #ffffff;
 }
 
+.cursorHidden,
+.cursorHidden * {
+  cursor: none !important;
+}
+
 /* Hero Section - Exact Figma Match */
 .hero {
   position: relative;
@@ -195,7 +200,7 @@
   height: clamp(20px, 2.08vw, 40px);
   background-color: #d9d9d9;
   border-radius: 50%;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background-color 0.14s ease-out, box-shadow 0.14s ease-out;
   position: relative;
   overflow: hidden;
 }
@@ -214,7 +219,6 @@
 }
 
 .socialLink:hover {
-  transform: scale(1.15) rotate(5deg);
   box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
 }
 
@@ -228,7 +232,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: filter 0.14s ease-out;
   /* Ensure perfect centering */
   position: relative;
 }
@@ -900,7 +904,7 @@
   /* Scale all absolute positioned elements proportionally */
   .firstName {
     left: calc(56px * 100vw / 1920px);
-    top: calc(503px * 100vh / 1080px);
+    top: calc(435px * 100vh / 1080px);
     width: calc(1178px * 100vw / 1920px);
     height: calc(173px * 100vh / 1080px);
   }
@@ -946,7 +950,7 @@
   }
 
   .heroCaption {
-    left: calc(1466px * 100vw / 1920px);
+    left: calc(1550px * 100vw / 1920px);
     top: calc(21px * 100vh / 1080px);
     width: calc(336px * 100vw / 1920px);
     height: calc(20px * 100vh / 1080px);
@@ -1039,7 +1043,7 @@
 /* --- HERO SECTION: Unify Social Links Styling for Mobile and Desktop --- */
 @media (max-width: 600px) {
   .heroContent{
-    padding: 20rem 0.5rem !important;
+    padding: 0 0.5rem !important;
   }
   .socialLinksContainer {
     position: static !important;
@@ -1609,32 +1613,14 @@
   max-height: 60vh;
   overflow-y: auto;
   padding-right: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: #FFD700 #181818;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 .verticalCarousel::-webkit-scrollbar {
-  width: 12px;
-  background: linear-gradient(180deg, #181818 60%, #232323 100%);
-  border-radius: 10px;
-}
-.verticalCarousel::-webkit-scrollbar-thumb {
-  background: linear-gradient(120deg, #FFD700 60%, #fffbe6 100%);
-  border-radius: 10px;
-  box-shadow: 0 0 8px 2px #FFD70099;
-  border: 2px solid #232323;
-  min-height: 40px;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.verticalCarousel::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(120deg, #ffe066 60%, #fffbe6 100%);
-  box-shadow: 0 0 16px 4px #FFD700cc;
-}
-.verticalCarousel::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #181818 60%, #232323 100%);
-  border-radius: 10px;
+  display: none;
 }
 @media (max-width: 900px) {
   .verticalCarousel {
@@ -1898,7 +1884,7 @@
 }
 
 /* Custom cursor */
-.custom-cursor-invert {
+.customCursorInvert {
   position: fixed;
   width: 20px;
   height: 20px;
@@ -1908,11 +1894,12 @@
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: none;
+  will-change: left, top;
   animation: cursorPulse 2s infinite ease-in-out;
 }
 
-.custom-cursor-invert::before {
+.customCursorInvert::before {
   content: '';
   position: absolute;
   top: -5px;
@@ -2356,35 +2343,551 @@
 
 .skillsVerticalCarousel {
   max-height: 80vh;
-  overflow-y: auto;
+  overflow: hidden;
+  padding-right: 8px;
+  touch-action: none;
+}
+
+.skillsVerticalMarqueeTrack {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-right: 8px;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  width: 100%;
+  will-change: transform;
 }
-.skillsVerticalCarousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-.skillsVerticalCarousel::-webkit-scrollbar-thumb {
-  background: linear-gradient(120deg, #FFD700 60%, #fffbe6 100%);
-  border-radius: 10px;
-  box-shadow: 0 0 8px 2px #FFD70099;
-  border: 2px solid #232323;
-  min-height: 40px;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.skillsVerticalCarousel::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(120deg, #ffe066 60%, #fffbe6 100%);
-  box-shadow: 0 0 16px 4px #FFD700cc;
-}
-.skillsVerticalCarousel::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #181818 60%, #232323 100%);
-  border-radius: 10px;
-}
+
 @media (max-width: 900px) {
   .skillsVerticalCarousel {
     max-height: 80vh;
+  }
+}
+
+/* GitHub Projects Section */
+.githubProjectsSection {
+  width: 100vw;
+  background: linear-gradient(180deg, #060606 0%, #111111 100%);
+  color: #ffffff;
+  padding: clamp(56px, 7vw, 120px) 0;
+}
+
+.githubProjectsInner {
+  width: min(1380px, 96vw);
+  margin: 0 auto;
+}
+
+.githubProjectsTitle {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-size: clamp(34px, 5vw, 76px);
+  line-height: 1;
+  margin: 0;
+}
+
+.githubProjectsSubtitle {
+  margin: 14px 0 38px 0;
+  max-width: 640px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(14px, 1.2vw, 19px);
+  line-height: 1.5;
+}
+
+.githubCarouselControls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.githubCarouselButton {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(4px);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.githubCarouselButton:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.03);
+  background: rgba(255, 255, 255, 0.32);
+  border-color: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+}
+
+.githubCarouselButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.githubCarouselViewport {
+  overflow: hidden;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.githubCarouselTrack {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  will-change: transform;
+}
+
+.githubProjectCard {
+  position: relative;
+  border: 1px solid #222;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
+  transition: border-color 0.32s cubic-bezier(.4,0,.2,1), background 0.32s cubic-bezier(.4,0,.2,1), box-shadow 0.32s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 min(430px, 88vw);
+  width: min(430px, 88vw);
+  min-height: 100%;
+}
+
+.githubProjectCard::before {
+  content: none;
+}
+
+.githubProjectCard:hover {
+  border-color: #444;
+  background: rgba(60, 130, 255, 0.10);
+  box-shadow: 0 8px 32px rgba(60, 130, 255, 0.18), 0 1.5px 6px rgba(0,0,0,0.10);
+}
+
+.githubProjectCoverWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  z-index: 2;
+}
+
+.githubProjectCover {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+  display: block;
+}
+
+.githubProjectContent {
+  padding: 18px 18px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2;
+  position: relative;
+  flex: 1;
+}
+
+.githubProjectTitle {
+  margin: 0;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 600;
+  font-size: clamp(18px, 1.5vw, 24px);
+  line-height: 1.2;
+}
+
+.githubProjectDescription {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: clamp(13px, 0.95vw, 16px);
+  line-height: 1.55;
+  min-height: 4.6em;
+}
+
+.githubProjectActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.githubProjectPrimaryActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.githubProjectReadmeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(116, 194, 255, 0.6);
+  color: #d9f1ff;
+  background: rgba(69, 163, 235, 0.16);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.githubProjectReadmeButton:hover {
+  background: rgba(69, 163, 235, 0.28);
+  border-color: rgba(116, 194, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+.githubProjectBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.githubProjectBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+}
+
+.githubProjectLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.githubProjectLink:hover {
+  background: #ffffff;
+  color: #111111;
+  border-color: #ffffff;
+}
+
+.githubReadmeOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(4, 9, 14, 0.72);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.githubReadmePanel {
+  width: min(980px, 94vw);
+  max-height: min(88vh, 920px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #0f141a;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.githubReadmeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.githubReadmeTitle {
+  margin: 0;
+  font-size: clamp(18px, 1.6vw, 24px);
+  line-height: 1.2;
+}
+
+.githubReadmeHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.githubReadmeRepoLink {
+  border: 1px solid rgba(116, 194, 255, 0.55);
+  background: rgba(69, 163, 235, 0.16);
+  color: #d9f1ff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.githubReadmeClose {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+}
+
+.githubReadmeClose:hover,
+.githubReadmeRepoLink:hover {
+  filter: brightness(1.08);
+}
+
+.githubReadmeMeta {
+  margin: 14px 16px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+}
+
+.githubReadmeContent {
+  margin: 0;
+  padding: 16px;
+  max-height: min(72vh, 760px);
+  overflow: auto;
+  color: #f1f4f7;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.githubReadmeToc {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.githubReadmeTocLabel {
+  margin: 0 0 8px 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.githubReadmeTocList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px 12px;
+}
+
+.githubReadmeTocItem {
+  display: block;
+  color: rgba(217, 241, 255, 0.92);
+  text-decoration: none;
+  line-height: 1.3;
+  border-left: 2px solid transparent;
+  padding-left: 8px;
+}
+
+.githubReadmeTocItem:hover {
+  color: #ffffff;
+  border-left-color: rgba(121, 200, 255, 0.85);
+}
+
+.githubReadmeTocItemL1 {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.githubReadmeTocItemL2 {
+  font-size: 0.84rem;
+  padding-left: 12px;
+}
+
+.githubReadmeTocItemL3 {
+  font-size: 0.79rem;
+  padding-left: 16px;
+  opacity: 0.9;
+}
+
+.githubReadmeContent h1,
+.githubReadmeContent h2,
+.githubReadmeContent h3,
+.githubReadmeContent h4,
+.githubReadmeContent h5,
+.githubReadmeContent h6 {
+  margin: 1.2em 0 0.5em 0;
+  line-height: 1.25;
+}
+
+.githubReadmeContent h1 {
+  font-size: 1.7rem;
+}
+
+.githubReadmeContent h2 {
+  font-size: 1.35rem;
+}
+
+.githubReadmeContent p,
+.githubReadmeContent ul,
+.githubReadmeContent ol,
+.githubReadmeContent table,
+.githubReadmeContent blockquote {
+  margin: 0.7em 0;
+}
+
+.githubReadmeContent ul,
+.githubReadmeContent ol {
+  padding-left: 1.2em;
+}
+
+.githubReadmeContent li + li {
+  margin-top: 0.3em;
+}
+
+.githubReadmeContent a {
+  color: #79c8ff;
+  text-decoration: underline;
+}
+
+.githubReadmeContent code {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  padding: 0.1em 0.35em;
+  font-size: 0.86em;
+}
+
+.githubReadmeContent pre {
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.githubReadmeContent pre code {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.githubReadmeContent table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.githubReadmeContent th,
+.githubReadmeContent td {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 6px 8px;
+}
+
+.githubReadmeContent blockquote {
+  border-left: 3px solid rgba(121, 200, 255, 0.6);
+  padding-left: 10px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 640px) {
+  .githubProjectsSection {
+    padding: 44px 0;
+  }
+
+  .githubProjectsInner {
+    width: min(1380px, 94vw);
+  }
+
+  .githubCarouselButton {
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+  }
+
+  .githubProjectCard {
+    flex-basis: min(390px, 88vw);
+    width: min(390px, 88vw);
+  }
+
+  .githubProjectContent {
+    padding: 14px 14px 18px 14px;
+  }
+
+  .githubProjectDescription {
+    min-height: auto;
+  }
+
+  .githubReadmeOverlay {
+    padding: 10px;
+  }
+
+  .githubReadmePanel {
+    width: 100%;
+    max-height: 92vh;
+  }
+
+  .githubReadmeHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .githubReadmeHeaderActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .githubReadmeTocList {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Final hero name positioning overrides */
+.hero .heroName {
+  position: absolute;
+  left: 2.9vw;
+  top: 34vh;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.02em;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.hero .firstName,
+.hero .lastName {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0;
+  padding: 0;
+  display: block;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+@media (max-width: 600px) {
+  .hero .heroName {
+    position: static !important;
+    left: auto;
+    top: auto;
+    z-index: 4;
+    margin: 0.2rem 0 0.1rem 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero .firstName,
+  .hero .lastName {
+    text-align: center;
+    white-space: nowrap;
   }
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -13,9 +13,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "3llimi's Portfolio",
-  description: "This is the portfolio of Ahmed Baha Eddine Alimi",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
+  title: "3llimi",
+  description: "This is the Portfolio of Ahmed Baha Eddine Alimi",
+  icons: {
+    icon: "/icons/DoctorLiveseyR.png",
+    shortcut: "/icons/DoctorLiveseyR.png",
+    apple: "/icons/DoctorLiveseyR.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({
@@ -25,7 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable}`}
+        style={{ overflow: "hidden" }}
+      >
         {children}
       </body>
     </html>
