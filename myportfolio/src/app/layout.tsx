@@ -12,13 +12,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const windowIconPath = `${basePath}/icons/DoctorLiveseyR.png`;
+
 export const metadata: Metadata = {
   title: "3llimi",
   description: "This is the Portfolio of Ahmed Baha Eddine Alimi",
   icons: {
-    icon: "/icons/DoctorLiveseyR.png",
-    shortcut: "/icons/DoctorLiveseyR.png",
-    apple: "/icons/DoctorLiveseyR.png",
+    icon: windowIconPath,
+    shortcut: windowIconPath,
+    apple: windowIconPath,
   },
 };
 
