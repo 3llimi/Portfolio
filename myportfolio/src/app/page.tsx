@@ -286,6 +286,10 @@ export default function Home() {
   const githubMarqueeLoopWidthRef = useRef(0);
   const githubMarqueeRafRef = useRef<number | null>(null);
   const githubMarqueeLastTimestampRef = useRef<number | null>(null);
+  const githubMarqueeVelocityRef = useRef(0);
+  const isGitHubCarouselPausedRef = useRef(false);
+  const githubTouchXRef = useRef<number | null>(null);
+  const githubTouchYRef = useRef<number | null>(null);
   const [readmeTitle, setReadmeTitle] = useState<string | null>(null);
   const [readmeRepoUrl, setReadmeRepoUrl] = useState<string | null>(null);
   const [readmeContent, setReadmeContent] = useState("");
@@ -300,6 +304,10 @@ export default function Home() {
     () => (githubProjects.length > 0 ? [...githubProjects, ...githubProjects] : []),
     [githubProjects]
   );
+
+  useEffect(() => {
+    isGitHubCarouselPausedRef.current = isGitHubCarouselPaused;
+  }, [isGitHubCarouselPaused]);
 
   const paData = [
     {
@@ -357,6 +365,7 @@ export default function Home() {
       scholarship: false,
     },
   ];
+  const marqueePaData = paData.length > 0 ? [...paData, ...paData] : [];
 
   // Custom cursor refs for high-frequency pointer updates without re-rendering
   const cursorRef = useRef<HTMLDivElement | null>(null);
@@ -469,32 +478,54 @@ export default function Home() {
     track.style.transform = `translate3d(-${offset}px, 0, 0)`;
   };
 
-  const shiftGitHubMarquee = (direction: 1 | -1) => {
-    const track = githubCarouselTrackRef.current;
+  const setGitHubMarqueeOffset = useCallback((rawOffset: number) => {
     const loopWidth = githubMarqueeLoopWidthRef.current;
-    if (!track || loopWidth <= 0) {
+    if (loopWidth <= 0) {
       return;
     }
 
-    const firstCard = track.firstElementChild as HTMLElement | null;
-    const cardWidth = firstCard?.getBoundingClientRect().width ?? 360;
-    const trackStyles = window.getComputedStyle(track);
-    const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap || "0") || 0;
-    const stepWidth = Math.max(140, cardWidth + gap);
+    const normalizedOffset = ((rawOffset % loopWidth) + loopWidth) % loopWidth;
+    githubMarqueeOffsetRef.current = normalizedOffset;
+    applyGitHubMarqueeTransform(normalizedOffset);
+  }, []);
 
-    let nextOffset = githubMarqueeOffsetRef.current + direction * stepWidth;
-    nextOffset = ((nextOffset % loopWidth) + loopWidth) % loopWidth;
-
-    githubMarqueeOffsetRef.current = nextOffset;
-    applyGitHubMarqueeTransform(nextOffset);
+  const handleGitHubTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    setIsGitHubCarouselPaused(true);
+    githubTouchXRef.current = event.touches[0]?.clientX ?? null;
+    githubTouchYRef.current = event.touches[0]?.clientY ?? null;
   };
 
-  const handleGitHubPrev = () => {
-    shiftGitHubMarquee(-1);
+  const handleGitHubTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (githubMarqueeLoopWidthRef.current <= 0) {
+      return;
+    }
+
+    const currentX = event.touches[0]?.clientX;
+    const currentY = event.touches[0]?.clientY;
+    if (
+      currentX === undefined ||
+      currentY === undefined ||
+      githubTouchXRef.current === null ||
+      githubTouchYRef.current === null
+    ) {
+      return;
+    }
+
+    const deltaX = githubTouchXRef.current - currentX;
+    const deltaY = githubTouchYRef.current - currentY;
+    githubTouchXRef.current = currentX;
+    githubTouchYRef.current = currentY;
+
+    if (Math.abs(deltaX) >= Math.abs(deltaY)) {
+      event.preventDefault();
+      setGitHubMarqueeOffset(githubMarqueeOffsetRef.current + deltaX);
+    }
   };
 
-  const handleGitHubNext = () => {
-    shiftGitHubMarquee(1);
+  const handleGitHubTouchEnd = () => {
+    githubTouchXRef.current = null;
+    githubTouchYRef.current = null;
+    setIsGitHubCarouselPaused(false);
   };
 
   useEffect(() => {
@@ -537,7 +568,39 @@ export default function Home() {
   }, [githubProjects.length, marqueeGithubProjects.length]);
 
   useEffect(() => {
-    if (isGitHubCarouselPaused || githubProjects.length === 0) {
+    if (!hasMounted) {
+      return;
+    }
+
+    const viewport = githubCarouselViewportRef.current;
+    if (!viewport) {
+      return;
+    }
+
+    const handleWheel = (event: WheelEvent) => {
+      if (githubMarqueeLoopWidthRef.current <= 0) {
+        return;
+      }
+
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+      if (delta === 0) {
+        return;
+      }
+
+      event.preventDefault();
+      setIsGitHubCarouselPaused(true);
+      setGitHubMarqueeOffset(githubMarqueeOffsetRef.current + delta);
+    };
+
+    viewport.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      viewport.removeEventListener("wheel", handleWheel);
+    };
+  }, [hasMounted, setGitHubMarqueeOffset]);
+
+  useEffect(() => {
+    if (githubProjects.length === 0) {
       return;
     }
 
@@ -548,18 +611,22 @@ export default function Home() {
         githubMarqueeLastTimestampRef.current = timestamp;
       }
 
-      const elapsedSeconds = (timestamp - githubMarqueeLastTimestampRef.current) / 1000;
+      const elapsedSeconds = Math.min(
+        (timestamp - githubMarqueeLastTimestampRef.current) / 1000,
+        0.05
+      );
       githubMarqueeLastTimestampRef.current = timestamp;
 
       const loopWidth = githubMarqueeLoopWidthRef.current;
       if (loopWidth > 0) {
-        let nextOffset = githubMarqueeOffsetRef.current + speedPxPerSecond * elapsedSeconds;
-        if (nextOffset >= loopWidth) {
-          nextOffset %= loopWidth;
-        }
+        const targetVelocity = isGitHubCarouselPausedRef.current ? 0 : speedPxPerSecond;
+        const smoothing = 1 - Math.exp(-7 * elapsedSeconds);
+        githubMarqueeVelocityRef.current +=
+          (targetVelocity - githubMarqueeVelocityRef.current) * smoothing;
 
-        githubMarqueeOffsetRef.current = nextOffset;
-        applyGitHubMarqueeTransform(nextOffset);
+        const nextOffset =
+          githubMarqueeOffsetRef.current + githubMarqueeVelocityRef.current * elapsedSeconds;
+        setGitHubMarqueeOffset(nextOffset);
       }
 
       githubMarqueeRafRef.current = requestAnimationFrame(step);
@@ -573,8 +640,9 @@ export default function Home() {
         githubMarqueeRafRef.current = null;
       }
       githubMarqueeLastTimestampRef.current = null;
+      githubMarqueeVelocityRef.current = 0;
     };
-  }, [isGitHubCarouselPaused, githubProjects.length]);
+  }, [githubProjects.length, setGitHubMarqueeOffset]);
 
   const handleReadmeClick = async (project: GitHubProjectCard) => {
     const repoInfo = extractOwnerAndRepo(project.repoUrl);
@@ -752,27 +820,120 @@ export default function Home() {
     };
   }, [showCursor]);
 
-    // Navigation functions
-  const scrollToNextSection = () => {
-    const currentScrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const nextScrollPosition = currentScrollY + windowHeight;
+  // Navigation functions
+  const sectionScrollRafRef = useRef<number | null>(null);
 
-    window.scrollTo({
-      top: nextScrollPosition,
-      behavior: 'smooth'
-    });
+  const getSectionAnchors = () => {
+    const sectionClassNames = [
+      styles.hero,
+      styles.aboutSection,
+      styles.skillsSection,
+      styles.projectsAchievementsSection,
+      styles.githubProjectsSection,
+      styles.footer,
+    ];
+
+    const anchors = sectionClassNames
+      .map((className) => document.querySelector<HTMLElement>(`.${className}`))
+      .filter((section): section is HTMLElement => section !== null)
+      .map((section) => Math.round(section.getBoundingClientRect().top + window.scrollY))
+      .filter((position, index, all) => all.indexOf(position) === index)
+      .sort((a, b) => a - b);
+
+    if (anchors.length === 0 || anchors[0] !== 0) {
+      anchors.unshift(0);
+    }
+
+    return anchors;
+  };
+
+  const animateWindowScroll = useCallback((targetTop: number) => {
+    const startTop = window.scrollY;
+    const maxScrollTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const boundedTargetTop = Math.min(maxScrollTop, Math.max(0, Math.round(targetTop)));
+    const distance = boundedTargetTop - startTop;
+
+    if (Math.abs(distance) < 2) {
+      window.scrollTo({ top: boundedTargetTop, behavior: "auto" });
+      return;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.scrollTo({ top: boundedTargetTop, behavior: "auto" });
+      return;
+    }
+
+    if (sectionScrollRafRef.current !== null) {
+      cancelAnimationFrame(sectionScrollRafRef.current);
+      sectionScrollRafRef.current = null;
+    }
+
+    const durationMs = Math.min(850, Math.max(380, Math.abs(distance) * 0.55));
+    const startTime = performance.now();
+
+    const easeInOutCubic = (progress: number) =>
+      progress < 0.5
+        ? 4 * progress * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    const step = (now: number) => {
+      const progress = Math.min((now - startTime) / durationMs, 1);
+      const easedProgress = easeInOutCubic(progress);
+      window.scrollTo({
+        top: startTop + distance * easedProgress,
+        behavior: "auto",
+      });
+
+      if (progress < 1) {
+        sectionScrollRafRef.current = requestAnimationFrame(step);
+      } else {
+        sectionScrollRafRef.current = null;
+      }
+    };
+
+    sectionScrollRafRef.current = requestAnimationFrame(step);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (sectionScrollRafRef.current !== null) {
+        cancelAnimationFrame(sectionScrollRafRef.current);
+        sectionScrollRafRef.current = null;
+      }
+    };
+  }, []);
+
+  const scrollToSectionInDirection = (direction: 1 | -1) => {
+    const anchors = getSectionAnchors();
+    if (anchors.length === 0) {
+      return;
+    }
+
+    const marker = window.scrollY + window.innerHeight * 0.42;
+    let currentIndex = 0;
+
+    for (let index = 0; index < anchors.length; index += 1) {
+      if (marker >= anchors[index]) {
+        currentIndex = index;
+      } else {
+        break;
+      }
+    }
+
+    const targetIndex = Math.min(
+      anchors.length - 1,
+      Math.max(0, currentIndex + direction)
+    );
+
+    animateWindowScroll(anchors[targetIndex]);
+  };
+
+  const scrollToNextSection = () => {
+    scrollToSectionInDirection(1);
   };
 
   const scrollToPreviousSection = () => {
-    const currentScrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const prevScrollPosition = Math.max(0, currentScrollY - windowHeight);
-
-    window.scrollTo({
-      top: prevScrollPosition,
-      behavior: 'smooth'
-    });
+    scrollToSectionInDirection(-1);
   };
 
   // State for showing/hiding navigation bubbles
@@ -818,39 +979,182 @@ export default function Home() {
     };
   }, []);
 
-  // Ref for auto-scroll in Projects section
-  const projectsCarouselRef = useRef<HTMLDivElement | null>(null);
+  // Refs for continuous marquee in Projects section
+  const projectsCarouselViewportRef = useRef<HTMLDivElement | null>(null);
+  const projectsCarouselTrackRef = useRef<HTMLDivElement | null>(null);
+  const projectsMarqueeOffsetRef = useRef(0);
+  const projectsMarqueeLoopHeightRef = useRef(0);
+  const projectsMarqueeRafRef = useRef<number | null>(null);
+  const projectsMarqueeLastTimestampRef = useRef<number | null>(null);
+  const projectsMarqueeVelocityRef = useRef(0);
+  const isProjectsCarouselPausedRef = useRef(false);
+  const projectsTouchYRef = useRef<number | null>(null);
   const [isCarouselHovered, setIsCarouselHovered] = useState(false);
 
   useEffect(() => {
-    const carousel = projectsCarouselRef.current;
-    if (!carousel) return;
-    let animationFrame: number | null = null;
-    let lastTimestamp: number | null = null;
-    const speed = 0.2; // px per ms (much faster, running effect)
+    isProjectsCarouselPausedRef.current = isCarouselHovered;
+  }, [isCarouselHovered]);
+
+  const applyProjectsMarqueeTransform = useCallback((offset: number) => {
+    const track = projectsCarouselTrackRef.current;
+    if (!track) {
+      return;
+    }
+
+    track.style.transform = `translate3d(0, -${offset}px, 0)`;
+  }, []);
+
+  const setProjectsMarqueeOffset = useCallback((rawOffset: number) => {
+    const loopHeight = projectsMarqueeLoopHeightRef.current;
+    if (loopHeight <= 0) {
+      return;
+    }
+
+    const normalizedOffset = ((rawOffset % loopHeight) + loopHeight) % loopHeight;
+    projectsMarqueeOffsetRef.current = normalizedOffset;
+    applyProjectsMarqueeTransform(normalizedOffset);
+  }, [applyProjectsMarqueeTransform]);
+
+  const handleProjectsTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    setIsCarouselHovered(true);
+    projectsTouchYRef.current = event.touches[0]?.clientY ?? null;
+  };
+
+  const handleProjectsTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (projectsMarqueeLoopHeightRef.current <= 0) {
+      return;
+    }
+
+    const currentY = event.touches[0]?.clientY;
+    if (currentY === undefined || projectsTouchYRef.current === null) {
+      return;
+    }
+
+    event.preventDefault();
+    const deltaY = projectsTouchYRef.current - currentY;
+    projectsTouchYRef.current = currentY;
+    setProjectsMarqueeOffset(projectsMarqueeOffsetRef.current + deltaY);
+  };
+
+  const handleProjectsTouchEnd = () => {
+    projectsTouchYRef.current = null;
+    setIsCarouselHovered(false);
+  };
+
+  useEffect(() => {
+    if (!hasMounted) {
+      return;
+    }
+
+    const track = projectsCarouselTrackRef.current;
+    if (!track || paData.length === 0) {
+      projectsMarqueeOffsetRef.current = 0;
+      projectsMarqueeLoopHeightRef.current = 0;
+      return;
+    }
+
+    const updateLoopHeight = () => {
+      const loopHeight = track.scrollHeight / 2;
+      projectsMarqueeLoopHeightRef.current = Number.isFinite(loopHeight) ? loopHeight : 0;
+
+      if (projectsMarqueeLoopHeightRef.current <= 0) {
+        projectsMarqueeOffsetRef.current = 0;
+      } else if (projectsMarqueeOffsetRef.current >= projectsMarqueeLoopHeightRef.current) {
+        projectsMarqueeOffsetRef.current %= projectsMarqueeLoopHeightRef.current;
+      }
+
+      applyProjectsMarqueeTransform(projectsMarqueeOffsetRef.current);
+    };
+
+    updateLoopHeight();
+
+    const resizeObserver = new ResizeObserver(updateLoopHeight);
+    resizeObserver.observe(track);
+
+    const viewport = projectsCarouselViewportRef.current;
+    if (viewport) {
+      resizeObserver.observe(viewport);
+    }
+
+    window.addEventListener("resize", updateLoopHeight);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateLoopHeight);
+    };
+  }, [applyProjectsMarqueeTransform, hasMounted, marqueePaData.length, paData.length]);
+
+  useEffect(() => {
+    if (!hasMounted) {
+      return;
+    }
+
+    const viewport = projectsCarouselViewportRef.current;
+    if (!viewport) {
+      return;
+    }
+
+    const handleWheel = (event: WheelEvent) => {
+      if (projectsMarqueeLoopHeightRef.current <= 0) {
+        return;
+      }
+
+      event.preventDefault();
+      setIsCarouselHovered(true);
+      setProjectsMarqueeOffset(projectsMarqueeOffsetRef.current + event.deltaY);
+    };
+
+    viewport.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      viewport.removeEventListener("wheel", handleWheel);
+    };
+  }, [hasMounted, setProjectsMarqueeOffset]);
+
+  useEffect(() => {
+    if (!hasMounted || paData.length === 0) {
+      return;
+    }
+
+    const speedPxPerSecond = 120;
 
     const step = (timestamp: number) => {
-      if (isCarouselHovered) return;
-      if (lastTimestamp === null) lastTimestamp = timestamp;
-      const elapsed = timestamp - lastTimestamp;
-      lastTimestamp = timestamp;
-      // Scroll by speed * elapsed ms
-      carousel.scrollTop += speed * elapsed;
-      // If at or past bottom, scroll to top
-      if (carousel.scrollTop + carousel.clientHeight >= carousel.scrollHeight - 1) {
-        carousel.scrollTop = 0;
+      if (projectsMarqueeLastTimestampRef.current === null) {
+        projectsMarqueeLastTimestampRef.current = timestamp;
       }
-      animationFrame = requestAnimationFrame(step);
+
+      const elapsedSeconds = Math.min(
+        (timestamp - projectsMarqueeLastTimestampRef.current) / 1000,
+        0.05
+      );
+      projectsMarqueeLastTimestampRef.current = timestamp;
+
+      const loopHeight = projectsMarqueeLoopHeightRef.current;
+      if (loopHeight > 0) {
+        const targetVelocity = isProjectsCarouselPausedRef.current ? 0 : speedPxPerSecond;
+        const smoothing = 1 - Math.exp(-7 * elapsedSeconds);
+        projectsMarqueeVelocityRef.current +=
+          (targetVelocity - projectsMarqueeVelocityRef.current) * smoothing;
+
+        const nextOffset =
+          projectsMarqueeOffsetRef.current + projectsMarqueeVelocityRef.current * elapsedSeconds;
+        setProjectsMarqueeOffset(nextOffset);
+      }
+
+      projectsMarqueeRafRef.current = requestAnimationFrame(step);
     };
 
-    if (!isCarouselHovered) {
-      animationFrame = requestAnimationFrame(step);
-    }
+    projectsMarqueeRafRef.current = requestAnimationFrame(step);
+
     return () => {
-      if (animationFrame) cancelAnimationFrame(animationFrame);
-      lastTimestamp = null;
+      if (projectsMarqueeRafRef.current !== null) {
+        cancelAnimationFrame(projectsMarqueeRafRef.current);
+        projectsMarqueeRafRef.current = null;
+      }
+      projectsMarqueeLastTimestampRef.current = null;
+      projectsMarqueeVelocityRef.current = 0;
     };
-  }, [isCarouselHovered]);
+  }, [hasMounted, paData.length, setProjectsMarqueeOffset]);
 
   // Refs for continuous marquee in Skills section
   const skillsMarqueeViewportRef = useRef<HTMLDivElement | null>(null);
@@ -1567,30 +1871,37 @@ export default function Home() {
               {hasMounted && (
                 <div
                   className={styles.verticalCarousel}
-                  ref={projectsCarouselRef}
+                  ref={projectsCarouselViewportRef}
+                  tabIndex={0}
                   onMouseEnter={() => setIsCarouselHovered(true)}
                   onMouseLeave={() => setIsCarouselHovered(false)}
-                  onTouchStart={() => setIsCarouselHovered(true)}
-                  onTouchEnd={() => setIsCarouselHovered(false)}
+                  onFocus={() => setIsCarouselHovered(true)}
+                  onBlur={() => setIsCarouselHovered(false)}
+                  onTouchStart={handleProjectsTouchStart}
+                  onTouchMove={handleProjectsTouchMove}
+                  onTouchEnd={handleProjectsTouchEnd}
+                  onTouchCancel={handleProjectsTouchEnd}
                 >
-                  {paData.map((item, idx) => (
-                    <motion.div
-                      className={styles.paBlock}
-                      key={idx}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.7 }}
-                      transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    >
-                      <div className={styles.paTitleRow}>
-                        <div className={styles.paMainTitle + (item.scholarship ? ' ' + styles.paScholarshipTitle : '')}>
-                          {item.title}
+                  <div ref={projectsCarouselTrackRef} className={styles.verticalCarouselTrack}>
+                    {marqueePaData.map((item, idx) => (
+                      <motion.div
+                        className={styles.paBlock}
+                        key={`${item.title}-${item.rightLabel}-${idx}`}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.7 }}
+                        transition={{ duration: 0.6, delay: (idx % paData.length) * 0.08 }}
+                      >
+                        <div className={styles.paTitleRow}>
+                          <div className={styles.paMainTitle + (item.scholarship ? ' ' + styles.paScholarshipTitle : '')}>
+                            {item.title}
+                          </div>
+                          <div className={styles.paRightLabel}>{item.rightLabel}</div>
                         </div>
-                        <div className={styles.paRightLabel}>{item.rightLabel}</div>
-                      </div>
-                      <div className={styles.paSubtitle}>{item.subtitle}</div>
-                    </motion.div>
-                  ))}
+                        <div className={styles.paSubtitle}>{item.subtitle}</div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               )}
             </motion.div>
@@ -1626,34 +1937,18 @@ export default function Home() {
               Some selected repositories that I am proud of doing with a visual preview and quick context.
             </motion.p>
 
-            <div className={styles.githubCarouselControls}>
-              <button
-                type="button"
-                className={styles.githubCarouselButton}
-                onClick={handleGitHubPrev}
-                disabled={githubProjects.length <= 1}
-                aria-label="Previous project"
-              >
-                ←
-              </button>
-              <button
-                type="button"
-                className={styles.githubCarouselButton}
-                onClick={handleGitHubNext}
-                disabled={githubProjects.length <= 1}
-                aria-label="Next project"
-              >
-                →
-              </button>
-            </div>
-
             <div
               ref={githubCarouselViewportRef}
               className={styles.githubCarouselViewport}
+              tabIndex={0}
               onMouseEnter={() => setIsGitHubCarouselPaused(true)}
               onMouseLeave={() => setIsGitHubCarouselPaused(false)}
-              onTouchStart={() => setIsGitHubCarouselPaused(true)}
-              onTouchEnd={() => setIsGitHubCarouselPaused(false)}
+              onFocus={() => setIsGitHubCarouselPaused(true)}
+              onBlur={() => setIsGitHubCarouselPaused(false)}
+              onTouchStart={handleGitHubTouchStart}
+              onTouchMove={handleGitHubTouchMove}
+              onTouchEnd={handleGitHubTouchEnd}
+              onTouchCancel={handleGitHubTouchEnd}
             >
               <div ref={githubCarouselTrackRef} className={styles.githubCarouselTrack}>
                 {marqueeGithubProjects.map((project, index) => (
