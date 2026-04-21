@@ -174,6 +174,12 @@ Demonstrated strong technical leadership, full-stack development, and product th
       "A hands-on course repository covering core compiler design, from lexical analysis and parsing to semantic checks and code generation, The implementation was in rust.",
   },
   {
+    repoName: "BookTrackerApp-SQRS-S26",
+    cover: "/images/BookTrackerApp.png",
+    description:
+      "A personal book collection tracker built with FastAPI, Streamlit, and the Open Library API. Part of the Software Quality, Reliability and Security (SQRS) course — Spring 2026 semester",
+  },
+  {
     repoName: "DevSecOps-Intro",
     cover: "/images/devsecops.jpg",
     description:
@@ -233,6 +239,12 @@ Built a scalable, production-like security platform while gaining hands-on exper
     cover: "/images/devops_loop.jpg",
     description:
       "A foundational DevOps course repository focused on CI/CD, automation, infrastructure practices, and reliable software delivery.",
+  },
+  {
+    repoName: "ACCPA",
+    cover: "/images/ACCPA.png",
+    description:
+      "The Great Type Checker of STELLA: a Rust-built ACCPA implementation spanning three stages, with core and advanced language features, type reconstruction, universal types, and precise ERROR_* diagnostics.",
   },
 ];
 
