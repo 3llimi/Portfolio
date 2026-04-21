@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
 
 // Helper function to get the correct image path for GitHub Pages
 const getImagePath = (path: string) => {
@@ -40,6 +42,20 @@ type SelectedRepoConfig = {
   cover: string;
   description?: string;
   contributionRole?: string;
+};
+
+type ReadmeApiResponse = {
+  content?: string;
+  path?: string;
+  html_url?: string;
+  download_url?: string;
+};
+
+type ReadmeUrlContext = {
+  rawRepoRoot: string;
+  rawDirBase: string;
+  htmlRepoRoot: string;
+  htmlDirBase: string;
 };
 
 const fallbackCovers = [
@@ -289,6 +305,99 @@ const extractOwnerAndRepo = (repoUrl: string) => {
   }
 };
 
+const decodeBase64Utf8 = (base64Value: string) => {
+  const normalized = base64Value.replace(/\s/g, "");
+  const binary = atob(normalized);
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+};
+
+const encodePathSegments = (path: string) =>
+  path
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+
+const normalizeBase = (value: string) => (value.endsWith("/") ? value : `${value}/`);
+
+const getDirectoryPath = (path: string) => {
+  const segments = path.split("/").filter(Boolean);
+  segments.pop();
+  return segments.join("/");
+};
+
+const buildReadmeUrlContext = (
+  repoInfo: { owner: string; repo: string },
+  readmeData: ReadmeApiResponse
+): ReadmeUrlContext => {
+  const defaultRawRepoRoot = `https://raw.githubusercontent.com/${repoInfo.owner}/${repoInfo.repo}/HEAD/`;
+  const defaultHtmlRepoRoot = `https://github.com/${repoInfo.owner}/${repoInfo.repo}/blob/HEAD/`;
+  const readmePath = (readmeData.path || "README.md").replace(/^\/+/, "");
+  const encodedReadmePath = encodePathSegments(readmePath);
+
+  const rawRepoRoot =
+    readmeData.download_url && readmeData.download_url.endsWith(encodedReadmePath)
+      ? normalizeBase(readmeData.download_url.slice(0, -encodedReadmePath.length))
+      : defaultRawRepoRoot;
+
+  const htmlRepoRoot =
+    readmeData.html_url && readmeData.html_url.endsWith(encodedReadmePath)
+      ? normalizeBase(readmeData.html_url.slice(0, -encodedReadmePath.length))
+      : defaultHtmlRepoRoot;
+
+  const readmeDirectory = getDirectoryPath(readmePath);
+  const encodedDirectory = readmeDirectory ? `${encodePathSegments(readmeDirectory)}/` : "";
+
+  return {
+    rawRepoRoot,
+    rawDirBase: `${rawRepoRoot}${encodedDirectory}`,
+    htmlRepoRoot,
+    htmlDirBase: `${htmlRepoRoot}${encodedDirectory}`,
+  };
+};
+
+const isAbsoluteUrl = (value: string) => /^[a-z][a-z\d+\-.]*:/i.test(value) || value.startsWith("//");
+
+const isUnsafeUrl = (value: string) => /^\s*javascript:/i.test(value);
+
+const resolveReadmeUrl = (
+  value: string | undefined,
+  kind: "asset" | "link",
+  context: ReadmeUrlContext | null
+) => {
+  if (!value) {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed || isUnsafeUrl(trimmed) || trimmed.startsWith("#")) {
+    return trimmed;
+  }
+
+  if (isAbsoluteUrl(trimmed) || !context) {
+    return trimmed;
+  }
+
+  if (trimmed.startsWith("/")) {
+    const fromRepoRoot = trimmed.replace(/^\/+/, "");
+    const repoBase = kind === "asset" ? context.rawRepoRoot : context.htmlRepoRoot;
+
+    try {
+      return new URL(fromRepoRoot, repoBase).toString();
+    } catch {
+      return `${repoBase}${fromRepoRoot}`;
+    }
+  }
+
+  const directoryBase = kind === "asset" ? context.rawDirBase : context.htmlDirBase;
+
+  try {
+    return new URL(trimmed, directoryBase).toString();
+  } catch {
+    return `${directoryBase}${trimmed}`;
+  }
+};
+
 export default function Home() {
   const [githubProjects, setGithubProjects] = useState<GitHubProjectCard[]>(fallbackGithubProjects);
   const [isGitHubCarouselPaused, setIsGitHubCarouselPaused] = useState(false);
@@ -305,6 +414,7 @@ export default function Home() {
   const [readmeTitle, setReadmeTitle] = useState<string | null>(null);
   const [readmeRepoUrl, setReadmeRepoUrl] = useState<string | null>(null);
   const [readmeContent, setReadmeContent] = useState("");
+  const [readmeUrlContext, setReadmeUrlContext] = useState<ReadmeUrlContext | null>(null);
   const [readmeError, setReadmeError] = useState<string | null>(null);
   const [isReadmeLoading, setIsReadmeLoading] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
@@ -662,6 +772,7 @@ export default function Home() {
     setReadmeTitle(project.title);
     setReadmeRepoUrl(project.repoUrl);
     setReadmeContent("");
+    setReadmeUrlContext(null);
     setReadmeError(null);
 
     if (!repoInfo) {
@@ -674,7 +785,7 @@ export default function Home() {
     try {
       const response = await fetch(`https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}/readme`, {
         headers: {
-          Accept: "application/vnd.github.raw+json",
+          Accept: "application/vnd.github+json",
         },
       });
 
@@ -682,7 +793,14 @@ export default function Home() {
         throw new Error(`README request failed with ${response.status}`);
       }
 
-      const content = await response.text();
+      const readmeData = (await response.json()) as ReadmeApiResponse;
+
+      if (!readmeData.content) {
+        throw new Error("README content is missing from API response");
+      }
+
+      const content = decodeBase64Utf8(readmeData.content);
+      setReadmeUrlContext(buildReadmeUrlContext(repoInfo, readmeData));
       setReadmeContent(content || "README is empty for this repository.");
     } catch {
       setReadmeError("Could not load README for this repository right now.");
@@ -695,6 +813,7 @@ export default function Home() {
     setReadmeTitle(null);
     setReadmeRepoUrl(null);
     setReadmeContent("");
+    setReadmeUrlContext(null);
     setReadmeError(null);
     setIsReadmeLoading(false);
   };
@@ -773,6 +892,33 @@ export default function Home() {
           {children}
         </h3>
       );
+    },
+    a: ({ href, children, ...props }) => {
+      const resolvedHref = resolveReadmeUrl(href, "link", readmeUrlContext);
+      const isExternal = Boolean(resolvedHref && /^(https?:)?\/\//i.test(resolvedHref));
+
+      return (
+        <a
+          href={resolvedHref}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    },
+    img: ({ src, alt, ...props }) => {
+      const srcValue = typeof src === "string" ? src : undefined;
+      const resolvedSrc = resolveReadmeUrl(srcValue, "asset", readmeUrlContext);
+
+      if (!resolvedSrc || isUnsafeUrl(resolvedSrc)) {
+        return null;
+      }
+
+      // External README images come from arbitrary repos and must stay dynamic.
+      // eslint-disable-next-line @next/next/no-img-element
+      return <img src={resolvedSrc} alt={alt || ""} loading="lazy" {...props} />;
     },
   };
 
@@ -2072,7 +2218,11 @@ export default function Home() {
               )}
               {!isReadmeLoading && !readmeError && readmeContent && (
                 <div className={styles.githubReadmeContent}>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={readmeHeadingComponents}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                    components={readmeHeadingComponents}
+                  >
                     {readmeContent}
                   </ReactMarkdown>
                 </div>

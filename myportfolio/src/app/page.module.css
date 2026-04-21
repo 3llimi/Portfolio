@@ -2770,6 +2770,20 @@
   text-decoration: underline;
 }
 
+.githubReadmeContent img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: min(56vh, 560px);
+  height: auto;
+  object-fit: contain;
+  margin: 0.9em auto;
+}
+
+.githubReadmeContent a img {
+  max-width: 100%;
+}
+
 .githubReadmeContent code {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -2858,6 +2872,10 @@
 
   .githubReadmeTocList {
     grid-template-columns: 1fr;
+  }
+
+  .githubReadmeContent img {
+    max-height: 42vh;
   }
 }
 
