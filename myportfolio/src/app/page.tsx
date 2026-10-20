@@ -1716,12 +1716,9 @@ export default function Home() {
                 >
                   <div className={styles.socialLinks} style={{ justifyContent: 'center', width: '100%', gap: 14 }}>
                     {[
-                      { href: "#", platform: "upwork", icon: getImagePath("/icons/upwork.svg"), alt: "Upwork" },
                       { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
-                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: getImagePath("/icons/behance.svg"), alt: "Behance" },
                       { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
                       { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
-                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: getImagePath("/icons/instagram.svg"), alt: "Instagram" }
                     ].map((social, index) => (
                       <motion.a
                         key={social.platform}
@@ -1823,12 +1820,9 @@ export default function Home() {
                 >
                   <div className={styles.socialLinks}>
                     {[
-                      { href: "#", platform: "upwork", icon: getImagePath("/icons/upwork.svg"), alt: "Upwork" },
                       { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
-                      { href: "https://www.behance.net/bahaallimi1", platform: "behance", icon: getImagePath("/icons/behance.svg"), alt: "Behance" },
                       { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
                       { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
-                      { href: "https://www.instagram.com/3llimi/", platform: "instagram", icon: getImagePath("/icons/instagram.svg"), alt: "Instagram" }
                     ].map((social, index) => (
                       <motion.a
                         key={social.platform}
@@ -1917,7 +1911,7 @@ export default function Home() {
               {/* Main Content */}
               <div className={styles.aboutText}>
                 <h3 className={styles.aboutIntro}>
-                  I&apos;m <strong>Ahmed Baha Eddine Alimi</strong>, a software engineer.
+                  I&apos;m <strong>Ahmed Baha Eddine Alimi</strong>, a <em>software engineer</em>.
                 </h3>
 
                 <h4 className={styles.aboutLocation}>

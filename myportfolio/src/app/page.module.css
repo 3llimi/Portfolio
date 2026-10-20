@@ -178,10 +178,11 @@
 /* Social links container */
 .socialLinksContainer {
   position: absolute;
-  left: 35.9vw;
+  left: 41.1vw;
   top: 84.9vh;
-  width: 26vw;
+  width: 15.625vw;
   height: 6.9vh;
+  box-sizing: border-box;
   background: rgba(80, 80, 80, 0.78);
   border-radius: 40px;
   z-index: 4;
@@ -191,9 +192,12 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: clamp(18px, 1.87vw, 36px);
   padding: clamp(8px, 0.9vw, 17.5px) clamp(18px, 1.87vw, 36px);
+  width: 100%;
   height: 100%;
+  box-sizing: border-box;
 }
 
 .socialLink {
@@ -947,9 +951,9 @@
   }
 
   .socialLinksContainer {
-    left: calc(690px * 100vw / 1920px);
+    left: calc(790px * 100vw / 1920px);
     top: calc(917px * 100vh / 1080px);
-    width: calc(500px * 100vw / 1920px);
+    width: calc(300px * 100vw / 1920px);
     height: calc(75px * 100vh / 1080px);
   }
 
@@ -1057,6 +1061,7 @@
     margin: 1.2rem auto 0.5rem auto !important;
     width: 90vw !important;
     max-width: 400px !important;
+    box-sizing: border-box !important;
     padding: 0.3rem 0.2rem !important;
     border-radius: 40px !important;
     background: rgba(80,80,80,0.78) !important;
@@ -1070,7 +1075,8 @@
     padding: clamp(8px, 2.33vw, 17.5px) clamp(12px, 3.2vw, 36px) !important;
     height: 100% !important;
     justify-content: center;
-    width: auto !important;
+    width: 100% !important;
+    box-sizing: border-box;
   }
 }
 
@@ -2114,8 +2120,9 @@
   }
 
   .socialLinksContainer {
-    width: 40vw;
-    height: 10vh;
+    width: 90vw;
+    height: auto;
+    min-height: 52px;
   }
 }
 
