@@ -463,12 +463,6 @@ export default function Home() {
       scholarship: true,
     },
     {
-      title: "*LIGHTS CAMERA LEARN",
-      rightLabel: "Session 22 & 23",
-      subtitle: "BTS PHOTOGRAPHER & VIDEOGRAPHER",
-      scholarship: false,
-    },
-    {
       title: "*Adanced Engineering School",
       rightLabel: "June 24 - Dec 24",
       subtitle: "Junior GUI Developer",
@@ -484,6 +478,12 @@ export default function Home() {
       title: "*InnoSync",
       rightLabel: "Innopolis University 25",
       subtitle: "Team Lead - Frontend Dev - Designer",
+      scholarship: false,
+    },
+    {
+      title: "*Middle East Technical University",
+      rightLabel: "Fall 26'",
+      subtitle: "Exchange Student - Computer Engineering Faculty",
       scholarship: false,
     },
   ];
@@ -1555,13 +1555,6 @@ export default function Home() {
       groupDelay: 0.6,
       headingDelay: 0.7,
       itemDelayStart: 0.7,
-    },
-    {
-      title: "*Photography",
-      items: [{ icon: "/icons/lightroom.svg", alt: "Lightroom", label: "*Lightroom" }],
-      groupDelay: 0.6,
-      headingDelay: 0.7,
-      itemDelayStart: 0.8,
     },
   ];
 
