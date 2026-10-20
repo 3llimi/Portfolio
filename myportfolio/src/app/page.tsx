@@ -558,21 +558,21 @@ export default function Home() {
         }
 
         const mappedProjects = filteredRepos.map((repo, index) => {
-            const selectedRepoDetail = selectedRepoDetails.get(repo.name.toLowerCase());
-            return {
-              id: repo.id,
-              title: repo.name,
-              description:
-                selectedRepoDetail?.description ||
-                repo.description?.trim() ||
-                "Repository project with implementation details available in the source code.",
-              cover:
-                selectedRepoDetail?.cover ??
-                fallbackCovers[index % fallbackCovers.length],
-              repoUrl: repo.html_url,
-              contributionRole: selectedRepoDetail?.contributionRole,
-            } satisfies GitHubProjectCard;
-          });
+          const selectedRepoDetail = selectedRepoDetails.get(repo.name.toLowerCase());
+          return {
+            id: repo.id,
+            title: repo.name,
+            description:
+              selectedRepoDetail?.description ||
+              repo.description?.trim() ||
+              "Repository project with implementation details available in the source code.",
+            cover:
+              selectedRepoDetail?.cover ??
+              fallbackCovers[index % fallbackCovers.length],
+            repoUrl: repo.html_url,
+            contributionRole: selectedRepoDetail?.contributionRole,
+          } satisfies GitHubProjectCard;
+        });
 
         if (mappedProjects.length > 0 || selectedRepoNameSet.size > 0) {
           setGithubProjects(mappedProjects);
@@ -1924,26 +1924,33 @@ export default function Home() {
               {/* Main Content */}
               <div className={styles.aboutText}>
                 <h3 className={styles.aboutIntro}>
-                  I am <strong>Ahmed Baha Eddine</strong>. You can call me <em>Baha</em> for short.
+                  I&apos;m <strong>Ahmed Baha Eddine Alimi</strong>, a software engineer.
                 </h3>
 
                 <h4 className={styles.aboutLocation}>
-                  A Tunisian Computer Science Student Currently Based in <span className={styles.russiaText}><span className={styles.russiaRu}>Ru</span><span className={styles.russiaS}>ss</span><span className={styles.russiaIa}>ia</span></span>
+                  Computer Science student at Innopolis University, based in{" "}
+                  <span className={styles.russiaText}>
+                    <span className={styles.russiaRu}>Ru</span>
+                    <span className={styles.russiaS}>ss</span>
+                    <span className={styles.russiaIa}>ia</span>
+                  </span>
                 </h4>
 
                 <div className={styles.aboutDescription}>
                   <p>
-                    I have a passion for anything related to computers, I have been very active through the years of my high school in my
-                    country Tunisia, Participated and numerous hackathons and competitions.
+                    I build reliable, well-designed software across the full development
+                    lifecycle, from system design and implementation to deployment and
+                    maintenance. I care about clean architecture, thoughtful engineering
+                    practices, and products that are a pleasure to use.
                   </p>
 
                   <p>
-                    I have acquired a number of skills throughout these years along with opening in some other interests and fields such
-                    as film making and photography
+                    I&apos;ve led and collaborated in cross-functional teams, delivering
+                    projects from concept to production. I&apos;m always looking to solve
+                    challenging problems and grow as an engineer.
                   </p>
                 </div>
               </div>
-
               {/* Bottom Quote Mark */}
               <div className={styles.quoteBottom}>&rdquo;</div>
             </motion.div>
@@ -2189,44 +2196,44 @@ export default function Home() {
                 exit={{ opacity: 0, y: 20, scale: 0.98 }}
                 transition={{ duration: 0.24, ease: "easeOut" }}
               >
-              <div className={styles.githubReadmeHeader}>
-                <h3 className={styles.githubReadmeTitle}>{readmeTitle} README</h3>
-                <div className={styles.githubReadmeHeaderActions}>
-                  {readmeRepoUrl && (
-                    <a
-                      href={readmeRepoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={styles.githubReadmeRepoLink}
+                <div className={styles.githubReadmeHeader}>
+                  <h3 className={styles.githubReadmeTitle}>{readmeTitle} README</h3>
+                  <div className={styles.githubReadmeHeaderActions}>
+                    {readmeRepoUrl && (
+                      <a
+                        href={readmeRepoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.githubReadmeRepoLink}
+                      >
+                        Open Repo
+                      </a>
+                    )}
+                    <button
+                      type="button"
+                      className={styles.githubReadmeClose}
+                      onClick={closeReadmeOverlay}
                     >
-                      Open Repo
-                    </a>
-                  )}
-                  <button
-                    type="button"
-                    className={styles.githubReadmeClose}
-                    onClick={closeReadmeOverlay}
-                  >
-                    Close
-                  </button>
+                      Close
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              {isReadmeLoading && <p className={styles.githubReadmeMeta}>Loading README...</p>}
-              {!isReadmeLoading && readmeError && (
-                <p className={styles.githubReadmeMeta}>{readmeError}</p>
-              )}
-              {!isReadmeLoading && !readmeError && readmeContent && (
-                <div className={styles.githubReadmeContent}>
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                    components={readmeHeadingComponents}
-                  >
-                    {readmeContent}
-                  </ReactMarkdown>
-                </div>
-              )}
+                {isReadmeLoading && <p className={styles.githubReadmeMeta}>Loading README...</p>}
+                {!isReadmeLoading && readmeError && (
+                  <p className={styles.githubReadmeMeta}>{readmeError}</p>
+                )}
+                {!isReadmeLoading && !readmeError && readmeContent && (
+                  <div className={styles.githubReadmeContent}>
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                      components={readmeHeadingComponents}
+                    >
+                      {readmeContent}
+                    </ReactMarkdown>
+                  </div>
+                )}
               </motion.div>
             </motion.div>
           )}
