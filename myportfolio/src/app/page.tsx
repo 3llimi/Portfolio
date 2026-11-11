@@ -1822,7 +1822,7 @@ export default function Home() {
                     {[
                       { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
                       { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
-                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
+                      { href: "https://www.linkedin.com/in/baha-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
                     ].map((social, index) => (
                       <motion.a
                         key={social.platform}
