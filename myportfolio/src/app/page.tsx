@@ -8,6 +8,7 @@ import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import SkillsSection, { skillsSectionClassName } from "./SkillsSection";
 
 // Helper function to get the correct image path for GitHub Pages
 const getImagePath = (path: string) => {
@@ -985,7 +986,7 @@ export default function Home() {
     const sectionClassNames = [
       styles.hero,
       styles.aboutSection,
-      styles.skillsSection,
+      skillsSectionClassName,
       styles.projectsAchievementsSection,
       styles.githubProjectsSection,
       styles.footer,
@@ -1112,28 +1113,6 @@ export default function Home() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
-
-  // Ref for skills section
-  const skillsSectionRef = useRef<HTMLDivElement | null>(null);
-  const [skillsActive, setSkillsActive] = useState(false);
-
-  useEffect(() => {
-    const handleSkillsSection = () => {
-      if (!skillsSectionRef.current) return;
-      const rect = skillsSectionRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      // Section is considered active if at least 40% is visible
-      const visible = rect.top < windowHeight * 0.6 && rect.bottom > windowHeight * 0.4;
-      setSkillsActive(visible);
-    };
-    handleSkillsSection();
-    window.addEventListener('scroll', handleSkillsSection);
-    window.addEventListener('resize', handleSkillsSection);
-    return () => {
-      window.removeEventListener('scroll', handleSkillsSection);
-      window.removeEventListener('resize', handleSkillsSection);
     };
   }, []);
 
@@ -1313,302 +1292,6 @@ export default function Home() {
       projectsMarqueeVelocityRef.current = 0;
     };
   }, [hasMounted, paData.length, setProjectsMarqueeOffset]);
-
-  // Refs for continuous marquee in Skills section
-  const skillsMarqueeViewportRef = useRef<HTMLDivElement | null>(null);
-  const skillsMarqueeTrackRef = useRef<HTMLDivElement | null>(null);
-  const skillsMarqueeOffsetRef = useRef(0);
-  const skillsMarqueeLoopHeightRef = useRef(0);
-  const skillsMarqueeRafRef = useRef<number | null>(null);
-  const skillsMarqueeLastTimestampRef = useRef<number | null>(null);
-  const skillsTouchYRef = useRef<number | null>(null);
-  const [isSkillsHovered, setIsSkillsHovered] = useState(false);
-
-  const applySkillsMarqueeTransform = useCallback((offset: number) => {
-    const track = skillsMarqueeTrackRef.current;
-    if (!track) {
-      return;
-    }
-
-    track.style.transform = `translate3d(0, -${offset}px, 0)`;
-  }, []);
-
-  const setSkillsMarqueeOffset = useCallback((rawOffset: number) => {
-    const loopHeight = skillsMarqueeLoopHeightRef.current;
-    if (loopHeight <= 0) {
-      return;
-    }
-
-    const normalizedOffset = ((rawOffset % loopHeight) + loopHeight) % loopHeight;
-    skillsMarqueeOffsetRef.current = normalizedOffset;
-    applySkillsMarqueeTransform(normalizedOffset);
-  }, [applySkillsMarqueeTransform]);
-
-  const handleSkillsTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
-    setIsSkillsHovered(true);
-    skillsTouchYRef.current = event.touches[0]?.clientY ?? null;
-  };
-
-  const handleSkillsTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    if (skillsMarqueeLoopHeightRef.current <= 0) {
-      return;
-    }
-
-    const currentY = event.touches[0]?.clientY;
-    if (currentY === undefined || skillsTouchYRef.current === null) {
-      return;
-    }
-
-    event.preventDefault();
-    const deltaY = skillsTouchYRef.current - currentY;
-    skillsTouchYRef.current = currentY;
-    setSkillsMarqueeOffset(skillsMarqueeOffsetRef.current + deltaY);
-  };
-
-  const handleSkillsTouchEnd = () => {
-    skillsTouchYRef.current = null;
-    setIsSkillsHovered(false);
-  };
-
-  useEffect(() => {
-    if (!hasMounted) {
-      return;
-    }
-
-    const viewport = skillsMarqueeViewportRef.current;
-    if (!viewport) {
-      return;
-    }
-
-    const handleWheel = (event: WheelEvent) => {
-      if (skillsMarqueeLoopHeightRef.current <= 0) {
-        return;
-      }
-
-      event.preventDefault();
-      setIsSkillsHovered(true);
-      setSkillsMarqueeOffset(skillsMarqueeOffsetRef.current + event.deltaY);
-    };
-
-    viewport.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      viewport.removeEventListener("wheel", handleWheel);
-    };
-  }, [hasMounted, setSkillsMarqueeOffset]);
-
-  useEffect(() => {
-    if (!hasMounted) {
-      return;
-    }
-
-    const track = skillsMarqueeTrackRef.current;
-    if (!track) {
-      skillsMarqueeOffsetRef.current = 0;
-      skillsMarqueeLoopHeightRef.current = 0;
-      return;
-    }
-
-    const updateLoopHeight = () => {
-      const loopHeight = track.scrollHeight / 2;
-      skillsMarqueeLoopHeightRef.current = Number.isFinite(loopHeight) ? loopHeight : 0;
-
-      if (skillsMarqueeLoopHeightRef.current <= 0) {
-        skillsMarqueeOffsetRef.current = 0;
-      } else if (skillsMarqueeOffsetRef.current >= skillsMarqueeLoopHeightRef.current) {
-        skillsMarqueeOffsetRef.current %= skillsMarqueeLoopHeightRef.current;
-      }
-
-      applySkillsMarqueeTransform(skillsMarqueeOffsetRef.current);
-    };
-
-    updateLoopHeight();
-
-    const resizeObserver = new ResizeObserver(updateLoopHeight);
-    resizeObserver.observe(track);
-
-    const viewport = skillsMarqueeViewportRef.current;
-    if (viewport) {
-      resizeObserver.observe(viewport);
-    }
-
-    window.addEventListener("resize", updateLoopHeight);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener("resize", updateLoopHeight);
-    };
-  }, [hasMounted, applySkillsMarqueeTransform]);
-
-  useEffect(() => {
-    if (!hasMounted || isSkillsHovered) {
-      return;
-    }
-
-    const speedPxPerSecond = 26;
-
-    const step = (timestamp: number) => {
-      if (skillsMarqueeLastTimestampRef.current === null) {
-        skillsMarqueeLastTimestampRef.current = timestamp;
-      }
-
-      const elapsedSeconds = (timestamp - skillsMarqueeLastTimestampRef.current) / 1000;
-      skillsMarqueeLastTimestampRef.current = timestamp;
-
-      const loopHeight = skillsMarqueeLoopHeightRef.current;
-      if (loopHeight > 0) {
-        const nextOffset = skillsMarqueeOffsetRef.current + speedPxPerSecond * elapsedSeconds;
-        setSkillsMarqueeOffset(nextOffset);
-      }
-
-      skillsMarqueeRafRef.current = requestAnimationFrame(step);
-    };
-
-    skillsMarqueeRafRef.current = requestAnimationFrame(step);
-
-    return () => {
-      if (skillsMarqueeRafRef.current !== null) {
-        cancelAnimationFrame(skillsMarqueeRafRef.current);
-        skillsMarqueeRafRef.current = null;
-      }
-      skillsMarqueeLastTimestampRef.current = null;
-    };
-  }, [isSkillsHovered, hasMounted, setSkillsMarqueeOffset]);
-
-  type SkillItem = {
-    icon: string;
-    alt: string;
-    label: string;
-  };
-
-  type SkillGroupConfig = {
-    title: string;
-    items: SkillItem[];
-    groupDelay: number;
-    headingDelay: number;
-    itemDelayStart: number;
-  };
-
-  const skillGroups: SkillGroupConfig[] = [
-    {
-      title: "*UI/UX Design",
-      items: [{ icon: "/icons/figma.svg", alt: "Figma", label: "*Figma" }],
-      groupDelay: 0.2,
-      headingDelay: 0.3,
-      itemDelayStart: 0.4,
-    },
-    {
-      title: "*Front-End Development",
-      items: [
-        { icon: "/icons/html5.svg", alt: "HTML5", label: "*HTML5" },
-        { icon: "/icons/css3.svg", alt: "CSS3", label: "*CSS3" },
-        { icon: "/icons/javascript.svg", alt: "JavaScript", label: "*JavaScript" },
-        { icon: "/icons/typescript.svg", alt: "TypeScript", label: "*TypeScript" },
-        { icon: "/icons/angular.svg", alt: "Angular", label: "*Angular" },
-        { icon: "/icons/flutter.svg", alt: "flutter", label: "*Flutter" },
-      ],
-      groupDelay: 0.3,
-      headingDelay: 0.4,
-      itemDelayStart: 0.5,
-    },
-    {
-      title: "*Back-End Development",
-      items: [
-        { icon: "/icons/nodejs.svg", alt: "Node.js", label: "*Node.js" },
-        { icon: "/icons/postgresql.svg", alt: "PostgreSQL", label: "*PostgreSQL" },
-        { icon: "/icons/mongodb.svg", alt: "MongoDB", label: "*MongoDB" },
-        { icon: "/icons/mysql.svg", alt: "MySQL", label: "*MySQL" },
-        { icon: "/icons/php.svg", alt: "PHP", label: "*PHP" },
-        { icon: "/icons/docker.svg", alt: "Docker", label: "*Docker" },
-        { icon: "/icons/go.svg", alt: "Go", label: "*GoLang" },
-      ],
-      groupDelay: 0.4,
-      headingDelay: 0.5,
-      itemDelayStart: 0.6,
-    },
-    {
-      title: "*DevOps",
-      items: [
-        { icon: "/icons/kubernetes-svgrepo-com.svg", alt: "Kubernetes", label: "*Kubernetes" },
-        { icon: "/icons/terraform-svgrepo-com.svg", alt: "Terraform", label: "*Terraform" },
-        { icon: "/icons/ansible-svgrepo-com.svg", alt: "Ansible", label: "*Ansible" },
-        { icon: "/icons/Helm.svg", alt: "Helm", label: "*Helm" },
-        { icon: "/icons/Argo CD.svg", alt: "Argo CD", label: "*Argo CD" },
-        { icon: "/icons/prometheus-svgrepo-com.svg", alt: "Prometheus", label: "*Prometheus" },
-        { icon: "/icons/grafana-svgrepo-com.svg", alt: "Grafana", label: "*Grafana" },
-      ],
-      groupDelay: 0.5,
-      headingDelay: 0.6,
-      itemDelayStart: 0.7,
-    },
-    {
-      title: "*Programming",
-      items: [
-        { icon: "/icons/python.svg", alt: "Python", label: "*Python" },
-        { icon: "/icons/csharp.svg", alt: "C#", label: "*C#" },
-        { icon: "/icons/cpp.svg", alt: "C++", label: "*C++" },
-        { icon: "/icons/c.svg", alt: "C", label: "*C" },
-        { icon: "/icons/java.svg", alt: "Java", label: "*Java" },
-        { icon: "/icons/arduino.svg", alt: "Arduino", label: "*Arduino" },
-        { icon: "/icons/rust-svgrepo-com.svg", alt: "Rust", label: "*Rust" },
-      ],
-      groupDelay: 0.6,
-      headingDelay: 0.7,
-      itemDelayStart: 0.7,
-    },
-  ];
-
-  const renderSkillGroups = (cloneKey: string) => (
-    <>
-      {skillGroups.map((group) => (
-        <motion.div
-          key={`${group.title}-${cloneKey}`}
-          className={styles.skillGroup}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.7 }}
-          transition={{ duration: 0.8, delay: group.groupDelay, type: "spring", stiffness: 100 }}
-        >
-          <motion.h3
-            className={styles.groupTitle}
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.7 }}
-            transition={{ duration: 0.6, delay: group.headingDelay }}
-          >
-            {group.title}
-          </motion.h3>
-          <div className={styles.skillsRow}>
-            {group.items.map((skill, index) => (
-              <motion.div
-                key={`${skill.alt}-${cloneKey}`}
-                className={styles.skillItem}
-                initial={{ opacity: 0, scale: 0, rotateY: 90 }}
-                whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{
-                  duration: 0.6,
-                  delay: group.itemDelayStart + index * 0.1,
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 15,
-                }}
-                whileHover={{
-                  rotateY: 10,
-                  transition: { duration: 0.2 },
-                }}
-              >
-                <div className={styles.skillIconLarge}>
-                  <Image src={getImagePath(skill.icon)} alt={skill.alt} width={40} height={40} />
-                </div>
-                <span className={styles.skillLabel}>{skill.label}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      ))}
-    </>
-  );
 
   // Hydration fix: only render browser-dependent UI after mount
   useEffect(() => { setHasMounted(true); }, []);
@@ -1945,51 +1628,7 @@ export default function Home() {
         </motion.section>
 
         {/* Skills & Technologies Section */}
-        <motion.section
-          ref={skillsSectionRef}
-          className={styles.skillsSection}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          {isMobile ? (
-            <div className={styles.skillsTitleBlock + ' ' + styles.skillsTitleBlockMobile}>
-              <div className={styles.skillsTitleMain}>SKILLS</div>
-              <div className={styles.skillsTitleSub}>TECHNOLOGIES</div>
-            </div>
-          ) : null}
-          <div className={styles.skillsScrollContainer}>
-            {hasMounted && (
-              <div
-                className={styles.skillsVerticalCarousel}
-                ref={skillsMarqueeViewportRef}
-                tabIndex={0}
-                onMouseEnter={() => setIsSkillsHovered(true)}
-                onMouseLeave={() => setIsSkillsHovered(false)}
-                onFocus={() => setIsSkillsHovered(true)}
-                onBlur={() => setIsSkillsHovered(false)}
-                onTouchStart={handleSkillsTouchStart}
-                onTouchMove={handleSkillsTouchMove}
-                onTouchEnd={handleSkillsTouchEnd}
-                onTouchCancel={handleSkillsTouchEnd}
-              >
-                <div ref={skillsMarqueeTrackRef} className={styles.skillsVerticalMarqueeTrack}>
-                  {renderSkillGroups("base")}
-                  {renderSkillGroups("clone")}
-                </div>
-              </div>
-            )}
-          </div>
-          <div className={styles.skillsHeadingRight}>
-            {!isMobile && (
-              <div className={styles.skillsTitleBlock}>
-                <div className={styles.skillsTitleMain}>{/* paProjects style */}SKILLS</div>
-                <div className={styles.skillsTitleSub}>{/* paAchievements style */}TECHNOLOGIES</div>
-              </div>
-            )}
-          </div>
-        </motion.section>
+        <SkillsSection />
 
         {/* Projects & Achievements Section - Screenshot Match */}
         <motion.section
@@ -2313,7 +1952,7 @@ export default function Home() {
           <>
             {!atBottom && (
               <motion.div
-                className={`${styles.navigationBubble} ${styles.navigationBubbleDown} ${skillsActive ? styles.bubbleSkillsActive : ''}`}
+                className={`${styles.navigationBubble} ${styles.navigationBubbleDown}`}
                 onClick={scrollToNextSection}
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -2327,7 +1966,7 @@ export default function Home() {
 
             {!atTop && (
               <motion.div
-                className={`${styles.navigationBubble} ${styles.navigationBubbleUp} ${skillsActive ? styles.bubbleSkillsActive : ''}`}
+                className={`${styles.navigationBubble} ${styles.navigationBubbleUp}`}
                 onClick={scrollToPreviousSection}
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
