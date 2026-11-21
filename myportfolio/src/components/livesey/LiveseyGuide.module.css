@@ -31,6 +31,21 @@
   display: block;
   width: 100%;
   height: 100%;
+  /* turning around passes through edge-on (scaleX 0), which reads as a quick turn instead of a pop */
+  transition: transform 0.16s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+/* gentle lean toward the cursor (rotation set by the engine, pivoting on his feet) */
+.lean {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip {
+    transition: none;
+  }
 }
 
 .cel {
@@ -83,6 +98,132 @@
   pointer-events: none;
 }
 
+/* Poof: a cartoon smoke cloud when he vanishes during a fast scroll and when he pops back in.
+   Sizes are desktop px, multiplied by --s (his scale relative to desktop). */
+.poof {
+  position: fixed;
+  width: 0;
+  height: 0;
+  z-index: 951;
+  pointer-events: none;
+}
+
+.puff {
+  position: absolute;
+  left: calc(var(--x) * var(--s) * 1px);
+  top: calc(var(--y) * var(--s) * 1px);
+  width: calc(var(--r) * var(--s) * 1px);
+  height: calc(var(--r) * var(--s) * 1px);
+  margin: calc(var(--r) * var(--s) * -0.5px) 0 0 calc(var(--r) * var(--s) * -0.5px);
+  border-radius: 50%;
+  /* soft, matte smoke: a bright core that melts into its neighbours, no glossy rim */
+  background: radial-gradient(
+    circle at 45% 42%,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(236, 236, 242, 0.92) 30%,
+    rgba(214, 214, 226, 0.7) 55%,
+    rgba(200, 200, 214, 0.28) 74%,
+    rgba(200, 200, 214, 0) 90%
+  );
+  filter: blur(calc(1.5px * var(--s)));
+  opacity: 0;
+  transform: scale(0.2);
+  animation: puff var(--poof-ms) cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes puff {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.2);
+  }
+  16% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * var(--s) * 0.25px), calc(var(--dy) * var(--s) * 0.25px)) scale(1);
+  }
+  55% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--dx) * var(--s) * 1px), calc((var(--dy) - 16) * var(--s) * 1px)) scale(1.3);
+  }
+}
+
+.poofRing {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(96px * var(--s));
+  height: calc(96px * var(--s));
+  margin: calc(-48px * var(--s)) 0 0 calc(-48px * var(--s));
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  opacity: 0;
+  animation: poofRing calc(var(--poof-ms) * 0.6) ease-out forwards;
+}
+
+@keyframes poofRing {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+.spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgb(var(--gold-rgb));
+  font-family: 'Satoshi', sans-serif;
+  font-size: calc(36px * var(--s));
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(var(--gold-rgb), 0.8);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4);
+  animation: spark calc(var(--poof-ms) * 0.9) ease-out forwards;
+}
+
+@keyframes spark {
+  0% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--sx) * var(--s) * 0.3px), calc(-50% + var(--sy) * var(--s) * 0.3px)) scale(0.4) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--sx) * var(--s) * 1px), calc(-50% + var(--sy) * var(--s) * 1px)) scale(1)
+      rotate(120deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .poof {
+    display: none;
+  }
+}
+
+/* Finale: the crew's walk strip (size, cel and position are written by the engine each frame) */
+.parade {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 950;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  will-change: transform, background-position;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+  transform: translate3d(-9999px, 0, 0);
+}
+
 /* Speech bubble */
 .bubble {
   position: absolute;
@@ -97,11 +238,19 @@
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 30px rgba(var(--gold-rgb), 0.08);
   color: #fff;
-  font-family: 'Satoshi', sans-serif;
+  /* Satoshi has no Cyrillic; his Russian words come from the matching Cyrillic face */
+  font-family: 'Satoshi', var(--font-cyrillic), sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
   pointer-events: none;
+}
+
+/* his Russian flourishes: a touch of gold swagger */
+.bubbleRu {
+  color: rgb(var(--gold-rgb));
+  font-weight: 700;
+  white-space: nowrap; /* never split "Ха-ха-ха" (or a short phrase) across lines */
 }
 
 .bubble::after {
@@ -224,6 +373,84 @@
   transform: translate(0, -50%);
 }
 
+/* ---------- First-visit hint: "this button hides him" ---------- */
+
+/* gold rings ripple out of the button while the hint is up */
+.toggleCalling {
+  border-color: rgb(var(--gold-rgb));
+  animation: toggleCall 1.6s ease-out infinite;
+}
+
+.toggleCalling .toggleTip {
+  display: none; /* the hint says it better */
+}
+
+@keyframes toggleCall {
+  0% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(var(--gold-rgb), 0.55);
+  }
+  70%,
+  100% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 14px rgba(var(--gold-rgb), 0);
+  }
+}
+
+/* sits just right of the button, vertically centred on it */
+.hintLive {
+  position: fixed;
+  left: 76px;
+  bottom: 18px;
+  height: 46px;
+  z-index: 960;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.hint {
+  position: relative;
+  max-width: min(300px, calc(100vw - 96px));
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--gold-rgb), 0.45);
+  background: rgba(14, 14, 18, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 24px rgba(var(--gold-rgb), 0.12);
+  color: rgba(255, 255, 255, 0.92);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.hint strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* arrow pointing back at the button */
+.hint::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  background: rgba(14, 14, 18, 0.95);
+  border-left: 1px solid rgba(var(--gold-rgb), 0.45);
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.45);
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggleCalling {
+    animation: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(var(--gold-rgb), 0.35);
+  }
+}
+
 @media (max-width: 600px) {
   .toggle {
     left: 14px;
@@ -235,6 +462,17 @@
   .toggle img {
     width: 28px;
     height: 28px;
+  }
+
+  .hintLive {
+    left: 64px;
+    bottom: 14px;
+    height: 40px;
+  }
+
+  .hint {
+    max-width: calc(100vw - 84px);
+    font-size: 12.5px;
   }
 }
 

@@ -8,11 +8,12 @@ import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import SkillsSection, { skillsSectionClassName } from "@/components/skills/SkillsSection";
+import SkillsSection from "@/components/skills/SkillsSection";
 import { SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "@/components/ui/ui";
 import sx from "@/styles/sections.module.css";
-import { SmoothScroll, getLenis, scrollToY } from "@/components/scroll/smoothScroll";
+import { SmoothScroll, scrollToY } from "@/components/scroll/smoothScroll";
 import ScrollRail from "@/components/scroll/ScrollRail";
+import SectionNav from "@/components/scroll/SectionNav";
 import LiveseyGuide from "@/components/livesey/LiveseyGuide";
 
 // Helper function to get the correct image path for GitHub Pages
@@ -1031,148 +1032,6 @@ export default function Home() {
     };
   }, [showCursor]);
 
-  // Navigation functions
-  const sectionScrollRafRef = useRef<number | null>(null);
-
-  const getSectionAnchors = () => {
-    const sectionClassNames = [
-      styles.hero,
-      styles.aboutSection,
-      skillsSectionClassName,
-      styles.projectsAchievementsSection,
-      styles.githubProjectsSection,
-      styles.footer,
-    ];
-
-    const anchors = sectionClassNames
-      .map((className) => document.querySelector<HTMLElement>(`.${className}`))
-      .filter((section): section is HTMLElement => section !== null)
-      .map((section) => Math.round(section.getBoundingClientRect().top + window.scrollY))
-      .filter((position, index, all) => all.indexOf(position) === index)
-      .sort((a, b) => a - b);
-
-    if (anchors.length === 0 || anchors[0] !== 0) {
-      anchors.unshift(0);
-    }
-
-    return anchors;
-  };
-
-  const animateWindowScroll = useCallback((targetTop: number) => {
-    const startTop = window.scrollY;
-    const maxScrollTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    const boundedTargetTop = Math.min(maxScrollTop, Math.max(0, Math.round(targetTop)));
-    const distance = boundedTargetTop - startTop;
-
-    if (getLenis()) {
-      scrollToY(boundedTargetTop, { duration: Math.min(1.4, Math.max(0.8, Math.abs(distance) / 1400)) });
-      return;
-    }
-
-    if (Math.abs(distance) < 2) {
-      window.scrollTo({ top: boundedTargetTop, behavior: "auto" });
-      return;
-    }
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      window.scrollTo({ top: boundedTargetTop, behavior: "auto" });
-      return;
-    }
-
-    if (sectionScrollRafRef.current !== null) {
-      cancelAnimationFrame(sectionScrollRafRef.current);
-      sectionScrollRafRef.current = null;
-    }
-
-    const durationMs = Math.min(850, Math.max(380, Math.abs(distance) * 0.55));
-    const startTime = performance.now();
-
-    const easeInOutCubic = (progress: number) =>
-      progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-    const step = (now: number) => {
-      const progress = Math.min((now - startTime) / durationMs, 1);
-      const easedProgress = easeInOutCubic(progress);
-      window.scrollTo({
-        top: startTop + distance * easedProgress,
-        behavior: "auto",
-      });
-
-      if (progress < 1) {
-        sectionScrollRafRef.current = requestAnimationFrame(step);
-      } else {
-        sectionScrollRafRef.current = null;
-      }
-    };
-
-    sectionScrollRafRef.current = requestAnimationFrame(step);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (sectionScrollRafRef.current !== null) {
-        cancelAnimationFrame(sectionScrollRafRef.current);
-        sectionScrollRafRef.current = null;
-      }
-    };
-  }, []);
-
-  const scrollToSectionInDirection = (direction: 1 | -1) => {
-    const anchors = getSectionAnchors();
-    if (anchors.length === 0) {
-      return;
-    }
-
-    const marker = window.scrollY + window.innerHeight * 0.42;
-    let currentIndex = 0;
-
-    for (let index = 0; index < anchors.length; index += 1) {
-      if (marker >= anchors[index]) {
-        currentIndex = index;
-      } else {
-        break;
-      }
-    }
-
-    const targetIndex = Math.min(
-      anchors.length - 1,
-      Math.max(0, currentIndex + direction)
-    );
-
-    animateWindowScroll(anchors[targetIndex]);
-  };
-
-  const scrollToNextSection = () => {
-    scrollToSectionInDirection(1);
-  };
-
-  const scrollToPreviousSection = () => {
-    scrollToSectionInDirection(-1);
-  };
-
-  // State for showing/hiding navigation bubbles
-  const [atTop, setAtTop] = useState(true);
-  const [atBottom, setAtBottom] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const docHeight = document.documentElement.scrollHeight;
-      setAtTop(scrollY <= 10);
-      setAtBottom(scrollY + windowHeight >= docHeight - 10);
-    };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
-
   // Refs for continuous marquee in Projects section
   const projectsCarouselViewportRef = useRef<HTMLDivElement | null>(null);
   const projectsCarouselTrackRef = useRef<HTMLDivElement | null>(null);
@@ -1399,7 +1258,7 @@ export default function Home() {
                 className={styles.heroName}
                 style={{ marginBottom: "0.08rem", marginTop: "0.3rem", gap: "0.05rem" }}
               >
-                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.25)} data-perch="Home">
+                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.25)} data-perch="Home" data-perch-surface="text" data-perch-x="0.25-0.5">
                   <span className={styles.rotatingStar}>*</span>
                   <WaveText text="Alimi" />
                 </span>
@@ -1427,7 +1286,7 @@ export default function Home() {
             {/* Desktop */}
             <div className={sx.heroDesktop}>
               <h1 className={styles.heroName}>
-                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.2)} data-perch="Home">
+                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.2)} data-perch="Home" data-perch-surface="text" data-perch-x="0.25-0.5">
                   <span className={styles.rotatingStar}>*</span>
                   <WaveText text="Alimi" />
                 </span>
@@ -1451,7 +1310,7 @@ export default function Home() {
                   priority
                 />
               </div>
-              <div className={`${styles.socialLinksContainer} ${sx.reveal}`} style={delay(0.65)} data-perch="Home">
+              <div className={`${styles.socialLinksContainer} ${sx.reveal}`} style={delay(0.65)} data-perch="Home" data-perch-x="0.3-0.7">
                 <div className={styles.socialLinks}>
                   <HeroSocialLinks />
                 </div>
@@ -1472,13 +1331,13 @@ export default function Home() {
           <div className={styles.aboutContainer}>
             {/* Left Side - Title */}
             <motion.div className={styles.aboutTitle} {...reveal(0.05)}>
-              <h2 className={sx.mobileTitle} data-perch="About"><WaveText text="ABOUT ME" /></h2>
+              <h2 className={sx.mobileTitle} data-perch="About" data-perch-surface="text"><WaveText text="ABOUT ME" /></h2>
             </motion.div>
 
             {/* Right Side - Content */}
             <motion.div className={styles.aboutContent} {...reveal(0.15)}>
               {/* Top Quote Mark */}
-              <div className={styles.quoteTop}>&ldquo;</div>
+              <div className={styles.quoteTop} data-perch="About" data-perch-surface="text" data-perch-x="0.5">&ldquo;</div>
 
               {/* Main Content */}
               <div className={styles.aboutText}>
@@ -1486,7 +1345,7 @@ export default function Home() {
                   I&apos;m <strong>Ahmed Baha Eddine Alimi</strong>, a <em>software engineer</em>.
                 </h3>
 
-                <h4 className={styles.aboutLocation} data-perch="About">
+                <h4 className={styles.aboutLocation}>
                   Computer Science student at Innopolis University, based in{" "}
                   <span className={styles.russiaText}>
                     <span className={styles.russiaRu}>Ru</span>
@@ -1528,9 +1387,9 @@ export default function Home() {
           <div className={styles.paColumns2}>
             {/* Left: Titles */}
             <motion.div className={styles.paLeft2} {...reveal(0.05)}>
-              <div className={`${styles.paProjects} ${sx.mobileTitle}`} data-perch="Projects"><WaveText text="PROJECTS" /></div>
+              <div className={`${styles.paProjects} ${sx.mobileTitle}`} data-perch="Projects" data-perch-surface="text"><WaveText text="PROJECTS" /></div>
               <div className={styles.paAmp}>&</div>
-              <div className={`${styles.paAchievements} ${sx.mobileTitle}`} data-perch="Projects"><WaveText text="ACHIEVEMENTS" /></div>
+              <div className={`${styles.paAchievements} ${sx.mobileTitle}`}><WaveText text="ACHIEVEMENTS" /></div>
               <div className={sx.paMeta}>
                 <p className={`${ui.hint} ${sx.hoverOnly}`}>
                   <span className={ui.hintDot} aria-hidden="true" />
@@ -1591,12 +1450,12 @@ export default function Home() {
           <SectionBackdrop blue="top-right" gold="bottom-left" />
           <div className={styles.githubProjectsInner}>
             <div className={sx.ghHeader}>
-              <motion.h2 className={sx.ghTitle} data-perch="GitHub" {...reveal(0.05)}>
+              <motion.h2 className={sx.ghTitle} data-perch="GitHub" data-perch-surface="text" {...reveal(0.05)}>
                 <span className={ui.titleMain}><WaveText text="GITHUB" /></span>
                 <span className={ui.titleSub}><WaveText text="PROJECTS" /></span>
               </motion.h2>
 
-              <motion.div className={sx.ghIntro} data-perch="GitHub" {...reveal(0.15)}>
+              <motion.div className={sx.ghIntro} {...reveal(0.15)}>
                 <p className={sx.ghSubtitle}>
                   A few repositories I&apos;m proud of, each with a visual preview and quick context.
                 </p>
@@ -1785,11 +1644,11 @@ export default function Home() {
           <div className={sx.footerInner}>
             <div className={sx.footerTop}>
               <motion.div {...reveal(0.05)}>
-                <h2 className={`${ui.titleMain} ${sx.footerTitle}`} data-perch="Contact"><WaveText text="GET IN TOUCH" /></h2>
+                <h2 className={`${ui.titleMain} ${sx.footerTitle}`} data-perch="Contact" data-perch-surface="text"><WaveText text="GET IN TOUCH" /></h2>
                 <p className={sx.footerLead}>Have a project or an opportunity in mind? Let&apos;s talk.</p>
               </motion.div>
 
-              <div className={sx.footerLinks} data-perch="Contact">
+              <div className={sx.footerLinks}>
                 {SOCIAL_LINKS.map((social, index) => (
                   <motion.a
                     key={social.platform}
@@ -1797,6 +1656,7 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${ui.card} ${sx.socialCard}`}
+                    data-perch="Contact"
                     onPointerMove={trackSpotlight}
                     {...reveal(0.15 + index * 0.08)}
                   >
@@ -1813,7 +1673,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className={sx.footerBottom}>
+            <div className={sx.footerBottom} data-livesey-ground data-nav-avoid>
               <p className={sx.copyright}>
                 © 2024–{new Date().getFullYear()} Designed &amp; developed by Ahmed Baha Eddine Alimi
               </p>
@@ -1833,40 +1693,8 @@ export default function Home() {
           <>
             <SmoothScroll />
             <ScrollRail />
+            <SectionNav />
             <LiveseyGuide />
-          </>
-        )}
-
-        {/* Navigation Bubbles */}
-        {hasMounted && (
-          <>
-            {!atBottom && (
-              <motion.div
-                className={`${styles.navigationBubble} ${styles.navigationBubbleDown}`}
-                onClick={scrollToNextSection}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.1, ease: EASE_OUT }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className={`${styles.chevron} ${styles.chevronDown}`}></div>
-              </motion.div>
-            )}
-
-            {!atTop && (
-              <motion.div
-                className={`${styles.navigationBubble} ${styles.navigationBubbleUp}`}
-                onClick={scrollToPreviousSection}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: EASE_OUT }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className={`${styles.chevron} ${styles.chevronUp}`}></div>
-              </motion.div>
-            )}
           </>
         )}
       </div>

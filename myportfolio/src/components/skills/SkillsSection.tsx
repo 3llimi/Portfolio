@@ -527,12 +527,12 @@ export default function SkillsSection() {
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.1 }}
           >
-            <h2 id="skills-heading" className={styles.titleBlock} data-perch="Skills">
+            <h2 id="skills-heading" className={styles.titleBlock} data-perch="Skills" data-perch-surface="text">
               <span className={styles.titleMain}><WaveText text="SKILLS" /></span>
               <span className={styles.titleSub}><WaveText text="TECHNOLOGIES" /></span>
             </h2>
 
-            <div className={styles.stats} data-perch="Skills">
+            <div className={styles.stats}>
               <div className={styles.stat}>
                 <span className={styles.statValue}>
                   <CountUp to={FLAT_SKILLS.length} />

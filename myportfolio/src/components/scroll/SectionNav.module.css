@@ -1,0 +1,282 @@
+/* Section navigation dock: a slim glass capsule — up arrow, rolling counter, down arrow —
+   with a gold scroll-progress line tracing its outline. Sits just left of the scroll rail. */
+
+.dock {
+  --w: 52px;
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  z-index: 1000;
+  width: var(--w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 0;
+  border-radius: 999px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(var(--gold-rgb), 0.08), transparent 70%),
+    linear-gradient(180deg, rgba(22, 22, 26, 0.72), rgba(8, 8, 10, 0.82));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    0 18px 40px -12px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, translate 0.25s var(--ease-out);
+}
+
+.dock:hover {
+  border-color: rgba(var(--gold-rgb), 0.18);
+  box-shadow:
+    0 18px 44px -12px rgba(0, 0, 0, 0.75),
+    0 0 28px -6px rgba(var(--gold-rgb), 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Progress outline ---------- */
+
+.progress {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  overflow: hidden;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.progressTrack,
+.progressBar {
+  fill: none;
+  stroke-width: 3; /* half is clipped by the outline, leaving a crisp 1.5px line */
+}
+
+.progressTrack {
+  stroke: rgba(255, 255, 255, 0.04);
+}
+
+.progressBar {
+  stroke: rgb(var(--gold-rgb));
+  stroke-dasharray: 1 1;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px rgba(var(--gold-rgb), 0.6));
+}
+
+/* ---------- Arrow buttons ---------- */
+
+.btn {
+  appearance: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.35s var(--ease-out), opacity 0.4s ease;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--gold-rgb), 0.22), rgba(var(--gold-rgb), 0) 70%);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.35s ease, transform 0.45s var(--ease-out);
+}
+
+.chevron {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.45s var(--ease-out), filter 0.3s ease;
+}
+
+.btn:hover:not(:disabled),
+.btn:focus-visible {
+  color: rgb(var(--gold-rgb));
+}
+
+.btn:hover:not(:disabled)::before,
+.btn:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.btn:hover:not(:disabled) .chevron {
+  filter: drop-shadow(0 0 6px rgba(var(--gold-rgb), 0.55));
+}
+
+.btn:first-of-type:hover:not(:disabled) .chevron {
+  transform: translateY(-3px);
+}
+
+.btn:last-of-type:hover:not(:disabled) .chevron {
+  transform: translateY(3px);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.btn:focus-visible {
+  outline: 1.5px solid rgba(var(--gold-rgb), 0.8);
+  outline-offset: -2px;
+}
+
+.btn:disabled {
+  opacity: 0.22;
+  cursor: default;
+}
+
+/* Gentle nudge on the down arrow while the visitor is still on the hero */
+.hint .chevron {
+  animation: nudge 2.4s var(--ease-out) 3s infinite;
+}
+
+.hint:hover .chevron {
+  animation: none;
+}
+
+@keyframes nudge {
+  0%, 60%, 100% { transform: translateY(0); }
+  25% { transform: translateY(4px); }
+  40% { transform: translateY(-1px); }
+}
+
+/* ---------- Tooltip ---------- */
+
+.tip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translate(8px, -50%);
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 10, 12, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-family: 'Satoshi', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.4s var(--ease-out);
+}
+
+.tipHint {
+  color: rgba(var(--gold-rgb), 0.9);
+  font-weight: 400;
+  margin-right: 2px;
+}
+
+.btn:hover .tip,
+.btn:focus-visible .tip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* ---------- Counter ---------- */
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 0;
+  font-family: 'Satoshi', sans-serif;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  user-select: none;
+}
+
+.counterWindow {
+  position: relative;
+  display: block;
+  height: 14px;
+  overflow: hidden;
+}
+
+.counterCurrent {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgb(var(--gold-rgb));
+}
+
+.counterRule {
+  width: 14px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+}
+
+.counterTotal {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+  .dock {
+    right: 22px;
+    bottom: 28px;
+  }
+
+  .btn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dock {
+    right: 14px;
+    bottom: 20px;
+  }
+
+  .counter {
+    padding: 3px 0;
+  }
+
+  .btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .chevron {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Touch screens: no hover, so no tooltips */
+@media (hover: none) {
+  .tip {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint .chevron {
+    animation: none;
+  }
+}

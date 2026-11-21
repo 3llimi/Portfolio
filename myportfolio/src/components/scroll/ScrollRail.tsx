@@ -2,11 +2,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import styles from "./ScrollRail.module.css";
-import { scrollToY } from "./smoothScroll";
+import {
+  currentScroll,
+  getSections,
+  maxScroll as pageMaxScroll,
+  scrollToSection,
+  scrollToY,
+  sectionScrollTop,
+} from "./smoothScroll";
 
-type Marker = { name: string; top: number; ratio: number };
+type Marker = { name: string; ratio: number };
 
-const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+const maxScroll = () => Math.max(1, pageMaxScroll());
 
 /** Slim custom scrollbar: spring-smoothed gold thumb, section markers, drag and click-to-jump. */
 export default function ScrollRail() {
@@ -28,12 +35,11 @@ export default function ScrollRail() {
     const total = document.documentElement.scrollHeight;
     setThumbRatio(Math.min(1, window.innerHeight / total));
     setRailHeight(railRef.current?.clientHeight ?? 0);
-    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-section]"));
     setMarkers(
-      sections.map((el) => {
-        const top = el.getBoundingClientRect().top + window.scrollY;
-        return { name: el.dataset.section ?? "", top, ratio: Math.min(1, top / maxScroll()) };
-      }),
+      getSections().map((el) => ({
+        name: el.dataset.section ?? "",
+        ratio: Math.min(1, sectionScrollTop(el) / maxScroll()),
+      })),
     );
   }, []);
 
@@ -46,11 +52,11 @@ export default function ScrollRail() {
   useEffect(() => {
     const onScroll = () => {
       progress.set(window.scrollY / maxScroll());
+      // Same section tops as the nav arrows (clamped, so the short footer still lights up at the end)
       const probe = window.scrollY + window.innerHeight * 0.45;
-      const sections = document.querySelectorAll<HTMLElement>("[data-section]");
       let index = 0;
-      sections.forEach((el, i) => {
-        if (el.getBoundingClientRect().top + window.scrollY <= probe) index = i;
+      getSections().forEach((el, i) => {
+        if (sectionScrollTop(el) <= probe) index = i;
       });
       setActive(index);
       wake();
@@ -83,14 +89,15 @@ export default function ScrollRail() {
     event.preventDefault();
     event.stopPropagation();
     event.currentTarget.setPointerCapture(event.pointerId);
-    dragRef.current = { startY: event.clientY, startScroll: window.scrollY };
+    dragRef.current = { startY: event.clientY, startScroll: currentScroll() };
   };
 
   const onThumbPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
     if (!drag) return;
     const scrollPerPixel = maxScroll() / Math.max(1, railHeight - thumbHeight);
-    scrollToY(drag.startScroll + (event.clientY - drag.startY) * scrollPerPixel, { immediate: true });
+    const top = drag.startScroll + (event.clientY - drag.startY) * scrollPerPixel;
+    scrollToY(Math.min(maxScroll(), Math.max(0, top)), { immediate: true });
     wake();
   };
 
@@ -101,8 +108,10 @@ export default function ScrollRail() {
   const onTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const rail = railRef.current;
     if (!rail) return;
+    // Land the thumb centred under the pointer (not its top edge at a proportional spot)
     const rect = rail.getBoundingClientRect();
-    const ratio = (event.clientY - rect.top) / rect.height;
+    const travel = Math.max(1, rect.height - thumbHeight);
+    const ratio = Math.min(1, Math.max(0, (event.clientY - rect.top - thumbHeight / 2) / travel));
     scrollToY(ratio * maxScroll());
   };
 
@@ -119,7 +128,8 @@ export default function ScrollRail() {
             style={{ top: `${marker.ratio * 100}%` }}
             onClick={(event) => {
               event.stopPropagation();
-              scrollToY(marker.top);
+              const section = getSections()[i];
+              if (section) scrollToSection(section);
             }}
           >
             <span className={styles.markerLabel}>{marker.name}</span>

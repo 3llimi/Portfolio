@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +10,15 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Satoshi has no Cyrillic: Manrope (a close geometric match) fills in only the Russian letters,
+// e.g. in Doctor Livesey's speech bubble — Latin text keeps Satoshi.
+const cyrillic = Manrope({
+  variable: "--font-cyrillic",
+  subsets: ["cyrillic"],
+  weight: ["500", "700"],
+  adjustFontFallback: false,
 });
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -46,7 +55,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${cyrillic.variable}`}
         style={{ overflow: "hidden" }}
       >
         {children}

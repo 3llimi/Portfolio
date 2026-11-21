@@ -26,7 +26,10 @@
 html,
 body {
   max-width: 100vw;
+  /* clip (not hidden): hidden turns <body> into its own scroll container, which makes
+     wheel/smooth scrolling inconsistent. hidden stays as a fallback for old browsers. */
   overflow-x: hidden;
+  overflow-x: clip;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;

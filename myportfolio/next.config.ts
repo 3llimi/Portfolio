@@ -7,7 +7,9 @@ const nextConfig: NextConfig = {
   basePath: isProd ? `/${repoName}` : "",
   assetPrefix: isProd ? `/${repoName}/` : "",
   output: "export",
-  distDir: "dist",
+  // Production export goes to dist/ (deployed by the workflow). `next dev` keeps using .next/, so
+  // running a build while the dev server is up can't delete files out from under it.
+  distDir: isProd ? "dist" : ".next",
   trailingSlash: true,
   images: {
     unoptimized: true,
