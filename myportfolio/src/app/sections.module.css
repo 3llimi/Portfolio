@@ -1,0 +1,430 @@
+/* Section-specific layout for About, Projects & Achievements, GitHub and the footer.
+   Visual primitives (cards, pills, titles, backdrop) live in ui.module.css. */
+
+/* Every section hosts its own ambient backdrop */
+.shell {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #000 !important;
+}
+
+/* Edge fades for the auto-scrolling lists */
+.fadeY {
+  max-height: 72vh !important;
+  mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+.fadeX {
+  mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+/* ---------- Hero entrance ----------
+   Runs in CSS from the first paint (no wait for JavaScript), so the hero never flashes
+   black or re-animates after hydration. Each element sets its delay with --d. */
+
+.heroBg {
+  animation: heroBgIn 1.8s var(--ease-out) both;
+}
+
+@keyframes heroBgIn {
+  from { opacity: 0; scale: 1.06; }
+  to { opacity: 1; scale: none; }
+}
+
+.reveal {
+  animation: heroReveal 1.1s var(--ease-out) both;
+  animation-delay: var(--d, 0s);
+}
+
+.revealImage {
+  animation-name: heroRevealImage;
+  animation-duration: 1.3s;
+}
+
+/* `translate`/`scale` compose with each element's own transform, so layout transforms are untouched */
+@keyframes heroReveal {
+  from { opacity: 0; translate: 0 26px; filter: blur(10px); }
+  to { opacity: 1; translate: none; filter: none; }
+}
+
+@keyframes heroRevealImage {
+  from { opacity: 0; scale: 0.94; filter: blur(14px); }
+  to { opacity: 1; scale: none; filter: none; }
+}
+
+/* Both hero layouts are in the markup; CSS shows the right one */
+.heroDesktop {
+  display: contents;
+}
+
+.heroMobile {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .heroDesktop {
+    display: none;
+  }
+
+  .heroMobile {
+    display: contents;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroBg,
+  .reveal {
+    animation: none;
+  }
+}
+
+/* ---------- Projects & Achievements ---------- */
+
+.paMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.achCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 1.6vw, 28px) clamp(22px, 1.8vw, 32px);
+}
+
+.achTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.achTitle {
+  margin: 0;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 500;
+  font-size: clamp(20px, 1.8vw, 34px);
+  line-height: 1.2;
+  color: #fff;
+}
+
+.achTitleGold {
+  font-style: italic;
+  color: rgb(var(--gold-rgb));
+}
+
+.achSubtitle {
+  margin: 0;
+  font-size: clamp(12px, 0.8vw, 14px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- GitHub ---------- */
+
+.ghHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(28px, 3vw, 48px);
+}
+
+.ghTitle {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-weight: inherit;
+}
+
+.ghIntro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  max-width: 440px;
+  text-align: right;
+}
+
+.ghSubtitle {
+  margin: 0;
+  font-size: clamp(14px, 1.1vw, 18px);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.ghCard {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 min(430px, 86vw);
+  width: min(430px, 86vw);
+}
+
+.ghCover {
+  margin: 10px 10px 0;
+  aspect-ratio: 16 / 10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+}
+
+.ghCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.ghCard:hover .ghCover img {
+  transform: scale(1.04);
+}
+
+.ghContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding: 18px 20px 20px;
+}
+
+.ghCardTitle {
+  margin: 0;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 500;
+  font-size: clamp(18px, 1.4vw, 24px);
+  line-height: 1.2;
+  color: #fff;
+  overflow-wrap: anywhere;
+}
+
+.ghDesc {
+  margin: 0;
+  font-size: clamp(13px, 0.92vw, 15px);
+  line-height: 1.55;
+  color: var(--muted);
+  min-height: 4.6em;
+}
+
+.ghActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.ghButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  display: block !important;
+  margin-top: 0 !important;
+  padding: clamp(72px, 8vw, 140px) 0 28px !important;
+}
+
+.footerInner {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4.17vw, 80px);
+  box-sizing: border-box;
+}
+
+.footerTop {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(32px, 4vw, 80px);
+  flex-wrap: wrap;
+  padding-bottom: clamp(40px, 4vw, 64px);
+}
+
+.footerTitle {
+  font-size: clamp(48px, 6.25vw, 120px);
+}
+
+.footerLead {
+  margin: 16px 0 0;
+  max-width: 520px;
+  font-size: clamp(15px, 1.25vw, 22px);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.socialCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 220px;
+  padding: 14px 18px 14px 14px;
+  color: #fff;
+}
+
+.socialCard:hover {
+  transform: translateY(-3px);
+}
+
+.socialIcon {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #f5f6f7;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.socialCard:hover .socialIcon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.socialIcon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.socialText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.socialName {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.socialHandle {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 24px;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent) 1;
+}
+
+.copyright {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Hints that only make sense with a mouse */
+@media (hover: none) {
+  .hoverOnly {
+    display: none !important;
+  }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .ghIntro {
+    align-items: flex-start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .paMeta {
+    align-items: center;
+    margin: 4px 0 20px;
+  }
+
+  .achCard {
+    padding: 18px;
+  }
+
+  .ghHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .ghTitle {
+    align-items: center;
+  }
+
+  .ghTitle > span {
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .ghIntro {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footerTop {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .footerLead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footerLinks {
+    flex-direction: column;
+  }
+
+  .socialCard {
+    min-width: 0;
+    text-align: left;
+  }
+
+  /* Same mobile title treatment as the Skills and GitHub headings */
+  .mobileTitle {
+    font-size: 2.1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.04em;
+    line-height: 1.1 !important;
+  }
+
+  .ghTitle > span {
+    line-height: 1.1;
+  }
+
+  .footerBottom {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+}

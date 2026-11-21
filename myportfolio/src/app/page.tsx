@@ -9,12 +9,65 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import SkillsSection, { skillsSectionClassName } from "./SkillsSection";
+import { SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "./ui";
+import sx from "./sections.module.css";
+import { SmoothScroll, getLenis, scrollToY } from "./smoothScroll";
+import ScrollRail from "./ScrollRail";
+import LiveseyGuide from "./LiveseyGuide";
 
 // Helper function to get the correct image path for GitHub Pages
 const getImagePath = (path: string) => {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
   return `${basePath}${path}`;
 };
+
+const SOCIAL_LINKS = [
+  { href: "https://t.me/Allimi3", platform: "telegram", icon: "/icons/telegram.svg", alt: "Telegram", handle: "@Allimi3" },
+  { href: "https://github.com/3llimi", platform: "github", icon: "/icons/github.svg", alt: "GitHub", handle: "@3llimi" },
+  { href: "https://www.linkedin.com/in/baha-alimi/", platform: "linkedin", icon: "/icons/linkedin.svg", alt: "LinkedIn", handle: "in/baha-alimi" },
+];
+
+
+const pad2 = (n: number) => n.toString().padStart(2, "0");
+
+/** One consistent scroll-reveal for every section: soft rise + unblur, ease-out-expo. */
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const reveal = (delay = 0) => ({
+  initial: { opacity: 0, y: 28, filter: "blur(6px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, amount: 0.25 },
+  transition: { duration: 0.9, ease: EASE_OUT, delay },
+});
+
+/** Inline style that sets the hero entrance delay used by the CSS `.reveal` animation. */
+const delay = (seconds: number, extra: React.CSSProperties = {}) =>
+  ({ ...extra, ["--d" as string]: `${seconds}s` }) as React.CSSProperties;
+
+function HeroSocialLinks() {
+  return (
+    <>
+      {SOCIAL_LINKS.map((social) => (
+        <motion.a
+          key={social.platform}
+          href={social.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.socialLink}
+          data-platform={social.platform}
+          aria-label={social.alt}
+          whileHover={{ y: -3, scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          transition={{ type: "spring", stiffness: 400, damping: 18 }}
+        >
+          <div className={styles.socialIcon}>
+            <Image src={getImagePath(social.icon)} alt={social.alt} fill />
+          </div>
+        </motion.a>
+      ))}
+    </>
+  );
+}
+const repoPath = (url: string) => url.replace("https://github.com/", "");
 
 type GitHubRepo = {
   id: number;
@@ -434,55 +487,55 @@ export default function Home() {
 
   const paData = [
     {
-      title: "*IOT4TUNISIA BOOTCAMP",
+      title: "IOT4TUNISIA BOOTCAMP",
       rightLabel: "MentorNations 20-21",
       subtitle: "DESIGNER & WEB DEVELOPER",
       scholarship: false,
     },
     {
-      title: "*HackUrWaste HACKATHON",
+      title: "HackUrWaste HACKATHON",
       rightLabel: "MentorNations 22",
       subtitle: "MENTOR",
       scholarship: false,
     },
     {
-      title: "*Tunisian National Olympiad in Informatics",
+      title: "Tunisian National Olympiad in Informatics",
       rightLabel: "ITA 22",
       subtitle: "Contestant",
       scholarship: false,
     },
     {
-      title: "*Upside Education HACKATHON",
+      title: "Upside Education HACKATHON",
       rightLabel: "GOMYCODE 22",
       subtitle: "DESIGNER & WEB DEVELOPER",
       scholarship: false,
     },
     {
-      title: "*Winner of The Full Russian Government Scholarship*",
+      title: "Winner of The Full Russian Government Scholarship",
       rightLabel: "23-27",
       subtitle: "CURRENTLY A COMPUTER SCIENCE STUDENT IN INNOPOLIS UNIVERSITY",
       scholarship: true,
     },
     {
-      title: "*Adanced Engineering School",
+      title: "Advanced Engineering School",
       rightLabel: "June 24 - Dec 24",
       subtitle: "Junior GUI Developer",
       scholarship: false,
     },
     {
-      title: "*Kazan TechArena HACKATHON",
+      title: "Kazan TechArena HACKATHON",
       rightLabel: "Huawei 25",
       subtitle: "Contestant",
       scholarship: false,
     },
     {
-      title: "*InnoSync",
+      title: "InnoSync",
       rightLabel: "Innopolis University 25",
       subtitle: "Team Lead - Frontend Dev - Designer",
       scholarship: false,
     },
     {
-      title: "*Middle East Technical University",
+      title: "Middle East Technical University",
       rightLabel: "Fall 26'",
       subtitle: "Exchange Student - Computer Engineering Faculty",
       scholarship: false,
@@ -497,7 +550,6 @@ export default function Home() {
   const [showCursor, setShowCursor] = useState(true);
 
   // Helper to detect mobile
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -1012,6 +1064,11 @@ export default function Home() {
     const boundedTargetTop = Math.min(maxScrollTop, Math.max(0, Math.round(targetTop)));
     const distance = boundedTargetTop - startTop;
 
+    if (getLenis()) {
+      scrollToY(boundedTargetTop, { duration: Math.min(1.4, Math.max(0.8, Math.abs(distance) / 1400)) });
+      return;
+    }
+
     if (Math.abs(distance) < 2) {
       window.scrollTo({ top: boundedTargetTop, behavior: "auto" });
       return;
@@ -1306,16 +1363,10 @@ export default function Home() {
         />
       )}
       <div className={`${styles.portfolio} ${showCursor ? styles.cursorHidden : ""}`}>
-        {/* Hero Section - Exact Figma Match */}
-        <motion.section
-          className={styles.hero}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
+        {/* Hero Section */}
+        <section className={styles.hero} data-section="Home">
           {/* Background Image */}
-          <div className={styles.heroBackground}>
+          <div className={`${styles.heroBackground} ${sx.heroBg}`}>
             <Image
               src={getImagePath("/images/hero-bg.jpg")}
               alt="Hero background"
@@ -1325,269 +1376,107 @@ export default function Home() {
             />
             <div className={styles.heroOverlay}></div>
           </div>
-          {/* Content Container */}
+          {/* Content: both layouts are rendered and CSS shows one, so server and client markup match */}
           <div className={styles.heroContent}>
-            {/* Mobile: Picture first, then writing, then social links */}
-            {isMobile ? (
-              <>
-                {/* Profile Image */}
-                <motion.div
-                  className={styles.heroImageContainer}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.5 }}
-                  style={{ margin: '0.7rem auto 0.3rem auto' }}
-                >
-                  <Image
-                    src={getImagePath("/images/profile-photo.png")}
-                    alt="Ahmed Baha Eddine Alimi"
-                    width={110}
-                    height={110}
-                    className={styles.profileImage}
-                    priority
-                  />
-                </motion.div>
-                {/* Name, Title, Subtitle */}
-                <motion.h1
-                  className={styles.heroName}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.2 }}
-                  style={{ marginBottom: '0.08rem', marginTop: '0.3rem', gap: '0.05rem' }}
-                >
-                  <span className={styles.lastName}>
-                    <span className={styles.rotatingStar}>*</span>Alimi
-                  </span>
-                  <span className={styles.firstName}>Ahmed Baha Eddine</span>
-                </motion.h1>
-                <motion.p
-                  className={styles.heroTitle}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.3 }}
-                  style={{ marginBottom: '0.05rem' }}
-                >
-                  Comp Sci Student
-                </motion.p>
-                <motion.p
-                  className={styles.heroSubtitle}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.4 }}
-                  style={{ marginBottom: '0.05rem' }}
-                >
-                  At Innopolis University
-                </motion.p>
-                {/* Social Links Container (Mobile) */}
-                <motion.div
-                  className={styles.socialLinksContainer}
-                  initial={{ opacity: 0, y: 30, scale: 0.8 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{
-                    duration: 0.8,
-                    delay: 0.6,
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 10
-                  }}
-                  style={{ position: 'static', margin: '0.4rem auto 0 auto', width: '100%', maxWidth: 320, background: 'rgba(30,30,30,0.97)' }}
-                >
-                  <div className={styles.socialLinks} style={{ justifyContent: 'center', width: '100%', gap: 14 }}>
-                    {[
-                      { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
-                      { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
-                      { href: "https://www.linkedin.com/in/ahmed-baha-eddine-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
-                    ].map((social, index) => (
-                      <motion.a
-                        key={social.platform}
-                        href={social.href}
-                        className={styles.socialLink}
-                        data-platform={social.platform}
-                        aria-label={social.alt}
-                        initial={{ opacity: 0, scale: 0, rotate: -180 }}
-                        whileInView={{
-                          opacity: 1,
-                          scale: 1,
-                          rotate: 0,
-                          transition: {
-                            duration: 0.6,
-                            delay: 0.8 + index * 0.1,
-                            type: "spring",
-                            stiffness: 200,
-                            damping: 15
-                          }
-                        }}
-                        viewport={{ once: true, amount: 0.7 }}
-                        whileHover={{
-                          scale: 1.2,
-                          rotate: 10,
-                          transition: { type: "tween", duration: 0.08, ease: "linear" }
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <div className={styles.socialIcon}>
-                          <Image
-                            src={social.icon}
-                            alt={social.alt}
-                            fill
-                          />
-                        </div>
-                      </motion.a>
-                    ))}
-                  </div>
-                </motion.div>
-              </>
-            ) : (
-              <>
-                {/* Name Text - Exact Positioning */}
-                <motion.h1
-                  className={styles.heroName}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.2 }}
-                >
-                  <span className={styles.lastName}>
-                    <span className={styles.rotatingStar}>*</span>Alimi
-                  </span>
-                  <span className={styles.firstName}>Ahmed Baha Eddine</span>
-                </motion.h1>
-                {/* Subtitle Text */}
-                <motion.p
-                  className={styles.heroTitle}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.3 }}
-                >
-                  Comp Sci Student
-                </motion.p>
-                <motion.p
-                  className={styles.heroSubtitle}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.4 }}
-                >
-                  At Innopolis University
-                </motion.p>
-                {/* Profile Image */}
-                <motion.div
-                  className={styles.heroImageContainer}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.5 }}
-                >
-                  <Image
-                    src={getImagePath("/images/profile-photo.png")}
-                    alt="Ahmed Baha Eddine Alimi"
-                    width={500}
-                    height={500}
-                    className={styles.profileImage}
-                    priority
-                  />
-                </motion.div>
-                {/* Social Links Container */}
-                <motion.div
-                  className={styles.socialLinksContainer}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.6 }}
-                >
-                  <div className={styles.socialLinks}>
-                    {[
-                      { href: "https://t.me/Allimi3", platform: "telegram", icon: getImagePath("/icons/telegram.svg"), alt: "Telegram" },
-                      { href: "https://github.com/3llimi", platform: "github", icon: getImagePath("/icons/github.svg"), alt: "GitHub" },
-                      { href: "https://www.linkedin.com/in/baha-alimi/", platform: "linkedin", icon: getImagePath("/icons/linkedin.svg"), alt: "LinkedIn" },
-                    ].map((social, index) => (
-                      <motion.a
-                        key={social.platform}
-                        href={social.href}
-                        className={styles.socialLink}
-                        data-platform={social.platform}
-                        aria-label={social.alt}
-                        initial={{ opacity: 0, scale: 0, rotate: -180 }}
-                        whileInView={{
-                          opacity: 1,
-                          scale: 1,
-                          rotate: 0,
-                          transition: {
-                            duration: 0.6,
-                            delay: 0.8 + index * 0.1,
-                            type: "spring",
-                            stiffness: 200,
-                            damping: 15
-                          }
-                        }}
-                        viewport={{ once: true, amount: 0.7 }}
-                        whileHover={{
-                          scale: 1.2,
-                          rotate: 10,
-                          transition: { type: "tween", duration: 0.08, ease: "linear" }
-                        }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <div className={styles.socialIcon}>
-                          <Image
-                            src={social.icon}
-                            alt={social.alt}
-                            fill
-                          />
-                        </div>
-                      </motion.a>
-                    ))}
-                  </div>
-                </motion.div>
-                {/* Caption (desktop only) */}
-                <motion.div
-                  className={styles.heroCaption}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.7, delay: 0.7 }}
-                >
-                  Shot in Innopolis University&apos;s Robotics Lab: By Me
-                </motion.div>
-              </>
-            )}
+            {/* Mobile: picture first, then writing, then social links */}
+            <div className={sx.heroMobile}>
+              <div
+                className={`${styles.heroImageContainer} ${sx.reveal} ${sx.revealImage}`}
+                data-perch="Home"
+                data-perch-x="0.5"
+                style={delay(0.15, { margin: "0.7rem auto 0.3rem auto" })}
+              >
+                <Image
+                  src={getImagePath("/images/profile-photo.png")}
+                  alt="Ahmed Baha Eddine Alimi"
+                  width={110}
+                  height={110}
+                  className={styles.profileImage}
+                  priority
+                />
+              </div>
+              <h1
+                className={styles.heroName}
+                style={{ marginBottom: "0.08rem", marginTop: "0.3rem", gap: "0.05rem" }}
+              >
+                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.25)} data-perch="Home">
+                  <span className={styles.rotatingStar}>*</span>
+                  <WaveText text="Alimi" />
+                </span>
+                <span className={`${styles.firstName} ${sx.reveal}`} style={delay(0.33)}>
+                  <WaveText text="Ahmed Baha Eddine" />
+                </span>
+              </h1>
+              <p className={`${styles.heroTitle} ${sx.reveal}`} style={delay(0.42, { marginBottom: "0.05rem" })}>
+                <span className={ui.underline}>Comp Sci Student</span>
+              </p>
+              <p className={`${styles.heroSubtitle} ${sx.reveal}`} style={delay(0.48, { marginBottom: "0.05rem" })}>
+                <span className={ui.underline}>At Innopolis University</span>
+              </p>
+              <div
+                className={`${styles.socialLinksContainer} ${sx.reveal}`}
+                data-perch="Home"
+                style={delay(0.58, { position: "static", margin: "0.4rem auto 0 auto", width: "100%", maxWidth: 320 })}
+              >
+                <div className={styles.socialLinks} style={{ justifyContent: "center", width: "100%", gap: 14 }}>
+                  <HeroSocialLinks />
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop */}
+            <div className={sx.heroDesktop}>
+              <h1 className={styles.heroName}>
+                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.2)} data-perch="Home">
+                  <span className={styles.rotatingStar}>*</span>
+                  <WaveText text="Alimi" />
+                </span>
+                <span className={`${styles.firstName} ${sx.reveal}`} style={delay(0.3)}>
+                  <WaveText text="Ahmed Baha Eddine" />
+                </span>
+              </h1>
+              <p className={`${styles.heroTitle} ${sx.reveal}`} style={delay(0.45)}>
+                <span className={ui.underline}>Comp Sci Student</span>
+              </p>
+              <p className={`${styles.heroSubtitle} ${sx.reveal}`} style={delay(0.52)}>
+                <span className={ui.underline}>At Innopolis University</span>
+              </p>
+              <div className={`${styles.heroImageContainer} ${sx.reveal} ${sx.revealImage}`} style={delay(0.35)} data-perch="Home" data-perch-x="0.5">
+                <Image
+                  src={getImagePath("/images/profile-photo.png")}
+                  alt="Ahmed Baha Eddine Alimi"
+                  width={500}
+                  height={500}
+                  className={styles.profileImage}
+                  priority
+                />
+              </div>
+              <div className={`${styles.socialLinksContainer} ${sx.reveal}`} style={delay(0.65)} data-perch="Home">
+                <div className={styles.socialLinks}>
+                  <HeroSocialLinks />
+                </div>
+              </div>
+              <div className={`${styles.heroCaption} ${sx.reveal}`} style={delay(0.85)}>
+                Shot in Innopolis University&apos;s Robotics Lab: By Me
+              </div>
+            </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* About Me Section */}
         <motion.section
-          className={styles.aboutSection}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className={`${styles.aboutSection} ${sx.shell}`}
+          data-section="About"
         >
+          <SectionBackdrop blue="bottom-left" gold="top-right" />
           <div className={styles.aboutContainer}>
             {/* Left Side - Title */}
-            <motion.div
-              className={styles.aboutTitle}
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <h2>ABOUT ME</h2>
+            <motion.div className={styles.aboutTitle} {...reveal(0.05)}>
+              <h2 className={sx.mobileTitle} data-perch="About"><WaveText text="ABOUT ME" /></h2>
             </motion.div>
 
             {/* Right Side - Content */}
-            <motion.div
-              className={styles.aboutContent}
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
+            <motion.div className={styles.aboutContent} {...reveal(0.15)}>
               {/* Top Quote Mark */}
               <div className={styles.quoteTop}>&ldquo;</div>
 
@@ -1597,7 +1486,7 @@ export default function Home() {
                   I&apos;m <strong>Ahmed Baha Eddine Alimi</strong>, a <em>software engineer</em>.
                 </h3>
 
-                <h4 className={styles.aboutLocation}>
+                <h4 className={styles.aboutLocation} data-perch="About">
                   Computer Science student at Innopolis University, based in{" "}
                   <span className={styles.russiaText}>
                     <span className={styles.russiaRu}>Ru</span>
@@ -1632,37 +1521,30 @@ export default function Home() {
 
         {/* Projects & Achievements Section - Screenshot Match */}
         <motion.section
-          className={styles.projectsAchievementsSection}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className={`${styles.projectsAchievementsSection} ${sx.shell}`}
+          data-section="Projects"
         >
+          <SectionBackdrop blue="top-left" gold="bottom-right" />
           <div className={styles.paColumns2}>
             {/* Left: Titles */}
-            <motion.div
-              className={styles.paLeft2}
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <div className={styles.paProjects}>PROJECTS</div>
+            <motion.div className={styles.paLeft2} {...reveal(0.05)}>
+              <div className={`${styles.paProjects} ${sx.mobileTitle}`} data-perch="Projects"><WaveText text="PROJECTS" /></div>
               <div className={styles.paAmp}>&</div>
-              <div className={styles.paAchievements}>ACHIEVEMENTS</div>
+              <div className={`${styles.paAchievements} ${sx.mobileTitle}`} data-perch="Projects"><WaveText text="ACHIEVEMENTS" /></div>
+              <div className={sx.paMeta}>
+                <p className={`${ui.hint} ${sx.hoverOnly}`}>
+                  <span className={ui.hintDot} aria-hidden="true" />
+                  Hover to pause, scroll to browse
+                </p>
+              </div>
             </motion.div>
             {/* Center: Project Blocks Vertical Scrollable */}
-            <motion.div
-              className={styles.paCenter2}
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
+            <motion.div className={styles.paCenter2} {...reveal(0.15)}>
               {hasMounted && (
                 <div
-                  className={styles.verticalCarousel}
+                  className={`${styles.verticalCarousel} ${sx.fadeY}`}
                   ref={projectsCarouselViewportRef}
+                  data-lenis-prevent
                   tabIndex={0}
                   onMouseEnter={() => setIsCarouselHovered(true)}
                   onMouseLeave={() => setIsCarouselHovered(false)}
@@ -1676,20 +1558,22 @@ export default function Home() {
                   <div ref={projectsCarouselTrackRef} className={styles.verticalCarouselTrack}>
                     {marqueePaData.map((item, idx) => (
                       <motion.div
-                        className={styles.paBlock}
+                        className={`${ui.card} ${sx.achCard} ${item.scholarship ? ui.cardHighlighted : ""}`}
                         key={`${item.title}-${item.rightLabel}-${idx}`}
-                        initial={{ opacity: 0, y: 30 }}
+                        onPointerMove={trackSpotlight}
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.7 }}
-                        transition={{ duration: 0.6, delay: (idx % paData.length) * 0.08 }}
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ duration: 0.7, ease: EASE_OUT }}
                       >
-                        <div className={styles.paTitleRow}>
-                          <div className={styles.paMainTitle + (item.scholarship ? ' ' + styles.paScholarshipTitle : '')}>
-                            {item.title}
-                          </div>
-                          <div className={styles.paRightLabel}>{item.rightLabel}</div>
+                        <div className={sx.achTop}>
+                          <span className={ui.cardIndex}>{pad2((idx % paData.length) + 1)}</span>
+                          <span className={ui.badge}>{item.rightLabel}</span>
                         </div>
-                        <div className={styles.paSubtitle}>{item.subtitle}</div>
+                        <h3 className={`${sx.achTitle} ${item.scholarship ? sx.achTitleGold : ""}`}>
+                          <Starred>{item.title}</Starred>
+                        </h3>
+                        <p className={sx.achSubtitle}>{item.subtitle}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -1701,36 +1585,32 @@ export default function Home() {
 
         {/* GitHub Projects Section */}
         <motion.section
-          className={styles.githubProjectsSection}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className={`${styles.githubProjectsSection} ${sx.shell}`}
+          data-section="GitHub"
         >
+          <SectionBackdrop blue="top-right" gold="bottom-left" />
           <div className={styles.githubProjectsInner}>
-            <motion.h2
-              className={styles.githubProjectsTitle}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.6 }}
-            >
-              GITHUB PROJECTS
-            </motion.h2>
+            <div className={sx.ghHeader}>
+              <motion.h2 className={sx.ghTitle} data-perch="GitHub" {...reveal(0.05)}>
+                <span className={ui.titleMain}><WaveText text="GITHUB" /></span>
+                <span className={ui.titleSub}><WaveText text="PROJECTS" /></span>
+              </motion.h2>
 
-            <motion.p
-              className={styles.githubProjectsSubtitle}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Some selected repositories that I am proud of doing with a visual preview and quick context.
-            </motion.p>
+              <motion.div className={sx.ghIntro} data-perch="GitHub" {...reveal(0.15)}>
+                <p className={sx.ghSubtitle}>
+                  A few repositories I&apos;m proud of, each with a visual preview and quick context.
+                </p>
+                <p className={`${ui.hint} ${sx.hoverOnly}`}>
+                  <span className={ui.hintDot} aria-hidden="true" />
+                  Hover to pause, read a README without leaving
+                </p>
+              </motion.div>
+            </div>
 
             <div
               ref={githubCarouselViewportRef}
-              className={styles.githubCarouselViewport}
+              className={`${styles.githubCarouselViewport} ${sx.fadeX}`}
+              data-lenis-prevent
               tabIndex={0}
               onMouseEnter={() => setIsGitHubCarouselPaused(true)}
               onMouseLeave={() => setIsGitHubCarouselPaused(false)}
@@ -1745,51 +1625,43 @@ export default function Home() {
                 {marqueeGithubProjects.map((project, index) => (
                   <motion.article
                     key={`${project.id}-${index}`}
-                    className={styles.githubProjectCard}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className={`${ui.card} ${sx.ghCard}`}
+                    onPointerMove={trackSpotlight}
+                    initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.9, ease: EASE_OUT, delay: Math.min(index, 3) * 0.08 }}
                   >
-                    <div className={styles.githubProjectCoverWrap}>
+                    <div className={sx.ghCover}>
                       <Image
                         src={getImagePath(project.cover)}
                         alt={`${project.title} cover`}
                         width={900}
                         height={520}
-                        className={styles.githubProjectCover}
                       />
                     </div>
 
-                    <div className={styles.githubProjectContent}>
-                      <h3 className={styles.githubProjectTitle}>{project.title}</h3>
-                      <p className={styles.githubProjectDescription}>{project.description}</p>
-                      <div className={styles.githubProjectActions}>
-                        <div className={styles.githubProjectPrimaryActions}>
+                    <div className={sx.ghContent}>
+                      <h3 className={sx.ghCardTitle}>{project.title}</h3>
+                      <p className={sx.ghDesc}>{project.description}</p>
+                      <div className={sx.ghActions}>
+                        <div className={sx.ghButtons}>
                           {project.contributionRole && (
                             <button
                               type="button"
-                              className={styles.githubProjectReadmeButton}
+                              className={`${ui.btn} ${ui.btnPrimary}`}
                               onClick={() => handleContributionClick(project)}
                             >
-                              View Contribution
+                              My Contribution
                             </button>
                           )}
-                          <button
-                            type="button"
-                            className={styles.githubProjectReadmeButton}
-                            onClick={() => handleReadmeClick(project)}
-                          >
+                          <button type="button" className={ui.btn} onClick={() => handleReadmeClick(project)}>
                             Read README
                           </button>
                         </div>
-                        <a
-                          href={project.repoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.githubProjectLink}
-                        >
-                          View Repository
+                        <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className={ui.linkMono}>
+                          {repoPath(project.repoUrl)}
+                          <span className={ui.arrow} aria-hidden="true">↗</span>
                         </a>
                       </div>
                     </div>
@@ -1817,30 +1689,24 @@ export default function Home() {
               <motion.div
                 className={styles.githubReadmePanel}
                 onClick={(event) => event.stopPropagation()}
-                initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.98 }}
-                transition={{ duration: 0.24, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 24, scale: 0.92, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: 16, scale: 0.95, filter: "blur(6px)" }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 <div className={styles.githubReadmeHeader}>
-                  <h3 className={styles.githubReadmeTitle}>{readmeTitle} README</h3>
+                  <h3 className={styles.githubReadmeTitle}>
+                    <span className={styles.githubReadmeEyebrow}>README</span>
+                    {readmeTitle}
+                  </h3>
                   <div className={styles.githubReadmeHeaderActions}>
                     {readmeRepoUrl && (
-                      <a
-                        href={readmeRepoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.githubReadmeRepoLink}
-                      >
-                        Open Repo
+                      <a href={readmeRepoUrl} target="_blank" rel="noopener noreferrer" className={ui.btn}>
+                        Open Repo <span className={ui.arrow} aria-hidden="true">↗</span>
                       </a>
                     )}
-                    <button
-                      type="button"
-                      className={styles.githubReadmeClose}
-                      onClick={closeReadmeOverlay}
-                    >
-                      Close
+                    <button type="button" className={ui.iconButton} onClick={closeReadmeOverlay} aria-label="Close">
+                      <span className={ui.closeIcon} aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -1881,22 +1747,19 @@ export default function Home() {
               <motion.div
                 className={styles.githubReadmePanel}
                 onClick={(event) => event.stopPropagation()}
-                initial={{ opacity: 0, y: 24, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.98 }}
-                transition={{ duration: 0.24, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 24, scale: 0.92, filter: "blur(10px)" }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: 16, scale: 0.95, filter: "blur(6px)" }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 <div className={styles.githubReadmeHeader}>
                   <h3 className={styles.githubReadmeTitle}>
-                    {activeContribution.title} Contribution &amp; Role
+                    <span className={styles.githubReadmeEyebrow}>Contribution &amp; role</span>
+                    {activeContribution.title}
                   </h3>
                   <div className={styles.githubReadmeHeaderActions}>
-                    <button
-                      type="button"
-                      className={styles.githubReadmeClose}
-                      onClick={closeContributionOverlay}
-                    >
-                      Close
+                    <button type="button" className={ui.iconButton} onClick={closeContributionOverlay} aria-label="Close">
+                      <span className={ui.closeIcon} aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -1913,39 +1776,64 @@ export default function Home() {
 
         {/* Footer */}
         <motion.footer
-          className={styles.footer}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
+          className={`${styles.footer} ${sx.shell} ${sx.footer}`}
+          data-section="Contact"
         >
-          <div className={styles.footerContent}>
-            <motion.h3
-              className={styles.contactTitle}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.4,
-                type: "spring",
-                stiffness: 200,
-                damping: 15
-              }}
-            >
-              GET IN TOUCH
-            </motion.h3>
-            <motion.p
-              className={styles.copyright}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.7 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              © 2024 Designed and Developed by Ahmed Baha Eddine Alimi
-            </motion.p>
+          <SectionBackdrop blue="none" gold="bottom-right" />
+          <div className={sx.footerInner}>
+            <div className={sx.footerTop}>
+              <motion.div {...reveal(0.05)}>
+                <h2 className={`${ui.titleMain} ${sx.footerTitle}`} data-perch="Contact"><WaveText text="GET IN TOUCH" /></h2>
+                <p className={sx.footerLead}>Have a project or an opportunity in mind? Let&apos;s talk.</p>
+              </motion.div>
+
+              <div className={sx.footerLinks} data-perch="Contact">
+                {SOCIAL_LINKS.map((social, index) => (
+                  <motion.a
+                    key={social.platform}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${ui.card} ${sx.socialCard}`}
+                    onPointerMove={trackSpotlight}
+                    {...reveal(0.15 + index * 0.08)}
+                  >
+                    <span className={sx.socialIcon}>
+                      <Image src={getImagePath(social.icon)} alt="" width={24} height={24} />
+                    </span>
+                    <span className={sx.socialText}>
+                      <span className={sx.socialName}>{social.alt}</span>
+                      <span className={sx.socialHandle}>{social.handle}</span>
+                    </span>
+                    <span className={ui.arrow} aria-hidden="true">↗</span>
+                  </motion.a>
+                ))}
+              </div>
+            </div>
+
+            <div className={sx.footerBottom}>
+              <p className={sx.copyright}>
+                © 2024–{new Date().getFullYear()} Designed &amp; developed by Ahmed Baha Eddine Alimi
+              </p>
+              <button
+                type="button"
+                className={ui.btn}
+                onClick={() => scrollToY(0, { duration: 1.6 })}
+              >
+                Back to top <span aria-hidden="true">↑</span>
+              </button>
+            </div>
           </div>
         </motion.footer>
+
+        {/* Smooth scrolling, custom scrollbar and our tour guide */}
+        {hasMounted && (
+          <>
+            <SmoothScroll />
+            <ScrollRail />
+            <LiveseyGuide />
+          </>
+        )}
 
         {/* Navigation Bubbles */}
         {hasMounted && (
@@ -1954,9 +1842,9 @@ export default function Home() {
               <motion.div
                 className={`${styles.navigationBubble} ${styles.navigationBubbleDown}`}
                 onClick={scrollToNextSection}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.5, type: "spring", stiffness: 200 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.1, ease: EASE_OUT }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -1968,9 +1856,9 @@ export default function Home() {
               <motion.div
                 className={`${styles.navigationBubble} ${styles.navigationBubbleUp}`}
                 onClick={scrollToPreviousSection}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.7, type: "spring", stiffness: 200 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: EASE_OUT }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >

@@ -7,6 +7,14 @@
   --gray: #1e1e1e;
   --light-gray: #e7e7e7;
   --dark-gray: #505050;
+
+  /* Shared design tokens used by every section */
+  --gold-rgb: 255, 215, 0;
+  --blue-rgb: 60, 130, 255;
+  --line: #222;
+  --line-hover: #444;
+  --muted: rgba(255, 255, 255, 0.62);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -19,7 +27,6 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
@@ -163,4 +170,32 @@ body, * {
   -webkit-backdrop-filter: invert(1);
   mix-blend-mode: difference;
   transition: background 0.2s, border 0.2s;
+}
+
+/* Native scrollbar is replaced by the custom rail (ScrollRail) */
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Lenis smooth scrolling */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }

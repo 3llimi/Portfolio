@@ -1,12 +1,15 @@
 /* Skills & Technologies — dark, card-based section that matches the rest of the site */
 
-.section {
-  --skills-blue: 60, 130, 255;
-  --skills-gold: 255, 215, 0;
-  --skills-border: #222;
-  --skills-border-hover: #444;
-  --skills-muted: rgba(255, 255, 255, 0.62);
+.section,
+.overlay {
+  --skills-blue: var(--blue-rgb);
+  --skills-gold: var(--gold-rgb);
+  --skills-border: var(--line);
+  --skills-border-hover: var(--line-hover);
+  --skills-muted: var(--muted);
+}
 
+.section {
   position: relative;
   width: 100vw;
   min-height: 100vh;
@@ -17,56 +20,6 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-}
-
-/* ---------- Ambient background ---------- */
-
-.backdrop {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.gridPattern {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 75%);
-}
-
-.orb {
-  position: absolute;
-  width: clamp(320px, 38vw, 640px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.22;
-  animation: orbFloat 18s ease-in-out infinite alternate;
-}
-
-.orbBlue {
-  top: -12%;
-  left: -8%;
-  background: rgb(var(--skills-blue));
-}
-
-.orbGold {
-  bottom: -18%;
-  right: -10%;
-  background: rgb(var(--skills-gold));
-  opacity: 0.1;
-  animation-duration: 22s;
-  animation-direction: alternate-reverse;
-}
-
-@keyframes orbFloat {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  100% { transform: translate3d(6vw, 4vh, 0) scale(1.15); }
 }
 
 /* ---------- Layout ---------- */
@@ -130,9 +83,6 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.titleMain:hover {
-  transform: scale(1.06);
-}
 
 .titleSub {
   font-family: 'Satoshi', sans-serif;
@@ -144,9 +94,6 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.titleSub:hover {
-  transform: scale(1.05);
-}
 
 .stats {
   display: flex;
@@ -391,10 +338,13 @@
 }
 
 .chip {
+  appearance: none;
+  font: inherit;
+  color: inherit;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 14px 6px 6px;
+  padding: 6px 8px 6px 6px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.04);
@@ -403,10 +353,43 @@
   transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.chip:hover {
+.chip:hover,
+.chipSelected {
   border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 22px rgba(var(--skills-blue), 0.25);
+}
+
+.chip:focus-visible {
+  outline: 2px solid rgb(var(--skills-gold));
+  outline-offset: 3px;
+}
+
+/* Small "number of projects" badge — hints that the chip opens something */
+.chipCount {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.chip:hover .chipCount,
+.chipSelected .chipCount {
+  background: rgb(var(--skills-gold));
+  color: #0b0b0b;
+}
+
+/* Keep the right padding balanced when there is no badge */
+.chipLabel:last-child {
+  margin-right: 6px;
 }
 
 /* Light tile so dark logos (Rust, Terraform, Grafana…) stay legible */
@@ -513,6 +496,413 @@
   width: 18px;
   height: 18px;
   object-fit: contain;
+}
+
+/* ---------- Skill detail dialog ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  font-family: 'Satoshi', sans-serif;
+  color: #fff;
+}
+
+.overlaySheet {
+  align-items: flex-end;
+  padding: 0;
+}
+
+.dialog {
+  position: relative;
+  width: min(640px, 100%);
+  max-height: min(86vh, 860px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, #111318 0%, #0a0a0c 100%);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 120px rgba(var(--skills-blue), 0.12);
+  overflow: hidden;
+  will-change: transform;
+}
+
+.dialogSheet {
+  width: 100%;
+  max-height: 88vh;
+  border-radius: 22px 22px 0 0;
+  border-bottom: none;
+}
+
+.dialogSheet .sheetHandle,
+.dialogSheet .dialogHeader {
+  touch-action: none;
+}
+
+.dialogGlow {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  width: 420px;
+  height: 260px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(var(--skills-blue), 0.35), transparent);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.sheetHandle {
+  width: 42px;
+  height: 5px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: content-box;
+  border-top: 10px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  flex: none;
+}
+
+.dialogHeader {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 26px 26px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex: none;
+}
+
+.dialogHeading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.dialogIcon {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: #f5f6f7;
+  box-shadow: 0 10px 30px rgba(var(--skills-blue), 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.dialogIcon img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.dialogTitleWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dialogEyebrow {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--skills-muted);
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.dialogMeta {
+  margin-top: 4px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dialogClose {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.3s ease;
+}
+
+.dialogClose span::before,
+.dialogClose span::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 1.5px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.dialogClose span::before { transform: translate(-50%, -50%) rotate(45deg); }
+.dialogClose span::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+.dialogClose:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: rotate(90deg);
+}
+
+.dialogClose:focus-visible,
+.navButton:focus-visible,
+.projectRow:focus-visible {
+  outline: 2px solid rgb(var(--skills-gold));
+  outline-offset: 2px;
+}
+
+.dialogBody {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  flex: 0 1 auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.dialogBodyInner {
+  padding: 22px 26px 24px;
+}
+
+/* Timeline */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  bottom: 22px;
+  left: 5px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(var(--skills-gold), 0.7), rgba(var(--skills-blue), 0.5), transparent);
+}
+
+.timelineItem {
+  position: relative;
+  padding-left: 28px;
+}
+
+.timelineDot {
+  position: absolute;
+  left: 0;
+  top: 22px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #0a0a0c;
+  border: 2px solid rgb(var(--skills-gold));
+  box-shadow: 0 0 12px rgba(var(--skills-gold), 0.5);
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.timelineItem:hover .timelineDot {
+  background: rgb(var(--skills-gold));
+  transform: scale(1.2);
+}
+
+.projectRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.projectRow:hover {
+  border-color: #444;
+  background: rgba(var(--skills-blue), 0.1);
+  transform: translateX(4px);
+}
+
+.projectTop {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+
+.projectYear {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: rgb(var(--skills-gold));
+  letter-spacing: 0.04em;
+}
+
+.projectName {
+  font-size: 17px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.projectKind {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+}
+
+.projectNote {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.projectLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: rgba(116, 194, 255, 0.85);
+  word-break: break-all;
+}
+
+.projectArrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.projectRow:hover .projectArrow,
+.emptyState a:hover .projectArrow {
+  transform: translate(2px, -2px);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Footer navigation */
+
+.dialogFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(0, 0, 0, 0.25);
+  flex: none;
+}
+
+.navButton {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 42%;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.navButton:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.navArrow {
+  transition: transform 0.25s ease;
+}
+
+.navButton:hover .navArrow {
+  transform: translateX(-3px);
+}
+
+.navButtonNext:hover .navArrow {
+  transform: translateX(3px);
+}
+
+.navIcon {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #f5f6f7;
+}
+
+.navIcon img {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.navLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navCounter {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.06em;
 }
 
 /* ---------- Responsive ---------- */
@@ -636,10 +1026,45 @@
   .marqueeItem {
     font-size: 13px;
   }
+
+  .dialogHeader {
+    padding: 14px 18px 16px;
+  }
+
+  .dialogIcon {
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+    border-radius: 16px;
+  }
+
+  .dialogIcon img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .dialogBodyInner {
+    padding: 16px 18px 18px;
+  }
+
+  .projectKind {
+    margin-left: 0;
+  }
+
+  .dialogFooter {
+    padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .navCounter {
+    display: none;
+  }
+
+  .navButton {
+    max-width: 48%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb,
   .marqueeTrack {
     animation: none;
   }

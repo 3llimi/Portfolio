@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Keep the dev-only Next.js badge away from the Livesey toggle in the bottom-left corner
+  devIndicators: {
+    position: "top-left",
+  },
   // Ensure static files are served correctly
   env: {
     NEXT_PUBLIC_BASE_PATH: isProd ? `/${repoName}` : "",
