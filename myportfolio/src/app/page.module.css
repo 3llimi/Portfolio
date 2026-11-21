@@ -118,7 +118,6 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
 .heroSubtitle {
   position: absolute;
   left: 21.1vw;
@@ -134,7 +133,6 @@
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
 
 /* Profile image - exact positioning */
 .heroImageContainer {
@@ -258,15 +256,6 @@
 }
 
 /* Hover effects for each platform - invert colors */
-.socialLink[data-platform="upwork"]:hover {
-  background-color: #73BB44;
-  transform-origin: center;
-}
-
-.socialLink[data-platform="upwork"]:hover .socialIcon {
-  filter: brightness(0) saturate(100%) invert(86%) sepia(0%) saturate(7%) hue-rotate(166deg) brightness(97%) contrast(88%);
-  transform-origin: center;
-}
 
 .socialLink[data-platform="telegram"]:hover {
   background-color: #2AABEE;
@@ -276,16 +265,6 @@
 .socialLink[data-platform="telegram"]:hover .socialIcon {
   /* For Telegram, we'll use a simpler filter that preserves visibility */
   filter: grayscale(1) brightness(0.6) contrast(2);
-  transform-origin: center;
-}
-
-.socialLink[data-platform="behance"]:hover {
-  background-color: #1769FF;
-  transform-origin: center;
-}
-
-.socialLink[data-platform="behance"]:hover .socialIcon {
-  filter: brightness(0) saturate(100%) invert(86%) sepia(0%) saturate(7%) hue-rotate(166deg) brightness(97%) contrast(88%);
   transform-origin: center;
 }
 
@@ -305,16 +284,6 @@
 }
 
 .socialLink[data-platform="linkedin"]:hover .socialIcon {
-  filter: brightness(0) saturate(100%) invert(86%) sepia(0%) saturate(7%) hue-rotate(166deg) brightness(97%) contrast(88%);
-  transform-origin: center;
-}
-
-.socialLink[data-platform="instagram"]:hover {
-  background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
-  transform-origin: center;
-}
-
-.socialLink[data-platform="instagram"]:hover .socialIcon {
   filter: brightness(0) saturate(100%) invert(86%) sepia(0%) saturate(7%) hue-rotate(166deg) brightness(97%) contrast(88%);
   transform-origin: center;
 }
@@ -371,7 +340,6 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
 .aboutContent {
   flex: 1;
   position: relative;
@@ -425,7 +393,6 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
 .aboutIntro strong {
   font-weight: 700;
   transition: color 0.5s var(--ease-out), text-shadow 0.5s var(--ease-out);
@@ -457,7 +424,6 @@
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
 
 .russiaText {
   cursor: pointer;
@@ -708,7 +674,6 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-
 .paAmp {
   display: none;
 }
@@ -724,7 +689,6 @@
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-
 
 .paCenter2 {
   flex: 1;

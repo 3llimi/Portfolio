@@ -1,0 +1,5385 @@
+{
+  "version": 3,
+  "atlas": "livesey-atlas.webp",
+  "canvas": {
+    "width": 256,
+    "height": 256
+  },
+  "anchor": {
+    "x": 128,
+    "y": 235
+  },
+  "defaultFrame": "idle-00",
+  "presentationDirection": "right",
+  "frames": {
+    "idle-00": {
+      "file": "frames/idle-00.png",
+      "rect": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-01": {
+      "file": "frames/idle-01.png",
+      "rect": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-02": {
+      "file": "frames/idle-02.png",
+      "rect": [
+        512,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-03": {
+      "file": "frames/idle-03.png",
+      "rect": [
+        768,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-04": {
+      "file": "frames/idle-04.png",
+      "rect": [
+        1024,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-05": {
+      "file": "frames/idle-05.png",
+      "rect": [
+        1280,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-06": {
+      "file": "frames/idle-06.png",
+      "rect": [
+        1536,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-07": {
+      "file": "frames/idle-07.png",
+      "rect": [
+        1792,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-08": {
+      "file": "frames/idle-08.png",
+      "rect": [
+        2048,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-09": {
+      "file": "frames/idle-09.png",
+      "rect": [
+        2304,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-10": {
+      "file": "frames/idle-10.png",
+      "rect": [
+        2560,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-11": {
+      "file": "frames/idle-11.png",
+      "rect": [
+        2816,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-12": {
+      "file": "frames/idle-12.png",
+      "rect": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-13": {
+      "file": "frames/idle-13.png",
+      "rect": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-14": {
+      "file": "frames/idle-14.png",
+      "rect": [
+        512,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-15": {
+      "file": "frames/idle-15.png",
+      "rect": [
+        768,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-16": {
+      "file": "frames/idle-16.png",
+      "rect": [
+        1024,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-17": {
+      "file": "frames/idle-17.png",
+      "rect": [
+        1280,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-18": {
+      "file": "frames/idle-18.png",
+      "rect": [
+        1536,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-19": {
+      "file": "frames/idle-19.png",
+      "rect": [
+        1792,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-20": {
+      "file": "frames/idle-20.png",
+      "rect": [
+        2048,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-21": {
+      "file": "frames/idle-21.png",
+      "rect": [
+        2304,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-22": {
+      "file": "frames/idle-22.png",
+      "rect": [
+        2560,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-23": {
+      "file": "frames/idle-23.png",
+      "rect": [
+        2816,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-24": {
+      "file": "frames/idle-24.png",
+      "rect": [
+        0,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-25": {
+      "file": "frames/idle-25.png",
+      "rect": [
+        256,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-26": {
+      "file": "frames/idle-26.png",
+      "rect": [
+        512,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-27": {
+      "file": "frames/idle-27.png",
+      "rect": [
+        768,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-28": {
+      "file": "frames/idle-28.png",
+      "rect": [
+        1024,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-29": {
+      "file": "frames/idle-29.png",
+      "rect": [
+        1280,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-30": {
+      "file": "frames/idle-30.png",
+      "rect": [
+        1536,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-31": {
+      "file": "frames/idle-31.png",
+      "rect": [
+        1792,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-32": {
+      "file": "frames/idle-32.png",
+      "rect": [
+        2048,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-33": {
+      "file": "frames/idle-33.png",
+      "rect": [
+        2304,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-34": {
+      "file": "frames/idle-34.png",
+      "rect": [
+        2560,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-35": {
+      "file": "frames/idle-35.png",
+      "rect": [
+        2816,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-36": {
+      "file": "frames/idle-36.png",
+      "rect": [
+        0,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-37": {
+      "file": "frames/idle-37.png",
+      "rect": [
+        256,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-38": {
+      "file": "frames/idle-38.png",
+      "rect": [
+        512,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-39": {
+      "file": "frames/idle-39.png",
+      "rect": [
+        768,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-40": {
+      "file": "frames/idle-40.png",
+      "rect": [
+        1024,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-41": {
+      "file": "frames/idle-41.png",
+      "rect": [
+        1280,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-42": {
+      "file": "frames/idle-42.png",
+      "rect": [
+        1536,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-43": {
+      "file": "frames/idle-43.png",
+      "rect": [
+        1792,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-44": {
+      "file": "frames/idle-44.png",
+      "rect": [
+        2048,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-45": {
+      "file": "frames/idle-45.png",
+      "rect": [
+        2304,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-46": {
+      "file": "frames/idle-46.png",
+      "rect": [
+        2560,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-47": {
+      "file": "frames/idle-47.png",
+      "rect": [
+        2816,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-48": {
+      "file": "frames/idle-48.png",
+      "rect": [
+        0,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-49": {
+      "file": "frames/idle-49.png",
+      "rect": [
+        256,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-50": {
+      "file": "frames/idle-50.png",
+      "rect": [
+        512,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-51": {
+      "file": "frames/idle-51.png",
+      "rect": [
+        768,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-52": {
+      "file": "frames/idle-52.png",
+      "rect": [
+        1024,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "idle-53": {
+      "file": "frames/idle-53.png",
+      "rect": [
+        1280,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-00": {
+      "file": "frames/notice-00.png",
+      "rect": [
+        1536,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-01": {
+      "file": "frames/notice-01.png",
+      "rect": [
+        1792,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-02": {
+      "file": "frames/notice-02.png",
+      "rect": [
+        2048,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-03": {
+      "file": "frames/notice-03.png",
+      "rect": [
+        2304,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-04": {
+      "file": "frames/notice-04.png",
+      "rect": [
+        2560,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-05": {
+      "file": "frames/notice-05.png",
+      "rect": [
+        2816,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-06": {
+      "file": "frames/notice-06.png",
+      "rect": [
+        0,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-07": {
+      "file": "frames/notice-07.png",
+      "rect": [
+        256,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-08": {
+      "file": "frames/notice-08.png",
+      "rect": [
+        512,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-09": {
+      "file": "frames/notice-09.png",
+      "rect": [
+        768,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-10": {
+      "file": "frames/notice-10.png",
+      "rect": [
+        1024,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-11": {
+      "file": "frames/notice-11.png",
+      "rect": [
+        1280,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-12": {
+      "file": "frames/notice-12.png",
+      "rect": [
+        1536,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-13": {
+      "file": "frames/notice-13.png",
+      "rect": [
+        1792,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-14": {
+      "file": "frames/notice-14.png",
+      "rect": [
+        2048,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-15": {
+      "file": "frames/notice-15.png",
+      "rect": [
+        2304,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-16": {
+      "file": "frames/notice-16.png",
+      "rect": [
+        2560,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-17": {
+      "file": "frames/notice-17.png",
+      "rect": [
+        2816,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-18": {
+      "file": "frames/notice-18.png",
+      "rect": [
+        0,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-19": {
+      "file": "frames/notice-19.png",
+      "rect": [
+        256,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "notice-20": {
+      "file": "frames/notice-20.png",
+      "rect": [
+        512,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-00": {
+      "file": "frames/walk-00.png",
+      "rect": [
+        768,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-01": {
+      "file": "frames/walk-01.png",
+      "rect": [
+        1024,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-02": {
+      "file": "frames/walk-02.png",
+      "rect": [
+        1280,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-03": {
+      "file": "frames/walk-03.png",
+      "rect": [
+        1536,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-04": {
+      "file": "frames/walk-04.png",
+      "rect": [
+        1792,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-05": {
+      "file": "frames/walk-05.png",
+      "rect": [
+        2048,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-06": {
+      "file": "frames/walk-06.png",
+      "rect": [
+        2304,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-07": {
+      "file": "frames/walk-07.png",
+      "rect": [
+        2560,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-08": {
+      "file": "frames/walk-08.png",
+      "rect": [
+        2816,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-09": {
+      "file": "frames/walk-09.png",
+      "rect": [
+        0,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-10": {
+      "file": "frames/walk-10.png",
+      "rect": [
+        256,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-11": {
+      "file": "frames/walk-11.png",
+      "rect": [
+        512,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-12": {
+      "file": "frames/walk-12.png",
+      "rect": [
+        768,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-13": {
+      "file": "frames/walk-13.png",
+      "rect": [
+        1024,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-14": {
+      "file": "frames/walk-14.png",
+      "rect": [
+        1280,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-15": {
+      "file": "frames/walk-15.png",
+      "rect": [
+        1536,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-16": {
+      "file": "frames/walk-16.png",
+      "rect": [
+        1792,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-17": {
+      "file": "frames/walk-17.png",
+      "rect": [
+        2048,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-18": {
+      "file": "frames/walk-18.png",
+      "rect": [
+        2304,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-19": {
+      "file": "frames/walk-19.png",
+      "rect": [
+        2560,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-20": {
+      "file": "frames/walk-20.png",
+      "rect": [
+        2816,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-21": {
+      "file": "frames/walk-21.png",
+      "rect": [
+        0,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-22": {
+      "file": "frames/walk-22.png",
+      "rect": [
+        256,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-23": {
+      "file": "frames/walk-23.png",
+      "rect": [
+        512,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-24": {
+      "file": "frames/walk-24.png",
+      "rect": [
+        768,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-25": {
+      "file": "frames/walk-25.png",
+      "rect": [
+        1024,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-26": {
+      "file": "frames/walk-26.png",
+      "rect": [
+        1280,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-27": {
+      "file": "frames/walk-27.png",
+      "rect": [
+        1536,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-28": {
+      "file": "frames/walk-28.png",
+      "rect": [
+        1792,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-29": {
+      "file": "frames/walk-29.png",
+      "rect": [
+        2048,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-30": {
+      "file": "frames/walk-30.png",
+      "rect": [
+        2304,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-31": {
+      "file": "frames/walk-31.png",
+      "rect": [
+        2560,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-32": {
+      "file": "frames/walk-32.png",
+      "rect": [
+        2816,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-33": {
+      "file": "frames/walk-33.png",
+      "rect": [
+        0,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-34": {
+      "file": "frames/walk-34.png",
+      "rect": [
+        256,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "walk-35": {
+      "file": "frames/walk-35.png",
+      "rect": [
+        512,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-00": {
+      "file": "frames/present-00.png",
+      "rect": [
+        768,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-01": {
+      "file": "frames/present-01.png",
+      "rect": [
+        1024,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-02": {
+      "file": "frames/present-02.png",
+      "rect": [
+        1280,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-03": {
+      "file": "frames/present-03.png",
+      "rect": [
+        1536,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-04": {
+      "file": "frames/present-04.png",
+      "rect": [
+        1792,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-05": {
+      "file": "frames/present-05.png",
+      "rect": [
+        2048,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-06": {
+      "file": "frames/present-06.png",
+      "rect": [
+        2304,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-07": {
+      "file": "frames/present-07.png",
+      "rect": [
+        2560,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-08": {
+      "file": "frames/present-08.png",
+      "rect": [
+        2816,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-09": {
+      "file": "frames/present-09.png",
+      "rect": [
+        0,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-10": {
+      "file": "frames/present-10.png",
+      "rect": [
+        256,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-11": {
+      "file": "frames/present-11.png",
+      "rect": [
+        512,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-12": {
+      "file": "frames/present-12.png",
+      "rect": [
+        768,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-13": {
+      "file": "frames/present-13.png",
+      "rect": [
+        1024,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-14": {
+      "file": "frames/present-14.png",
+      "rect": [
+        1280,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-15": {
+      "file": "frames/present-15.png",
+      "rect": [
+        1536,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-16": {
+      "file": "frames/present-16.png",
+      "rect": [
+        1792,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-17": {
+      "file": "frames/present-17.png",
+      "rect": [
+        2048,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-18": {
+      "file": "frames/present-18.png",
+      "rect": [
+        2304,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-19": {
+      "file": "frames/present-19.png",
+      "rect": [
+        2560,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-20": {
+      "file": "frames/present-20.png",
+      "rect": [
+        2816,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-21": {
+      "file": "frames/present-21.png",
+      "rect": [
+        0,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-22": {
+      "file": "frames/present-22.png",
+      "rect": [
+        256,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-23": {
+      "file": "frames/present-23.png",
+      "rect": [
+        512,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-24": {
+      "file": "frames/present-24.png",
+      "rect": [
+        768,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-25": {
+      "file": "frames/present-25.png",
+      "rect": [
+        1024,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-26": {
+      "file": "frames/present-26.png",
+      "rect": [
+        1280,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-27": {
+      "file": "frames/present-27.png",
+      "rect": [
+        1536,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-28": {
+      "file": "frames/present-28.png",
+      "rect": [
+        1792,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-29": {
+      "file": "frames/present-29.png",
+      "rect": [
+        2048,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-30": {
+      "file": "frames/present-30.png",
+      "rect": [
+        2304,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-31": {
+      "file": "frames/present-31.png",
+      "rect": [
+        2560,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-32": {
+      "file": "frames/present-32.png",
+      "rect": [
+        2816,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas.webp"
+    },
+    "present-33": {
+      "file": "frames/present-33.png",
+      "rect": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "present-34": {
+      "file": "frames/present-34.png",
+      "rect": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "present-35": {
+      "file": "frames/present-35.png",
+      "rect": [
+        512,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "present-36": {
+      "file": "frames/present-36.png",
+      "rect": [
+        768,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "present-37": {
+      "file": "frames/present-37.png",
+      "rect": [
+        1024,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-00": {
+      "file": "frames/jump-00.png",
+      "rect": [
+        1280,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-01": {
+      "file": "frames/jump-01.png",
+      "rect": [
+        1536,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-02": {
+      "file": "frames/jump-02.png",
+      "rect": [
+        1792,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-03": {
+      "file": "frames/jump-03.png",
+      "rect": [
+        2048,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-04": {
+      "file": "frames/jump-04.png",
+      "rect": [
+        2304,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-05": {
+      "file": "frames/jump-05.png",
+      "rect": [
+        2560,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-06": {
+      "file": "frames/jump-06.png",
+      "rect": [
+        2816,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-07": {
+      "file": "frames/jump-07.png",
+      "rect": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-08": {
+      "file": "frames/jump-08.png",
+      "rect": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-09": {
+      "file": "frames/jump-09.png",
+      "rect": [
+        512,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-10": {
+      "file": "frames/jump-10.png",
+      "rect": [
+        768,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-11": {
+      "file": "frames/jump-11.png",
+      "rect": [
+        1024,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-12": {
+      "file": "frames/jump-12.png",
+      "rect": [
+        1280,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-13": {
+      "file": "frames/jump-13.png",
+      "rect": [
+        1536,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-14": {
+      "file": "frames/jump-14.png",
+      "rect": [
+        1792,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-15": {
+      "file": "frames/jump-15.png",
+      "rect": [
+        2048,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-16": {
+      "file": "frames/jump-16.png",
+      "rect": [
+        2304,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-17": {
+      "file": "frames/jump-17.png",
+      "rect": [
+        2560,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-18": {
+      "file": "frames/jump-18.png",
+      "rect": [
+        2816,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-19": {
+      "file": "frames/jump-19.png",
+      "rect": [
+        0,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-20": {
+      "file": "frames/jump-20.png",
+      "rect": [
+        256,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-21": {
+      "file": "frames/jump-21.png",
+      "rect": [
+        512,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-22": {
+      "file": "frames/jump-22.png",
+      "rect": [
+        768,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-23": {
+      "file": "frames/jump-23.png",
+      "rect": [
+        1024,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-24": {
+      "file": "frames/jump-24.png",
+      "rect": [
+        1280,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-25": {
+      "file": "frames/jump-25.png",
+      "rect": [
+        1536,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-26": {
+      "file": "frames/jump-26.png",
+      "rect": [
+        1792,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-27": {
+      "file": "frames/jump-27.png",
+      "rect": [
+        2048,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-28": {
+      "file": "frames/jump-28.png",
+      "rect": [
+        2304,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-29": {
+      "file": "frames/jump-29.png",
+      "rect": [
+        2560,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-30": {
+      "file": "frames/jump-30.png",
+      "rect": [
+        2816,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-31": {
+      "file": "frames/jump-31.png",
+      "rect": [
+        0,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-32": {
+      "file": "frames/jump-32.png",
+      "rect": [
+        256,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-33": {
+      "file": "frames/jump-33.png",
+      "rect": [
+        512,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-34": {
+      "file": "frames/jump-34.png",
+      "rect": [
+        768,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "jump-35": {
+      "file": "frames/jump-35.png",
+      "rect": [
+        1024,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-00": {
+      "file": "frames/land-00.png",
+      "rect": [
+        1280,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-01": {
+      "file": "frames/land-01.png",
+      "rect": [
+        1536,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-02": {
+      "file": "frames/land-02.png",
+      "rect": [
+        1792,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-03": {
+      "file": "frames/land-03.png",
+      "rect": [
+        2048,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-04": {
+      "file": "frames/land-04.png",
+      "rect": [
+        2304,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-05": {
+      "file": "frames/land-05.png",
+      "rect": [
+        2560,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-06": {
+      "file": "frames/land-06.png",
+      "rect": [
+        2816,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-07": {
+      "file": "frames/land-07.png",
+      "rect": [
+        0,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-08": {
+      "file": "frames/land-08.png",
+      "rect": [
+        256,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-09": {
+      "file": "frames/land-09.png",
+      "rect": [
+        512,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-10": {
+      "file": "frames/land-10.png",
+      "rect": [
+        768,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-11": {
+      "file": "frames/land-11.png",
+      "rect": [
+        1024,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-12": {
+      "file": "frames/land-12.png",
+      "rect": [
+        1280,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-13": {
+      "file": "frames/land-13.png",
+      "rect": [
+        1536,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-14": {
+      "file": "frames/land-14.png",
+      "rect": [
+        1792,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-15": {
+      "file": "frames/land-15.png",
+      "rect": [
+        2048,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-16": {
+      "file": "frames/land-16.png",
+      "rect": [
+        2304,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-17": {
+      "file": "frames/land-17.png",
+      "rect": [
+        2560,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-18": {
+      "file": "frames/land-18.png",
+      "rect": [
+        2816,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "land-19": {
+      "file": "frames/land-19.png",
+      "rect": [
+        0,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-00": {
+      "file": "frames/brace-00.png",
+      "rect": [
+        256,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-01": {
+      "file": "frames/brace-01.png",
+      "rect": [
+        512,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-02": {
+      "file": "frames/brace-02.png",
+      "rect": [
+        768,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-03": {
+      "file": "frames/brace-03.png",
+      "rect": [
+        1024,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-04": {
+      "file": "frames/brace-04.png",
+      "rect": [
+        1280,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-05": {
+      "file": "frames/brace-05.png",
+      "rect": [
+        1536,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-06": {
+      "file": "frames/brace-06.png",
+      "rect": [
+        1792,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-07": {
+      "file": "frames/brace-07.png",
+      "rect": [
+        2048,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-08": {
+      "file": "frames/brace-08.png",
+      "rect": [
+        2304,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-09": {
+      "file": "frames/brace-09.png",
+      "rect": [
+        2560,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-10": {
+      "file": "frames/brace-10.png",
+      "rect": [
+        2816,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-11": {
+      "file": "frames/brace-11.png",
+      "rect": [
+        0,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-12": {
+      "file": "frames/brace-12.png",
+      "rect": [
+        256,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-13": {
+      "file": "frames/brace-13.png",
+      "rect": [
+        512,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-14": {
+      "file": "frames/brace-14.png",
+      "rect": [
+        768,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-15": {
+      "file": "frames/brace-15.png",
+      "rect": [
+        1024,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-16": {
+      "file": "frames/brace-16.png",
+      "rect": [
+        1280,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-17": {
+      "file": "frames/brace-17.png",
+      "rect": [
+        1536,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "brace-18": {
+      "file": "frames/brace-18.png",
+      "rect": [
+        1792,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-00": {
+      "file": "frames/nod-00.png",
+      "rect": [
+        2048,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-01": {
+      "file": "frames/nod-01.png",
+      "rect": [
+        2304,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-02": {
+      "file": "frames/nod-02.png",
+      "rect": [
+        2560,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-03": {
+      "file": "frames/nod-03.png",
+      "rect": [
+        2816,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-04": {
+      "file": "frames/nod-04.png",
+      "rect": [
+        0,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-05": {
+      "file": "frames/nod-05.png",
+      "rect": [
+        256,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-06": {
+      "file": "frames/nod-06.png",
+      "rect": [
+        512,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-07": {
+      "file": "frames/nod-07.png",
+      "rect": [
+        768,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-08": {
+      "file": "frames/nod-08.png",
+      "rect": [
+        1024,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-09": {
+      "file": "frames/nod-09.png",
+      "rect": [
+        1280,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-10": {
+      "file": "frames/nod-10.png",
+      "rect": [
+        1536,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-11": {
+      "file": "frames/nod-11.png",
+      "rect": [
+        1792,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-12": {
+      "file": "frames/nod-12.png",
+      "rect": [
+        2048,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-13": {
+      "file": "frames/nod-13.png",
+      "rect": [
+        2304,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-14": {
+      "file": "frames/nod-14.png",
+      "rect": [
+        2560,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-15": {
+      "file": "frames/nod-15.png",
+      "rect": [
+        2816,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-16": {
+      "file": "frames/nod-16.png",
+      "rect": [
+        0,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-17": {
+      "file": "frames/nod-17.png",
+      "rect": [
+        256,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-18": {
+      "file": "frames/nod-18.png",
+      "rect": [
+        512,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-19": {
+      "file": "frames/nod-19.png",
+      "rect": [
+        768,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-20": {
+      "file": "frames/nod-20.png",
+      "rect": [
+        1024,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-21": {
+      "file": "frames/nod-21.png",
+      "rect": [
+        1280,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-22": {
+      "file": "frames/nod-22.png",
+      "rect": [
+        1536,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-23": {
+      "file": "frames/nod-23.png",
+      "rect": [
+        1792,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-24": {
+      "file": "frames/nod-24.png",
+      "rect": [
+        2048,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-25": {
+      "file": "frames/nod-25.png",
+      "rect": [
+        2304,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "nod-26": {
+      "file": "frames/nod-26.png",
+      "rect": [
+        2560,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-00": {
+      "file": "frames/laugh-00.png",
+      "rect": [
+        2816,
+        2048,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-01": {
+      "file": "frames/laugh-01.png",
+      "rect": [
+        0,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-02": {
+      "file": "frames/laugh-02.png",
+      "rect": [
+        256,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-03": {
+      "file": "frames/laugh-03.png",
+      "rect": [
+        512,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-04": {
+      "file": "frames/laugh-04.png",
+      "rect": [
+        768,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-05": {
+      "file": "frames/laugh-05.png",
+      "rect": [
+        1024,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-06": {
+      "file": "frames/laugh-06.png",
+      "rect": [
+        1280,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-07": {
+      "file": "frames/laugh-07.png",
+      "rect": [
+        1536,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-08": {
+      "file": "frames/laugh-08.png",
+      "rect": [
+        1792,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-09": {
+      "file": "frames/laugh-09.png",
+      "rect": [
+        2048,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-10": {
+      "file": "frames/laugh-10.png",
+      "rect": [
+        2304,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-11": {
+      "file": "frames/laugh-11.png",
+      "rect": [
+        2560,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-12": {
+      "file": "frames/laugh-12.png",
+      "rect": [
+        2816,
+        2304,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-13": {
+      "file": "frames/laugh-13.png",
+      "rect": [
+        0,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-14": {
+      "file": "frames/laugh-14.png",
+      "rect": [
+        256,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-15": {
+      "file": "frames/laugh-15.png",
+      "rect": [
+        512,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-16": {
+      "file": "frames/laugh-16.png",
+      "rect": [
+        768,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-17": {
+      "file": "frames/laugh-17.png",
+      "rect": [
+        1024,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-18": {
+      "file": "frames/laugh-18.png",
+      "rect": [
+        1280,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-19": {
+      "file": "frames/laugh-19.png",
+      "rect": [
+        1536,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-20": {
+      "file": "frames/laugh-20.png",
+      "rect": [
+        1792,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-21": {
+      "file": "frames/laugh-21.png",
+      "rect": [
+        2048,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-22": {
+      "file": "frames/laugh-22.png",
+      "rect": [
+        2304,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-23": {
+      "file": "frames/laugh-23.png",
+      "rect": [
+        2560,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-24": {
+      "file": "frames/laugh-24.png",
+      "rect": [
+        2816,
+        2560,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-25": {
+      "file": "frames/laugh-25.png",
+      "rect": [
+        0,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-26": {
+      "file": "frames/laugh-26.png",
+      "rect": [
+        256,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-27": {
+      "file": "frames/laugh-27.png",
+      "rect": [
+        512,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-28": {
+      "file": "frames/laugh-28.png",
+      "rect": [
+        768,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-29": {
+      "file": "frames/laugh-29.png",
+      "rect": [
+        1024,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-30": {
+      "file": "frames/laugh-30.png",
+      "rect": [
+        1280,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-31": {
+      "file": "frames/laugh-31.png",
+      "rect": [
+        1536,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-32": {
+      "file": "frames/laugh-32.png",
+      "rect": [
+        1792,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-33": {
+      "file": "frames/laugh-33.png",
+      "rect": [
+        2048,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-34": {
+      "file": "frames/laugh-34.png",
+      "rect": [
+        2304,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-35": {
+      "file": "frames/laugh-35.png",
+      "rect": [
+        2560,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-36": {
+      "file": "frames/laugh-36.png",
+      "rect": [
+        2816,
+        2816,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-2.webp"
+    },
+    "laugh-37": {
+      "file": "frames/laugh-37.png",
+      "rect": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-38": {
+      "file": "frames/laugh-38.png",
+      "rect": [
+        256,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-39": {
+      "file": "frames/laugh-39.png",
+      "rect": [
+        512,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-40": {
+      "file": "frames/laugh-40.png",
+      "rect": [
+        768,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-41": {
+      "file": "frames/laugh-41.png",
+      "rect": [
+        1024,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-42": {
+      "file": "frames/laugh-42.png",
+      "rect": [
+        1280,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-43": {
+      "file": "frames/laugh-43.png",
+      "rect": [
+        1536,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-44": {
+      "file": "frames/laugh-44.png",
+      "rect": [
+        1792,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-45": {
+      "file": "frames/laugh-45.png",
+      "rect": [
+        2048,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-46": {
+      "file": "frames/laugh-46.png",
+      "rect": [
+        2304,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "laugh-47": {
+      "file": "frames/laugh-47.png",
+      "rect": [
+        2560,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-present-1": {
+      "file": "frames/notice-present-1.png",
+      "rect": [
+        2816,
+        0,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-present-2": {
+      "file": "frames/notice-present-2.png",
+      "rect": [
+        0,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-present-3": {
+      "file": "frames/notice-present-3.png",
+      "rect": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-present-4": {
+      "file": "frames/notice-present-4.png",
+      "rect": [
+        512,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-present-5": {
+      "file": "frames/notice-present-5.png",
+      "rect": [
+        768,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-present-6": {
+      "file": "frames/notice-present-6.png",
+      "rect": [
+        1024,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-walk-1": {
+      "file": "frames/notice-walk-1.png",
+      "rect": [
+        1280,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-walk-2": {
+      "file": "frames/notice-walk-2.png",
+      "rect": [
+        1536,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-walk-3": {
+      "file": "frames/notice-walk-3.png",
+      "rect": [
+        1792,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-walk-4": {
+      "file": "frames/notice-walk-4.png",
+      "rect": [
+        2048,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-walk-5": {
+      "file": "frames/notice-walk-5.png",
+      "rect": [
+        2304,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-walk-6": {
+      "file": "frames/notice-walk-6.png",
+      "rect": [
+        2560,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-a-settle-1": {
+      "file": "frames/walk-contact-a-settle-1.png",
+      "rect": [
+        2816,
+        256,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-a-settle-2": {
+      "file": "frames/walk-contact-a-settle-2.png",
+      "rect": [
+        0,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-a-settle-3": {
+      "file": "frames/walk-contact-a-settle-3.png",
+      "rect": [
+        256,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-a-settle-4": {
+      "file": "frames/walk-contact-a-settle-4.png",
+      "rect": [
+        512,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-a-settle-5": {
+      "file": "frames/walk-contact-a-settle-5.png",
+      "rect": [
+        768,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-a-settle-6": {
+      "file": "frames/walk-contact-a-settle-6.png",
+      "rect": [
+        1024,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-b-settle-1": {
+      "file": "frames/walk-contact-b-settle-1.png",
+      "rect": [
+        1280,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-b-settle-2": {
+      "file": "frames/walk-contact-b-settle-2.png",
+      "rect": [
+        1536,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-b-settle-3": {
+      "file": "frames/walk-contact-b-settle-3.png",
+      "rect": [
+        1792,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-b-settle-4": {
+      "file": "frames/walk-contact-b-settle-4.png",
+      "rect": [
+        2048,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-b-settle-5": {
+      "file": "frames/walk-contact-b-settle-5.png",
+      "rect": [
+        2304,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "walk-contact-b-settle-6": {
+      "file": "frames/walk-contact-b-settle-6.png",
+      "rect": [
+        2560,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-takeoff-1": {
+      "file": "frames/brace-takeoff-1.png",
+      "rect": [
+        2816,
+        512,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-takeoff-2": {
+      "file": "frames/brace-takeoff-2.png",
+      "rect": [
+        0,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-takeoff-3": {
+      "file": "frames/brace-takeoff-3.png",
+      "rect": [
+        256,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-takeoff-4": {
+      "file": "frames/brace-takeoff-4.png",
+      "rect": [
+        512,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-takeoff-5": {
+      "file": "frames/brace-takeoff-5.png",
+      "rect": [
+        768,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-takeoff-6": {
+      "file": "frames/brace-takeoff-6.png",
+      "rect": [
+        1024,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-00": {
+      "file": "frames/present-release-00.png",
+      "rect": [
+        1280,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-01": {
+      "file": "frames/present-release-01.png",
+      "rect": [
+        1536,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-02": {
+      "file": "frames/present-release-02.png",
+      "rect": [
+        1792,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-03": {
+      "file": "frames/present-release-03.png",
+      "rect": [
+        2048,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-04": {
+      "file": "frames/present-release-04.png",
+      "rect": [
+        2304,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-05": {
+      "file": "frames/present-release-05.png",
+      "rect": [
+        2560,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-06": {
+      "file": "frames/present-release-06.png",
+      "rect": [
+        2816,
+        768,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-07": {
+      "file": "frames/present-release-07.png",
+      "rect": [
+        0,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-08": {
+      "file": "frames/present-release-08.png",
+      "rect": [
+        256,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-09": {
+      "file": "frames/present-release-09.png",
+      "rect": [
+        512,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-10": {
+      "file": "frames/present-release-10.png",
+      "rect": [
+        768,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-11": {
+      "file": "frames/present-release-11.png",
+      "rect": [
+        1024,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-12": {
+      "file": "frames/present-release-12.png",
+      "rect": [
+        1280,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-13": {
+      "file": "frames/present-release-13.png",
+      "rect": [
+        1536,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-14": {
+      "file": "frames/present-release-14.png",
+      "rect": [
+        1792,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-15": {
+      "file": "frames/present-release-15.png",
+      "rect": [
+        2048,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-16": {
+      "file": "frames/present-release-16.png",
+      "rect": [
+        2304,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-17": {
+      "file": "frames/present-release-17.png",
+      "rect": [
+        2560,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-18": {
+      "file": "frames/present-release-18.png",
+      "rect": [
+        2816,
+        1024,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "present-release-19": {
+      "file": "frames/present-release-19.png",
+      "rect": [
+        0,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-00": {
+      "file": "frames/notice-release-00.png",
+      "rect": [
+        256,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-01": {
+      "file": "frames/notice-release-01.png",
+      "rect": [
+        512,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-02": {
+      "file": "frames/notice-release-02.png",
+      "rect": [
+        768,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-03": {
+      "file": "frames/notice-release-03.png",
+      "rect": [
+        1024,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-04": {
+      "file": "frames/notice-release-04.png",
+      "rect": [
+        1280,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-05": {
+      "file": "frames/notice-release-05.png",
+      "rect": [
+        1536,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-06": {
+      "file": "frames/notice-release-06.png",
+      "rect": [
+        1792,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-07": {
+      "file": "frames/notice-release-07.png",
+      "rect": [
+        2048,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-08": {
+      "file": "frames/notice-release-08.png",
+      "rect": [
+        2304,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-09": {
+      "file": "frames/notice-release-09.png",
+      "rect": [
+        2560,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-10": {
+      "file": "frames/notice-release-10.png",
+      "rect": [
+        2816,
+        1280,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "notice-release-11": {
+      "file": "frames/notice-release-11.png",
+      "rect": [
+        0,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-00": {
+      "file": "frames/brace-release-00.png",
+      "rect": [
+        256,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-01": {
+      "file": "frames/brace-release-01.png",
+      "rect": [
+        512,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-02": {
+      "file": "frames/brace-release-02.png",
+      "rect": [
+        768,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-03": {
+      "file": "frames/brace-release-03.png",
+      "rect": [
+        1024,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-04": {
+      "file": "frames/brace-release-04.png",
+      "rect": [
+        1280,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-05": {
+      "file": "frames/brace-release-05.png",
+      "rect": [
+        1536,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-06": {
+      "file": "frames/brace-release-06.png",
+      "rect": [
+        1792,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-07": {
+      "file": "frames/brace-release-07.png",
+      "rect": [
+        2048,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-08": {
+      "file": "frames/brace-release-08.png",
+      "rect": [
+        2304,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-09": {
+      "file": "frames/brace-release-09.png",
+      "rect": [
+        2560,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-10": {
+      "file": "frames/brace-release-10.png",
+      "rect": [
+        2816,
+        1536,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-11": {
+      "file": "frames/brace-release-11.png",
+      "rect": [
+        0,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-12": {
+      "file": "frames/brace-release-12.png",
+      "rect": [
+        256,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-13": {
+      "file": "frames/brace-release-13.png",
+      "rect": [
+        512,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    },
+    "brace-release-14": {
+      "file": "frames/brace-release-14.png",
+      "rect": [
+        768,
+        1792,
+        256,
+        256
+      ],
+      "atlas": "livesey-atlas-3.webp"
+    }
+  },
+  "clips": {
+    "idle": {
+      "end": "loop",
+      "frames": [
+        {
+          "id": "idle-00",
+          "ms": 1080
+        },
+        {
+          "id": "idle-01",
+          "ms": 30
+        },
+        {
+          "id": "idle-02",
+          "ms": 30
+        },
+        {
+          "id": "idle-03",
+          "ms": 30
+        },
+        {
+          "id": "idle-04",
+          "ms": 30
+        },
+        {
+          "id": "idle-05",
+          "ms": 30
+        },
+        {
+          "id": "idle-06",
+          "ms": 30
+        },
+        {
+          "id": "idle-07",
+          "ms": 30
+        },
+        {
+          "id": "idle-08",
+          "ms": 30
+        },
+        {
+          "id": "idle-09",
+          "ms": 30
+        },
+        {
+          "id": "idle-10",
+          "ms": 30
+        },
+        {
+          "id": "idle-11",
+          "ms": 30
+        },
+        {
+          "id": "idle-12",
+          "ms": 30
+        },
+        {
+          "id": "idle-13",
+          "ms": 30
+        },
+        {
+          "id": "idle-14",
+          "ms": 30
+        },
+        {
+          "id": "idle-15",
+          "ms": 30
+        },
+        {
+          "id": "idle-16",
+          "ms": 30
+        },
+        {
+          "id": "idle-17",
+          "ms": 30
+        },
+        {
+          "id": "idle-18",
+          "ms": 30
+        },
+        {
+          "id": "idle-19",
+          "ms": 30
+        },
+        {
+          "id": "idle-20",
+          "ms": 30
+        },
+        {
+          "id": "idle-21",
+          "ms": 30
+        },
+        {
+          "id": "idle-22",
+          "ms": 30
+        },
+        {
+          "id": "idle-23",
+          "ms": 30
+        },
+        {
+          "id": "idle-24",
+          "ms": 30
+        },
+        {
+          "id": "idle-25",
+          "ms": 30
+        },
+        {
+          "id": "idle-26",
+          "ms": 30
+        },
+        {
+          "id": "idle-27",
+          "ms": 30
+        },
+        {
+          "id": "idle-28",
+          "ms": 30
+        },
+        {
+          "id": "idle-29",
+          "ms": 30
+        },
+        {
+          "id": "idle-30",
+          "ms": 30
+        },
+        {
+          "id": "idle-31",
+          "ms": 30
+        },
+        {
+          "id": "idle-32",
+          "ms": 30
+        },
+        {
+          "id": "idle-33",
+          "ms": 30
+        },
+        {
+          "id": "idle-34",
+          "ms": 30
+        },
+        {
+          "id": "idle-35",
+          "ms": 30
+        },
+        {
+          "id": "idle-36",
+          "ms": 30
+        },
+        {
+          "id": "idle-37",
+          "ms": 30
+        },
+        {
+          "id": "idle-38",
+          "ms": 30
+        },
+        {
+          "id": "idle-39",
+          "ms": 30
+        },
+        {
+          "id": "idle-40",
+          "ms": 30
+        },
+        {
+          "id": "idle-41",
+          "ms": 30
+        },
+        {
+          "id": "idle-42",
+          "ms": 30
+        },
+        {
+          "id": "idle-43",
+          "ms": 30
+        },
+        {
+          "id": "idle-44",
+          "ms": 30
+        },
+        {
+          "id": "idle-45",
+          "ms": 30
+        },
+        {
+          "id": "idle-46",
+          "ms": 30
+        },
+        {
+          "id": "idle-47",
+          "ms": 30
+        },
+        {
+          "id": "idle-48",
+          "ms": 30
+        },
+        {
+          "id": "idle-49",
+          "ms": 30
+        },
+        {
+          "id": "idle-50",
+          "ms": 30
+        },
+        {
+          "id": "idle-51",
+          "ms": 30
+        },
+        {
+          "id": "idle-52",
+          "ms": 30
+        },
+        {
+          "id": "idle-53",
+          "ms": 30
+        }
+      ]
+    },
+    "notice": {
+      "end": "hold",
+      "frames": [
+        {
+          "id": "notice-00",
+          "ms": 30
+        },
+        {
+          "id": "notice-01",
+          "ms": 30
+        },
+        {
+          "id": "notice-02",
+          "ms": 30
+        },
+        {
+          "id": "notice-03",
+          "ms": 30
+        },
+        {
+          "id": "notice-04",
+          "ms": 30
+        },
+        {
+          "id": "notice-05",
+          "ms": 30
+        },
+        {
+          "id": "notice-06",
+          "ms": 30
+        },
+        {
+          "id": "notice-07",
+          "ms": 30
+        },
+        {
+          "id": "notice-08",
+          "ms": 30
+        },
+        {
+          "id": "notice-09",
+          "ms": 30
+        },
+        {
+          "id": "notice-10",
+          "ms": 30
+        },
+        {
+          "id": "notice-11",
+          "ms": 30
+        },
+        {
+          "id": "notice-12",
+          "ms": 30
+        },
+        {
+          "id": "notice-13",
+          "ms": 30
+        },
+        {
+          "id": "notice-14",
+          "ms": 30
+        },
+        {
+          "id": "notice-15",
+          "ms": 30
+        },
+        {
+          "id": "notice-16",
+          "ms": 30
+        },
+        {
+          "id": "notice-17",
+          "ms": 30
+        },
+        {
+          "id": "notice-18",
+          "ms": 30
+        },
+        {
+          "id": "notice-19",
+          "ms": 30
+        },
+        {
+          "id": "notice-20",
+          "ms": 30
+        }
+      ]
+    },
+    "walk": {
+      "end": "loop",
+      "frames": [
+        {
+          "id": "walk-00",
+          "ms": 30
+        },
+        {
+          "id": "walk-01",
+          "ms": 30
+        },
+        {
+          "id": "walk-02",
+          "ms": 30
+        },
+        {
+          "id": "walk-03",
+          "ms": 30
+        },
+        {
+          "id": "walk-04",
+          "ms": 30
+        },
+        {
+          "id": "walk-05",
+          "ms": 30
+        },
+        {
+          "id": "walk-06",
+          "ms": 30
+        },
+        {
+          "id": "walk-07",
+          "ms": 30
+        },
+        {
+          "id": "walk-08",
+          "ms": 30
+        },
+        {
+          "id": "walk-09",
+          "ms": 30
+        },
+        {
+          "id": "walk-10",
+          "ms": 30
+        },
+        {
+          "id": "walk-11",
+          "ms": 30
+        },
+        {
+          "id": "walk-12",
+          "ms": 30
+        },
+        {
+          "id": "walk-13",
+          "ms": 30
+        },
+        {
+          "id": "walk-14",
+          "ms": 30
+        },
+        {
+          "id": "walk-15",
+          "ms": 30
+        },
+        {
+          "id": "walk-16",
+          "ms": 30
+        },
+        {
+          "id": "walk-17",
+          "ms": 30
+        },
+        {
+          "id": "walk-18",
+          "ms": 30
+        },
+        {
+          "id": "walk-19",
+          "ms": 30
+        },
+        {
+          "id": "walk-20",
+          "ms": 30
+        },
+        {
+          "id": "walk-21",
+          "ms": 30
+        },
+        {
+          "id": "walk-22",
+          "ms": 30
+        },
+        {
+          "id": "walk-23",
+          "ms": 30
+        },
+        {
+          "id": "walk-24",
+          "ms": 30
+        },
+        {
+          "id": "walk-25",
+          "ms": 30
+        },
+        {
+          "id": "walk-26",
+          "ms": 30
+        },
+        {
+          "id": "walk-27",
+          "ms": 30
+        },
+        {
+          "id": "walk-28",
+          "ms": 30
+        },
+        {
+          "id": "walk-29",
+          "ms": 30
+        },
+        {
+          "id": "walk-30",
+          "ms": 30
+        },
+        {
+          "id": "walk-31",
+          "ms": 30
+        },
+        {
+          "id": "walk-32",
+          "ms": 30
+        },
+        {
+          "id": "walk-33",
+          "ms": 30
+        },
+        {
+          "id": "walk-34",
+          "ms": 30
+        },
+        {
+          "id": "walk-35",
+          "ms": 30
+        }
+      ],
+      "travelPerCyclePx": 104
+    },
+    "present": {
+      "end": "hold",
+      "frames": [
+        {
+          "id": "present-00",
+          "ms": 30
+        },
+        {
+          "id": "present-01",
+          "ms": 30
+        },
+        {
+          "id": "present-02",
+          "ms": 30
+        },
+        {
+          "id": "present-03",
+          "ms": 30
+        },
+        {
+          "id": "present-04",
+          "ms": 30
+        },
+        {
+          "id": "present-05",
+          "ms": 30
+        },
+        {
+          "id": "present-06",
+          "ms": 30
+        },
+        {
+          "id": "present-07",
+          "ms": 30
+        },
+        {
+          "id": "present-08",
+          "ms": 30
+        },
+        {
+          "id": "present-09",
+          "ms": 30
+        },
+        {
+          "id": "present-10",
+          "ms": 30
+        },
+        {
+          "id": "present-11",
+          "ms": 30
+        },
+        {
+          "id": "present-12",
+          "ms": 30
+        },
+        {
+          "id": "present-13",
+          "ms": 30
+        },
+        {
+          "id": "present-14",
+          "ms": 30
+        },
+        {
+          "id": "present-15",
+          "ms": 30
+        },
+        {
+          "id": "present-16",
+          "ms": 30
+        },
+        {
+          "id": "present-17",
+          "ms": 30
+        },
+        {
+          "id": "present-18",
+          "ms": 30
+        },
+        {
+          "id": "present-19",
+          "ms": 30
+        },
+        {
+          "id": "present-20",
+          "ms": 30
+        },
+        {
+          "id": "present-21",
+          "ms": 30
+        },
+        {
+          "id": "present-22",
+          "ms": 30
+        },
+        {
+          "id": "present-23",
+          "ms": 30
+        },
+        {
+          "id": "present-24",
+          "ms": 30
+        },
+        {
+          "id": "present-25",
+          "ms": 30
+        },
+        {
+          "id": "present-26",
+          "ms": 30
+        },
+        {
+          "id": "present-27",
+          "ms": 30
+        },
+        {
+          "id": "present-28",
+          "ms": 30
+        },
+        {
+          "id": "present-29",
+          "ms": 30
+        },
+        {
+          "id": "present-30",
+          "ms": 30
+        },
+        {
+          "id": "present-31",
+          "ms": 30
+        },
+        {
+          "id": "present-32",
+          "ms": 30
+        },
+        {
+          "id": "present-33",
+          "ms": 30
+        },
+        {
+          "id": "present-34",
+          "ms": 30
+        },
+        {
+          "id": "present-35",
+          "ms": 30
+        },
+        {
+          "id": "present-36",
+          "ms": 30
+        },
+        {
+          "id": "present-37",
+          "ms": 30
+        }
+      ]
+    },
+    "jump": {
+      "end": "idle",
+      "frames": [
+        {
+          "id": "jump-00",
+          "ms": 30
+        },
+        {
+          "id": "jump-01",
+          "ms": 30
+        },
+        {
+          "id": "jump-02",
+          "ms": 30
+        },
+        {
+          "id": "jump-03",
+          "ms": 30
+        },
+        {
+          "id": "jump-04",
+          "ms": 30
+        },
+        {
+          "id": "jump-05",
+          "ms": 30
+        },
+        {
+          "id": "jump-06",
+          "ms": 30
+        },
+        {
+          "id": "jump-07",
+          "ms": 30
+        },
+        {
+          "id": "jump-08",
+          "ms": 30
+        },
+        {
+          "id": "jump-09",
+          "ms": 30
+        },
+        {
+          "id": "jump-10",
+          "ms": 30
+        },
+        {
+          "id": "jump-11",
+          "ms": 30
+        },
+        {
+          "id": "jump-12",
+          "ms": 30
+        },
+        {
+          "id": "jump-13",
+          "ms": 30
+        },
+        {
+          "id": "jump-14",
+          "ms": 30
+        },
+        {
+          "id": "jump-15",
+          "ms": 30
+        },
+        {
+          "id": "jump-16",
+          "ms": 30
+        },
+        {
+          "id": "jump-17",
+          "ms": 30
+        },
+        {
+          "id": "jump-18",
+          "ms": 30
+        },
+        {
+          "id": "jump-19",
+          "ms": 30
+        },
+        {
+          "id": "jump-20",
+          "ms": 30
+        },
+        {
+          "id": "jump-21",
+          "ms": 30
+        },
+        {
+          "id": "jump-22",
+          "ms": 30
+        },
+        {
+          "id": "jump-23",
+          "ms": 30
+        },
+        {
+          "id": "jump-24",
+          "ms": 30
+        },
+        {
+          "id": "jump-25",
+          "ms": 30
+        },
+        {
+          "id": "jump-26",
+          "ms": 30
+        },
+        {
+          "id": "jump-27",
+          "ms": 30
+        },
+        {
+          "id": "jump-28",
+          "ms": 30
+        },
+        {
+          "id": "jump-29",
+          "ms": 30
+        },
+        {
+          "id": "jump-30",
+          "ms": 30
+        },
+        {
+          "id": "jump-31",
+          "ms": 30
+        },
+        {
+          "id": "jump-32",
+          "ms": 30
+        },
+        {
+          "id": "jump-33",
+          "ms": 30
+        },
+        {
+          "id": "jump-34",
+          "ms": 30
+        },
+        {
+          "id": "jump-35",
+          "ms": 30
+        }
+      ]
+    },
+    "land": {
+      "end": "idle",
+      "frames": [
+        {
+          "id": "land-00",
+          "ms": 30
+        },
+        {
+          "id": "land-01",
+          "ms": 30
+        },
+        {
+          "id": "land-02",
+          "ms": 30
+        },
+        {
+          "id": "land-03",
+          "ms": 30
+        },
+        {
+          "id": "land-04",
+          "ms": 30
+        },
+        {
+          "id": "land-05",
+          "ms": 30
+        },
+        {
+          "id": "land-06",
+          "ms": 30
+        },
+        {
+          "id": "land-07",
+          "ms": 30
+        },
+        {
+          "id": "land-08",
+          "ms": 30
+        },
+        {
+          "id": "land-09",
+          "ms": 30
+        },
+        {
+          "id": "land-10",
+          "ms": 30
+        },
+        {
+          "id": "land-11",
+          "ms": 30
+        },
+        {
+          "id": "land-12",
+          "ms": 30
+        },
+        {
+          "id": "land-13",
+          "ms": 30
+        },
+        {
+          "id": "land-14",
+          "ms": 30
+        },
+        {
+          "id": "land-15",
+          "ms": 30
+        },
+        {
+          "id": "land-16",
+          "ms": 30
+        },
+        {
+          "id": "land-17",
+          "ms": 30
+        },
+        {
+          "id": "land-18",
+          "ms": 30
+        },
+        {
+          "id": "land-19",
+          "ms": 30
+        }
+      ]
+    },
+    "brace": {
+      "end": "hold",
+      "frames": [
+        {
+          "id": "brace-00",
+          "ms": 30
+        },
+        {
+          "id": "brace-01",
+          "ms": 30
+        },
+        {
+          "id": "brace-02",
+          "ms": 30
+        },
+        {
+          "id": "brace-03",
+          "ms": 30
+        },
+        {
+          "id": "brace-04",
+          "ms": 30
+        },
+        {
+          "id": "brace-05",
+          "ms": 30
+        },
+        {
+          "id": "brace-06",
+          "ms": 30
+        },
+        {
+          "id": "brace-07",
+          "ms": 30
+        },
+        {
+          "id": "brace-08",
+          "ms": 30
+        },
+        {
+          "id": "brace-09",
+          "ms": 30
+        },
+        {
+          "id": "brace-10",
+          "ms": 30
+        },
+        {
+          "id": "brace-11",
+          "ms": 30
+        },
+        {
+          "id": "brace-12",
+          "ms": 30
+        },
+        {
+          "id": "brace-13",
+          "ms": 30
+        },
+        {
+          "id": "brace-14",
+          "ms": 30
+        },
+        {
+          "id": "brace-15",
+          "ms": 30
+        },
+        {
+          "id": "brace-16",
+          "ms": 30
+        },
+        {
+          "id": "brace-17",
+          "ms": 30
+        },
+        {
+          "id": "brace-18",
+          "ms": 30
+        }
+      ]
+    },
+    "nod": {
+      "end": "idle",
+      "frames": [
+        {
+          "id": "nod-00",
+          "ms": 30
+        },
+        {
+          "id": "nod-01",
+          "ms": 30
+        },
+        {
+          "id": "nod-02",
+          "ms": 30
+        },
+        {
+          "id": "nod-03",
+          "ms": 30
+        },
+        {
+          "id": "nod-04",
+          "ms": 30
+        },
+        {
+          "id": "nod-05",
+          "ms": 30
+        },
+        {
+          "id": "nod-06",
+          "ms": 30
+        },
+        {
+          "id": "nod-07",
+          "ms": 30
+        },
+        {
+          "id": "nod-08",
+          "ms": 30
+        },
+        {
+          "id": "nod-09",
+          "ms": 30
+        },
+        {
+          "id": "nod-10",
+          "ms": 30
+        },
+        {
+          "id": "nod-11",
+          "ms": 30
+        },
+        {
+          "id": "nod-12",
+          "ms": 30
+        },
+        {
+          "id": "nod-13",
+          "ms": 30
+        },
+        {
+          "id": "nod-14",
+          "ms": 30
+        },
+        {
+          "id": "nod-15",
+          "ms": 30
+        },
+        {
+          "id": "nod-16",
+          "ms": 30
+        },
+        {
+          "id": "nod-17",
+          "ms": 30
+        },
+        {
+          "id": "nod-18",
+          "ms": 30
+        },
+        {
+          "id": "nod-19",
+          "ms": 30
+        },
+        {
+          "id": "nod-20",
+          "ms": 30
+        },
+        {
+          "id": "nod-21",
+          "ms": 30
+        },
+        {
+          "id": "nod-22",
+          "ms": 30
+        },
+        {
+          "id": "nod-23",
+          "ms": 30
+        },
+        {
+          "id": "nod-24",
+          "ms": 30
+        },
+        {
+          "id": "nod-25",
+          "ms": 30
+        },
+        {
+          "id": "nod-26",
+          "ms": 30
+        }
+      ]
+    },
+    "laugh": {
+      "end": "idle",
+      "frames": [
+        {
+          "id": "laugh-00",
+          "ms": 30
+        },
+        {
+          "id": "laugh-01",
+          "ms": 30
+        },
+        {
+          "id": "laugh-02",
+          "ms": 30
+        },
+        {
+          "id": "laugh-03",
+          "ms": 30
+        },
+        {
+          "id": "laugh-04",
+          "ms": 30
+        },
+        {
+          "id": "laugh-05",
+          "ms": 30
+        },
+        {
+          "id": "laugh-06",
+          "ms": 30
+        },
+        {
+          "id": "laugh-07",
+          "ms": 30
+        },
+        {
+          "id": "laugh-08",
+          "ms": 30
+        },
+        {
+          "id": "laugh-09",
+          "ms": 30
+        },
+        {
+          "id": "laugh-10",
+          "ms": 30
+        },
+        {
+          "id": "laugh-11",
+          "ms": 30
+        },
+        {
+          "id": "laugh-12",
+          "ms": 30
+        },
+        {
+          "id": "laugh-13",
+          "ms": 30
+        },
+        {
+          "id": "laugh-14",
+          "ms": 30
+        },
+        {
+          "id": "laugh-15",
+          "ms": 30
+        },
+        {
+          "id": "laugh-16",
+          "ms": 30
+        },
+        {
+          "id": "laugh-17",
+          "ms": 30
+        },
+        {
+          "id": "laugh-18",
+          "ms": 30
+        },
+        {
+          "id": "laugh-19",
+          "ms": 30
+        },
+        {
+          "id": "laugh-20",
+          "ms": 30
+        },
+        {
+          "id": "laugh-21",
+          "ms": 30
+        },
+        {
+          "id": "laugh-22",
+          "ms": 30
+        },
+        {
+          "id": "laugh-23",
+          "ms": 30
+        },
+        {
+          "id": "laugh-24",
+          "ms": 30
+        },
+        {
+          "id": "laugh-25",
+          "ms": 30
+        },
+        {
+          "id": "laugh-26",
+          "ms": 30
+        },
+        {
+          "id": "laugh-27",
+          "ms": 30
+        },
+        {
+          "id": "laugh-28",
+          "ms": 30
+        },
+        {
+          "id": "laugh-29",
+          "ms": 30
+        },
+        {
+          "id": "laugh-30",
+          "ms": 30
+        },
+        {
+          "id": "laugh-31",
+          "ms": 30
+        },
+        {
+          "id": "laugh-32",
+          "ms": 30
+        },
+        {
+          "id": "laugh-33",
+          "ms": 30
+        },
+        {
+          "id": "laugh-34",
+          "ms": 30
+        },
+        {
+          "id": "laugh-35",
+          "ms": 30
+        },
+        {
+          "id": "laugh-36",
+          "ms": 30
+        },
+        {
+          "id": "laugh-37",
+          "ms": 30
+        },
+        {
+          "id": "laugh-38",
+          "ms": 30
+        },
+        {
+          "id": "laugh-39",
+          "ms": 30
+        },
+        {
+          "id": "laugh-40",
+          "ms": 30
+        },
+        {
+          "id": "laugh-41",
+          "ms": 30
+        },
+        {
+          "id": "laugh-42",
+          "ms": 30
+        },
+        {
+          "id": "laugh-43",
+          "ms": 30
+        },
+        {
+          "id": "laugh-44",
+          "ms": 30
+        },
+        {
+          "id": "laugh-45",
+          "ms": 30
+        },
+        {
+          "id": "laugh-46",
+          "ms": 30
+        },
+        {
+          "id": "laugh-47",
+          "ms": 30
+        }
+      ]
+    }
+  },
+  "transitions": {
+    "notice-present": {
+      "frames": [
+        {
+          "id": "notice-present-1",
+          "ms": 30
+        },
+        {
+          "id": "notice-present-2",
+          "ms": 30
+        },
+        {
+          "id": "notice-present-3",
+          "ms": 30
+        },
+        {
+          "id": "notice-present-4",
+          "ms": 30
+        },
+        {
+          "id": "notice-present-5",
+          "ms": 30
+        },
+        {
+          "id": "notice-present-6",
+          "ms": 30
+        }
+      ],
+      "nextClip": "present",
+      "nextFrame": 7
+    },
+    "notice-walk": {
+      "frames": [
+        {
+          "id": "notice-walk-1",
+          "ms": 30
+        },
+        {
+          "id": "notice-walk-2",
+          "ms": 30
+        },
+        {
+          "id": "notice-walk-3",
+          "ms": 30
+        },
+        {
+          "id": "notice-walk-4",
+          "ms": 30
+        },
+        {
+          "id": "notice-walk-5",
+          "ms": 30
+        },
+        {
+          "id": "notice-walk-6",
+          "ms": 30
+        }
+      ],
+      "nextClip": "walk",
+      "nextFrame": 0
+    },
+    "walk-contact-a-settle": {
+      "frames": [
+        {
+          "id": "walk-contact-a-settle-1",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-a-settle-2",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-a-settle-3",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-a-settle-4",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-a-settle-5",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-a-settle-6",
+          "ms": 30
+        }
+      ],
+      "nextClip": "idle",
+      "nextFrame": 0
+    },
+    "walk-contact-b-settle": {
+      "frames": [
+        {
+          "id": "walk-contact-b-settle-1",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-b-settle-2",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-b-settle-3",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-b-settle-4",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-b-settle-5",
+          "ms": 30
+        },
+        {
+          "id": "walk-contact-b-settle-6",
+          "ms": 30
+        }
+      ],
+      "nextClip": "idle",
+      "nextFrame": 0
+    },
+    "brace-takeoff": {
+      "frames": [
+        {
+          "id": "brace-takeoff-1",
+          "ms": 30
+        },
+        {
+          "id": "brace-takeoff-2",
+          "ms": 30
+        },
+        {
+          "id": "brace-takeoff-3",
+          "ms": 30
+        },
+        {
+          "id": "brace-takeoff-4",
+          "ms": 30
+        },
+        {
+          "id": "brace-takeoff-5",
+          "ms": 30
+        },
+        {
+          "id": "brace-takeoff-6",
+          "ms": 30
+        }
+      ],
+      "nextClip": "jump",
+      "nextFrame": 6
+    }
+  },
+  "releases": {
+    "present": {
+      "frames": [
+        {
+          "id": "present-release-00",
+          "ms": 30
+        },
+        {
+          "id": "present-release-01",
+          "ms": 30
+        },
+        {
+          "id": "present-release-02",
+          "ms": 30
+        },
+        {
+          "id": "present-release-03",
+          "ms": 30
+        },
+        {
+          "id": "present-release-04",
+          "ms": 30
+        },
+        {
+          "id": "present-release-05",
+          "ms": 30
+        },
+        {
+          "id": "present-release-06",
+          "ms": 30
+        },
+        {
+          "id": "present-release-07",
+          "ms": 30
+        },
+        {
+          "id": "present-release-08",
+          "ms": 30
+        },
+        {
+          "id": "present-release-09",
+          "ms": 30
+        },
+        {
+          "id": "present-release-10",
+          "ms": 30
+        },
+        {
+          "id": "present-release-11",
+          "ms": 30
+        },
+        {
+          "id": "present-release-12",
+          "ms": 30
+        },
+        {
+          "id": "present-release-13",
+          "ms": 30
+        },
+        {
+          "id": "present-release-14",
+          "ms": 30
+        },
+        {
+          "id": "present-release-15",
+          "ms": 30
+        },
+        {
+          "id": "present-release-16",
+          "ms": 30
+        },
+        {
+          "id": "present-release-17",
+          "ms": 30
+        },
+        {
+          "id": "present-release-18",
+          "ms": 30
+        },
+        {
+          "id": "present-release-19",
+          "ms": 30
+        }
+      ],
+      "nextClip": "idle",
+      "nextFrame": 0
+    },
+    "notice": {
+      "frames": [
+        {
+          "id": "notice-release-00",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-01",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-02",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-03",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-04",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-05",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-06",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-07",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-08",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-09",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-10",
+          "ms": 30
+        },
+        {
+          "id": "notice-release-11",
+          "ms": 30
+        }
+      ],
+      "nextClip": "idle",
+      "nextFrame": 0
+    },
+    "brace": {
+      "frames": [
+        {
+          "id": "brace-release-00",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-01",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-02",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-03",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-04",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-05",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-06",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-07",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-08",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-09",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-10",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-11",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-12",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-13",
+          "ms": 30
+        },
+        {
+          "id": "brace-release-14",
+          "ms": 30
+        }
+      ],
+      "nextClip": "idle",
+      "nextFrame": 0
+    }
+  },
+  "atlases": [
+    "livesey-atlas.webp",
+    "livesey-atlas-2.webp",
+    "livesey-atlas-3.webp"
+  ]
+}

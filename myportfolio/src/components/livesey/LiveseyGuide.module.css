@@ -26,62 +26,37 @@
   border-radius: 12px;
 }
 
-.flip,
-.spin,
-.squash,
-.pose {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
+/* The cels do all the acting; this wrapper only mirrors him (around the foot anchor = cel centre) */
 .flip {
-  transition: transform 0.22s var(--ease-out);
-}
-
-/* Flips rotate around his middle; squash & stretch pivot on his feet */
-.spin {
-  transform-origin: 50% 55%;
-}
-
-.squash {
-  transform-origin: 50% 100%;
-}
-
-.pose {
-  transform-origin: 50% 100%;
-}
-
-.pose img {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  display: block;
-  user-select: none;
-  -webkit-user-drag: none;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
 }
 
-.breathing {
-  animation: breathe 2.4s ease-in-out infinite;
+.cel {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
 }
 
-@keyframes breathe {
-  0%, 100% { transform: scale(1, 1); }
-  50% { transform: scale(1.02, 0.98); }
+/* While a dialog is open he steps out of the reading area */
+.guide {
+  transition: opacity 0.22s ease;
 }
 
-.sprite:hover .breathing {
-  animation-duration: 0.9s;
+.guideAway {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.guideAway .sprite {
+  pointer-events: none;
 }
 
 /* Contact shadow: fades away while he's in the air */
 .shadow {
   position: absolute;
-  left: 16%;
-  right: 16%;
-  bottom: 2px;
-  height: 9px;
+  left: 30%;
+  right: 30%;
+  height: 8px;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(0, 0, 0, 0.6), transparent);
   transition: opacity 0.2s ease, transform 0.25s var(--ease-out);
@@ -263,8 +238,3 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .breathing {
-    animation: none;
-  }
-}

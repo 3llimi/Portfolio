@@ -15,8 +15,8 @@ import {
   type Variants,
 } from "framer-motion";
 import styles from "./SkillsSection.module.css";
-import { SectionBackdrop, ui, WaveText } from "./ui";
-import { GITHUB_PROFILE, PROJECTS, SKILL_GROUPS, type Skill, type SkillGroup } from "./skillsData";
+import { SectionBackdrop, ui, WaveText } from "@/components/ui/ui";
+import { GITHUB_PROFILE, PROJECTS, SKILL_GROUPS, type Skill, type SkillGroup } from "@/data/skillsData";
 
 const getImagePath = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH || ""}${path}`;
 
@@ -131,6 +131,7 @@ function SkillCard({
                 <motion.button
                   type="button"
                   className={`${styles.chip} ${selectedLabel === skill.label ? styles.chipSelected : ""}`}
+                  data-skill-chip
                   onClick={(event) => onSelect(skill, event.currentTarget)}
                   aria-haspopup="dialog"
                   aria-label={`${skill.label}: see where I used it`}

@@ -8,12 +8,12 @@ import type { Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
-import SkillsSection, { skillsSectionClassName } from "./SkillsSection";
-import { SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "./ui";
-import sx from "./sections.module.css";
-import { SmoothScroll, getLenis, scrollToY } from "./smoothScroll";
-import ScrollRail from "./ScrollRail";
-import LiveseyGuide from "./LiveseyGuide";
+import SkillsSection, { skillsSectionClassName } from "@/components/skills/SkillsSection";
+import { SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "@/components/ui/ui";
+import sx from "@/styles/sections.module.css";
+import { SmoothScroll, getLenis, scrollToY } from "@/components/scroll/smoothScroll";
+import ScrollRail from "@/components/scroll/ScrollRail";
+import LiveseyGuide from "@/components/livesey/LiveseyGuide";
 
 // Helper function to get the correct image path for GitHub Pages
 const getImagePath = (path: string) => {
@@ -1626,6 +1626,8 @@ export default function Home() {
                   <motion.article
                     key={`${project.id}-${index}`}
                     className={`${ui.card} ${sx.ghCard}`}
+                    data-project-card
+                    data-perch="GitHub"
                     onPointerMove={trackSpotlight}
                     initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
                     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}

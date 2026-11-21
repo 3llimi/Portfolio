@@ -174,7 +174,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     blurb: "Infrastructure as code, delivery pipelines and observability.",
     items: [
       {
-        icon: "/icons/kubernetes-svgrepo-com.svg",
+        icon: "/icons/kubernetes.svg",
         label: "Kubernetes",
         uses: [
           { project: "devops", note: "Deployments, Services, Ingress, ConfigMaps, Secrets and StatefulSets." },
@@ -182,7 +182,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
         ],
       },
       {
-        icon: "/icons/terraform-svgrepo-com.svg",
+        icon: "/icons/terraform.svg",
         label: "Terraform",
         uses: [
           { project: "devops", note: "GitHub repository settings managed as code, plus the same setup in Pulumi." },
@@ -190,7 +190,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
         ],
       },
       {
-        icon: "/icons/ansible-svgrepo-com.svg",
+        icon: "/icons/ansible.svg",
         label: "Ansible",
         uses: [
           { project: "devops", note: "Roles and playbooks to provision servers and deploy the app." },
@@ -198,22 +198,22 @@ export const SKILL_GROUPS: SkillGroup[] = [
         ],
       },
       {
-        icon: "/icons/Helm.svg",
+        icon: "/icons/helm.svg",
         label: "Helm",
         uses: [{ project: "devops", note: "Own chart with dev/prod values and a shared library chart; Vault via Helm." }],
       },
       {
-        icon: "/icons/Argo CD.svg",
+        icon: "/icons/argo-cd.svg",
         label: "Argo CD",
         uses: [{ project: "devops", note: "GitOps delivery with an Application and ApplicationSet per environment." }],
       },
       {
-        icon: "/icons/prometheus-svgrepo-com.svg",
+        icon: "/icons/prometheus.svg",
         label: "Prometheus",
         uses: [{ project: "devops", note: "Scraped app metrics and added a ServiceMonitor in Kubernetes." }],
       },
       {
-        icon: "/icons/grafana-svgrepo-com.svg",
+        icon: "/icons/grafana.svg",
         label: "Grafana",
         uses: [{ project: "devops", note: "Dashboards combining Prometheus metrics with Loki/Promtail logs." }],
       },
@@ -237,7 +237,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
         ],
       },
       {
-        icon: "/icons/rust-svgrepo-com.svg",
+        icon: "/icons/rust.svg",
         label: "Rust",
         uses: [
           { project: "accpa", note: "Type checker for STELLA with type reconstruction and universal types." },
