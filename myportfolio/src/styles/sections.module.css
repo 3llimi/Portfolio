@@ -392,6 +392,14 @@
   color: var(--muted);
 }
 
+/* Wherever the Livesey toggle shows (the inverse of COMPACT_QUERY), it's fixed in the bottom-left
+   corner and ends 64px from the edge: indent the line so it starts clear of it (~84px from the edge) */
+@media (min-width: 601px) and (hover: hover), (min-width: 601px) and (pointer: fine) {
+  .copyright {
+    padding-left: max(0px, calc(84px - clamp(20px, 4.17vw, 80px)));
+  }
+}
+
 /* Hints that only make sense with a mouse */
 @media (hover: none) {
   .hoverOnly {

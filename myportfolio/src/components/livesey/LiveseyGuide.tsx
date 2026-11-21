@@ -29,8 +29,9 @@ import {
  *   leaps to the next section once the scroll is about to settle (aimed at where the page will stop),
  *   so he doesn't chain hops mid-scroll. `data-perch-surface="text"` makes him stand on the tops of
  *   the letters rather than on the line box; `data-perch-x="0.5"` / `"0.2-0.6"` fixes or limits where
- *   along the surface his feet go. Destinations are scored (inside the reading band, headroom above
- *   him, a short hop), not random.
+ *   along the surface his feet go. Destinations are scored (inside the reading band, a short hop), not
+ *   random, and a spot where his body would cover another perch or a `data-perch-obstacle` above it
+ *   is never used.
  * - Positioning runs after every other rAF callback of the frame (Lenis, the carousels), so he
  *   never trails a frame behind the ledge he stands on.
  * - Linger on a project card (or focus its README button) → notice → swagger one walk cycle (two
@@ -740,7 +741,9 @@ export default function LiveseyGuide() {
     const hasHeadroom = (el: HTMLElement, foot: number, top: number) => {
       const hat = top - (CEL_ANCHOR.y - HAT_Y) * st.s;
       const half = 58 * st.s;
-      for (const other of Array.from(document.querySelectorAll<HTMLElement>(`[data-perch="${el.dataset.perch}"]`))) {
+      // other perches of the section, plus content he mustn't stand in front of (`data-perch-obstacle`)
+      const above = document.querySelectorAll<HTMLElement>(`[data-perch="${el.dataset.perch}"], [data-perch-obstacle]`);
+      for (const other of Array.from(above)) {
         if (other === el || other.contains(el) || el.contains(other)) continue;
         const r = other.getBoundingClientRect();
         if (r.width <= 0 || r.right < foot - half || r.left > foot + half) continue;
@@ -811,7 +814,9 @@ export default function LiveseyGuide() {
         const cx = foot - CEL_ANCHOR.x * st.s;
         if (Math.abs(clampX(cx) - cx) > 1) return; // would be pushed off the surface
         let score = top < H * lo ? (H * lo - top) * 1.2 : top > H * hi ? (top - H * hi) * 1.2 : 0;
-        if (!hasHeadroom(el, foot, s.top)) score += 700; // only if nothing roomier is in view
+        // never stand where his body would cover the perch above (e.g. a lower skill card's edge,
+        // right under the card above it); with nothing roomier in view he takes the floor instead
+        if (!hasHeadroom(el, foot, s.top)) return;
         score += Math.hypot(foot - fx, top - fy) * 0.12;
         if (el === avoid) score += 500;
         score += Math.random() * (random ? 420 : 50);

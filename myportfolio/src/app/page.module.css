@@ -365,7 +365,9 @@
 .quoteBottom {
   position: absolute;
   bottom: -60px;
-  right: 0;
+  /* flush with the end of the text column (.aboutText's right padding) and clear of the fixed
+     section counter, which covers the screen's right-most 92px */
+  right: 60px;
   font-family: 'Satoshi', sans-serif;
   font-size: clamp(80px, 8.3vw, 160px);
   line-height: 1;

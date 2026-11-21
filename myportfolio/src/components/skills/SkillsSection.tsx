@@ -520,8 +520,10 @@ export default function SkillsSection() {
           </motion.div>
 
           {/* Heading, stats and filters */}
+          {/* data-perch-obstacle: when this stacks above the grid, Livesey won't stand in front of the filters */}
           <motion.aside
             className={styles.side}
+            data-perch-obstacle
             initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, amount: 0.25 }}
