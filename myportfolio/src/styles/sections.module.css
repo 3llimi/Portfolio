@@ -55,7 +55,9 @@
   to { opacity: 1; scale: none; filter: none; }
 }
 
-/* Both hero layouts are in the markup; CSS shows the right one */
+/* Both hero layouts are in the markup; CSS shows the right one.
+   The stacked layout covers phones, landscape phones and portrait tablets
+   (same query as the stacked hero rules in page.module.css). */
 .heroDesktop {
   display: contents;
 }
@@ -64,7 +66,7 @@
   display: none;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
   .heroDesktop {
     display: none;
   }
@@ -126,6 +128,18 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+/* Touch screens: static list instead of the auto-scrolling column (1 column on phones, 2 on tablets) */
+.achList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
+  text-align: left;
 }
 
 /* ---------- GitHub ---------- */
@@ -228,6 +242,42 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.ghButtons:empty {
+  display: none;
+}
+
+/* Touch screens: native horizontal swipe with snapping, the next card peeking in */
+.ghScroller {
+  overflow-x: auto !important;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter, 20px);
+  touch-action: pan-x pan-y !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Bleed to the screen edges so cards swipe in from off-screen */
+  width: auto !important;
+  margin-inline: calc(-1 * var(--gutter, 20px));
+}
+
+.ghScroller::-webkit-scrollbar {
+  display: none;
+}
+
+.ghScroller > div {
+  padding: 4px var(--gutter, 20px) 8px;
+}
+
+.ghScroller .ghCard {
+  flex-basis: min(82vw, 380px);
+  width: min(82vw, 380px);
+  scroll-snap-align: start;
+}
+
+.ghScroller .ghCard:hover .ghCover img {
+  transform: none;
 }
 
 /* ---------- Footer ---------- */
@@ -358,22 +408,47 @@
   }
 }
 
-@media (max-width: 600px) {
+/* Phones, landscape phones and portrait tablets */
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
+  .footer {
+    padding: 72px 0 calc(24px + env(safe-area-inset-bottom)) !important;
+  }
 
+  .footerInner {
+    padding: 0 var(--gutter);
+  }
+
+  .ghHeader {
+    margin-bottom: 24px;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
   .paMeta {
-    align-items: center;
-    margin: 4px 0 20px;
+    display: none;
   }
 
   .achCard {
-    padding: 18px;
+    gap: 8px;
+    padding: 16px 18px;
+  }
+
+  .achTitle {
+    font-size: 18px;
+  }
+
+  .achSubtitle {
+    font-size: 11.5px;
+    line-height: 1.45;
   }
 
   .ghHeader {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 16px;
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
   .ghTitle {
@@ -384,31 +459,77 @@
     font-size: 2.1rem;
     font-weight: 700;
     letter-spacing: 0.04em;
+    line-height: 1.1;
+  }
+
+  .ghTitle > span + span {
+    margin-top: 0;
   }
 
   .ghIntro {
     align-items: center;
     text-align: center;
+    gap: 10px;
+  }
+
+  .ghSubtitle {
+    font-size: 15px;
+  }
+
+  /* Each card snaps to the centre of the screen, with its neighbours peeking in on both sides */
+  .ghScroller {
+    scroll-padding-inline: 0;
+  }
+
+  .ghScroller > div {
+    padding-inline: 9vw;
+  }
+
+  .ghScroller .ghCard {
+    flex-basis: 82vw;
+    width: 82vw;
+    scroll-snap-align: center;
+  }
+
+  .ghContent {
+    padding: 14px 16px 16px;
+  }
+
+  .ghDesc {
+    font-size: 14px;
+    min-height: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .footer {
+    padding-top: 56px !important;
   }
 
   .footerTop {
     flex-direction: column;
     align-items: stretch;
     text-align: center;
+    gap: 24px;
+    padding-bottom: 28px;
   }
 
   .footerLead {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 10px auto 0;
+    font-size: 15px;
   }
 
   .footerLinks {
     flex-direction: column;
+    gap: 10px;
   }
 
   .socialCard {
     min-width: 0;
     text-align: left;
+    padding: 12px 16px 12px 12px;
   }
 
   /* Same mobile title treatment as the Skills and GitHub headings */
@@ -419,12 +540,15 @@
     line-height: 1.1 !important;
   }
 
-  .ghTitle > span {
-    line-height: 1.1;
-  }
-
   .footerBottom {
     flex-direction: column-reverse;
     text-align: center;
+    gap: 14px;
+    padding-top: 20px;
+  }
+
+  .copyright {
+    font-size: 12px;
+    line-height: 1.5;
   }
 }

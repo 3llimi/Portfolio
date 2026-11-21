@@ -952,14 +952,38 @@
   }
 }
 
-@media (max-width: 600px) {
+/* Phones, landscape phones and portrait tablets: size to content (no empty 100vh band) */
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
   .section {
-    min-height: auto;
-    padding: 56px 0 40px;
+    min-height: 0;
+    padding: 72px 0 64px;
   }
 
   .inner {
-    padding: 0 16px;
+    padding: 0 var(--gutter);
+  }
+
+  .layout {
+    gap: 28px;
+  }
+
+  .marquee {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: 56px 0 48px;
+  }
+
+  .layout {
+    gap: 24px;
+  }
+
+  /* The logos already appear as chips in the cards above: skip the repeat on phones */
+  .marquee {
+    display: none;
   }
 
   .side {
@@ -988,9 +1012,9 @@
   .filters {
     flex-wrap: nowrap;
     overflow-x: auto;
-    width: calc(100% + 32px);
-    margin: 0 -16px;
-    padding: 2px 16px 6px;
+    width: calc(100% + 2 * var(--gutter));
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 2px var(--gutter) 6px;
     scrollbar-width: none;
   }
 

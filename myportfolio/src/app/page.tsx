@@ -11,10 +11,11 @@ import rehypeSanitize from "rehype-sanitize";
 import SkillsSection from "@/components/skills/SkillsSection";
 import { SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "@/components/ui/ui";
 import sx from "@/styles/sections.module.css";
-import { SmoothScroll, scrollToY } from "@/components/scroll/smoothScroll";
+import { SmoothScroll, scrollToSection, scrollToY } from "@/components/scroll/smoothScroll";
 import ScrollRail from "@/components/scroll/ScrollRail";
 import SectionNav from "@/components/scroll/SectionNav";
 import LiveseyGuide from "@/components/livesey/LiveseyGuide";
+import { FINE_POINTER_QUERY, useIsCompact, useMediaQuery } from "@/components/ui/useMediaQuery";
 
 // Helper function to get the correct image path for GitHub Pages
 const getImagePath = (path: string) => {
@@ -473,13 +474,16 @@ export default function Home() {
   const [readmeError, setReadmeError] = useState<string | null>(null);
   const [isReadmeLoading, setIsReadmeLoading] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  // Phones/tablets: native swipe lists instead of auto-scrolling marquees, no Livesey/README/cursor
+  const isCompact = useIsCompact();
   const [activeContribution, setActiveContribution] = useState<{
     title: string;
     content: string;
   } | null>(null);
+  // The marquee renders its cards twice to loop seamlessly; the swipe list needs them once
   const marqueeGithubProjects = useMemo(
-    () => (githubProjects.length > 0 ? [...githubProjects, ...githubProjects] : []),
-    [githubProjects]
+    () => (githubProjects.length > 0 && !isCompact ? [...githubProjects, ...githubProjects] : githubProjects),
+    [githubProjects, isCompact]
   );
 
   useEffect(() => {
@@ -548,9 +552,8 @@ export default function Home() {
   const cursorRef = useRef<HTMLDivElement | null>(null);
   const cursorPositionRef = useRef({ x: 0, y: 0 });
   const cursorRafRef = useRef<number | null>(null);
-  const [showCursor, setShowCursor] = useState(true);
-
-  // Helper to detect mobile
+  // Only with a real mouse/trackpad: on touch screens the dot would just sit in a corner
+  const showCursor = useMediaQuery(FINE_POINTER_QUERY);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -706,9 +709,10 @@ export default function Home() {
 
   useEffect(() => {
     const track = githubCarouselTrackRef.current;
-    if (!track || githubProjects.length === 0) {
+    if (!track || githubProjects.length === 0 || isCompact) {
       githubMarqueeOffsetRef.current = 0;
       githubMarqueeLoopWidthRef.current = 0;
+      if (track) track.style.transform = "";
       return;
     }
 
@@ -741,10 +745,10 @@ export default function Home() {
       resizeObserver.disconnect();
       window.removeEventListener("resize", updateLoopWidth);
     };
-  }, [githubProjects.length, marqueeGithubProjects.length]);
+  }, [githubProjects.length, marqueeGithubProjects.length, isCompact]);
 
   useEffect(() => {
-    if (!hasMounted) {
+    if (!hasMounted || isCompact) {
       return;
     }
 
@@ -773,10 +777,10 @@ export default function Home() {
     return () => {
       viewport.removeEventListener("wheel", handleWheel);
     };
-  }, [hasMounted, setGitHubMarqueeOffset]);
+  }, [hasMounted, isCompact, setGitHubMarqueeOffset]);
 
   useEffect(() => {
-    if (githubProjects.length === 0) {
+    if (githubProjects.length === 0 || isCompact) {
       return;
     }
 
@@ -818,7 +822,7 @@ export default function Home() {
       githubMarqueeLastTimestampRef.current = null;
       githubMarqueeVelocityRef.current = 0;
     };
-  }, [githubProjects.length, setGitHubMarqueeOffset]);
+  }, [githubProjects.length, isCompact, setGitHubMarqueeOffset]);
 
   const handleReadmeClick = async (project: GitHubProjectCard) => {
     const repoInfo = extractOwnerAndRepo(project.repoUrl);
@@ -892,7 +896,9 @@ export default function Home() {
       return;
     }
 
+    const html = document.documentElement;
     const previousOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = html.style.overflow;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (readmeTitle) {
@@ -904,11 +910,14 @@ export default function Home() {
       }
     };
 
+    // Lock <html> too: it is the page's scroller (and pauses Lenis while the dialog is open)
     document.body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      html.style.overflow = previousHtmlOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [readmeTitle, activeContribution]);
@@ -991,16 +1000,6 @@ export default function Home() {
         window.history.scrollRestoration = previousRestoration;
       }
     };
-  }, []);
-
-  useEffect(() => {
-    // Hide cursor on mobile (<=600px)
-    const handleResize = () => {
-      setShowCursor(window.innerWidth > 600);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -1095,7 +1094,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!hasMounted) {
+    if (!hasMounted || isCompact) {
       return;
     }
 
@@ -1135,10 +1134,10 @@ export default function Home() {
       resizeObserver.disconnect();
       window.removeEventListener("resize", updateLoopHeight);
     };
-  }, [applyProjectsMarqueeTransform, hasMounted, marqueePaData.length, paData.length]);
+  }, [applyProjectsMarqueeTransform, hasMounted, isCompact, marqueePaData.length, paData.length]);
 
   useEffect(() => {
-    if (!hasMounted) {
+    if (!hasMounted || isCompact) {
       return;
     }
 
@@ -1162,10 +1161,10 @@ export default function Home() {
     return () => {
       viewport.removeEventListener("wheel", handleWheel);
     };
-  }, [hasMounted, setProjectsMarqueeOffset]);
+  }, [hasMounted, isCompact, setProjectsMarqueeOffset]);
 
   useEffect(() => {
-    if (!hasMounted || paData.length === 0) {
+    if (!hasMounted || isCompact || paData.length === 0) {
       return;
     }
 
@@ -1207,7 +1206,7 @@ export default function Home() {
       projectsMarqueeLastTimestampRef.current = null;
       projectsMarqueeVelocityRef.current = 0;
     };
-  }, [hasMounted, paData.length, setProjectsMarqueeOffset]);
+  }, [hasMounted, isCompact, paData.length, setProjectsMarqueeOffset]);
 
   // Hydration fix: only render browser-dependent UI after mount
   useEffect(() => { setHasMounted(true); }, []);
@@ -1237,28 +1236,23 @@ export default function Home() {
           </div>
           {/* Content: both layouts are rendered and CSS shows one, so server and client markup match */}
           <div className={styles.heroContent}>
-            {/* Mobile: picture first, then writing, then social links */}
+            {/* Phones & portrait tablets: picture first, then writing, then social links */}
             <div className={sx.heroMobile}>
               <div
                 className={`${styles.heroImageContainer} ${sx.reveal} ${sx.revealImage}`}
-                data-perch="Home"
-                data-perch-x="0.5"
-                style={delay(0.15, { margin: "0.7rem auto 0.3rem auto" })}
+                style={delay(0.15)}
               >
                 <Image
                   src={getImagePath("/images/profile-photo.png")}
                   alt="Ahmed Baha Eddine Alimi"
-                  width={110}
-                  height={110}
+                  width={400}
+                  height={400}
                   className={styles.profileImage}
                   priority
                 />
               </div>
-              <h1
-                className={styles.heroName}
-                style={{ marginBottom: "0.08rem", marginTop: "0.3rem", gap: "0.05rem" }}
-              >
-                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.25)} data-perch="Home" data-perch-surface="text" data-perch-x="0.25-0.5">
+              <h1 className={styles.heroName}>
+                <span className={`${styles.lastName} ${sx.reveal}`} style={delay(0.25)}>
                   <span className={styles.rotatingStar}>*</span>
                   <WaveText text="Alimi" />
                 </span>
@@ -1266,21 +1260,29 @@ export default function Home() {
                   <WaveText text="Ahmed Baha Eddine" />
                 </span>
               </h1>
-              <p className={`${styles.heroTitle} ${sx.reveal}`} style={delay(0.42, { marginBottom: "0.05rem" })}>
-                <span className={ui.underline}>Comp Sci Student</span>
+              <p className={`${styles.heroTitle} ${sx.reveal}`} style={delay(0.42)}>
+                <span className={styles.heroAccent}>Software Engineer</span>
               </p>
-              <p className={`${styles.heroSubtitle} ${sx.reveal}`} style={delay(0.48, { marginBottom: "0.05rem" })}>
-                <span className={ui.underline}>At Innopolis University</span>
+              <p className={`${styles.heroSubtitle} ${sx.reveal}`} style={delay(0.48)}>
+                CS <span className={styles.heroTitleSep}>@</span> Innopolis University
               </p>
-              <div
-                className={`${styles.socialLinksContainer} ${sx.reveal}`}
-                data-perch="Home"
-                style={delay(0.58, { position: "static", margin: "0.4rem auto 0 auto", width: "100%", maxWidth: 320 })}
-              >
-                <div className={styles.socialLinks} style={{ justifyContent: "center", width: "100%", gap: 14 }}>
+              <div className={`${styles.socialLinksContainer} ${sx.reveal}`} style={delay(0.52)}>
+                <div className={styles.socialLinks}>
                   <HeroSocialLinks />
                 </div>
               </div>
+              <button
+                type="button"
+                className={`${styles.scrollCue} ${sx.reveal}`}
+                style={delay(0.9)}
+                onClick={() => {
+                  const about = document.querySelector<HTMLElement>('[data-section="About"]');
+                  if (about) scrollToSection(about);
+                }}
+              >
+                <span>Scroll</span>
+                <span className={styles.scrollCueLine} aria-hidden="true" />
+              </button>
             </div>
 
             {/* Desktop */}
@@ -1295,10 +1297,10 @@ export default function Home() {
                 </span>
               </h1>
               <p className={`${styles.heroTitle} ${sx.reveal}`} style={delay(0.45)}>
-                <span className={ui.underline}>Comp Sci Student</span>
+                <span className={`${ui.sweep} ${styles.heroAccent}`}>Software Engineer</span>
               </p>
               <p className={`${styles.heroSubtitle} ${sx.reveal}`} style={delay(0.52)}>
-                <span className={ui.underline}>At Innopolis University</span>
+                <span className={ui.sweep}>CS @ Innopolis University</span>
               </p>
               <div className={`${styles.heroImageContainer} ${sx.reveal} ${sx.revealImage}`} style={delay(0.35)} data-perch="Home" data-perch-x="0.5">
                 <Image
@@ -1399,7 +1401,27 @@ export default function Home() {
             </motion.div>
             {/* Center: Project Blocks Vertical Scrollable */}
             <motion.div className={styles.paCenter2} {...reveal(0.15)}>
-              {hasMounted && (
+              {/* Touch screens: a plain list that scrolls with the page (the marquee would trap the swipe) */}
+              {hasMounted && isCompact && (
+                <ol className={sx.achList}>
+                  {paData.map((item, idx) => (
+                    <li
+                      key={`${item.title}-${item.rightLabel}`}
+                      className={`${ui.card} ${sx.achCard} ${item.scholarship ? ui.cardHighlighted : ""}`}
+                    >
+                      <div className={sx.achTop}>
+                        <span className={ui.cardIndex}>{pad2(idx + 1)}</span>
+                        <span className={ui.badge}>{item.rightLabel}</span>
+                      </div>
+                      <h3 className={`${sx.achTitle} ${item.scholarship ? sx.achTitleGold : ""}`}>
+                        <Starred>{item.title}</Starred>
+                      </h3>
+                      <p className={sx.achSubtitle}>{item.subtitle}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+              {hasMounted && !isCompact && (
                 <div
                   className={`${styles.verticalCarousel} ${sx.fadeY}`}
                   ref={projectsCarouselViewportRef}
@@ -1459,26 +1481,33 @@ export default function Home() {
                 <p className={sx.ghSubtitle}>
                   A few repositories I&apos;m proud of, each with a visual preview and quick context.
                 </p>
-                <p className={`${ui.hint} ${sx.hoverOnly}`}>
-                  <span className={ui.hintDot} aria-hidden="true" />
-                  Hover to pause, read a README without leaving
-                </p>
+                {isCompact ? (
+                  <p className={ui.hint}>
+                    <span className={ui.hintDot} aria-hidden="true" />
+                    Swipe to browse <span aria-hidden="true">→</span>
+                  </p>
+                ) : (
+                  <p className={`${ui.hint} ${sx.hoverOnly}`}>
+                    <span className={ui.hintDot} aria-hidden="true" />
+                    Hover to pause, read a README without leaving
+                  </p>
+                )}
               </motion.div>
             </div>
 
             <div
               ref={githubCarouselViewportRef}
-              className={`${styles.githubCarouselViewport} ${sx.fadeX}`}
+              className={`${styles.githubCarouselViewport} ${isCompact ? sx.ghScroller : sx.fadeX}`}
               data-lenis-prevent
               tabIndex={0}
-              onMouseEnter={() => setIsGitHubCarouselPaused(true)}
-              onMouseLeave={() => setIsGitHubCarouselPaused(false)}
-              onFocus={() => setIsGitHubCarouselPaused(true)}
-              onBlur={() => setIsGitHubCarouselPaused(false)}
-              onTouchStart={handleGitHubTouchStart}
-              onTouchMove={handleGitHubTouchMove}
-              onTouchEnd={handleGitHubTouchEnd}
-              onTouchCancel={handleGitHubTouchEnd}
+              onMouseEnter={isCompact ? undefined : () => setIsGitHubCarouselPaused(true)}
+              onMouseLeave={isCompact ? undefined : () => setIsGitHubCarouselPaused(false)}
+              onFocus={isCompact ? undefined : () => setIsGitHubCarouselPaused(true)}
+              onBlur={isCompact ? undefined : () => setIsGitHubCarouselPaused(false)}
+              onTouchStart={isCompact ? undefined : handleGitHubTouchStart}
+              onTouchMove={isCompact ? undefined : handleGitHubTouchMove}
+              onTouchEnd={isCompact ? undefined : handleGitHubTouchEnd}
+              onTouchCancel={isCompact ? undefined : handleGitHubTouchEnd}
             >
               <div ref={githubCarouselTrackRef} className={styles.githubCarouselTrack}>
                 {marqueeGithubProjects.map((project, index) => (
@@ -1487,9 +1516,10 @@ export default function Home() {
                     className={`${ui.card} ${sx.ghCard}`}
                     data-project-card
                     data-perch="GitHub"
-                    onPointerMove={trackSpotlight}
-                    initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
-                    whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    onPointerMove={isCompact ? undefined : trackSpotlight}
+                    // Swipe list: no per-card reveal, so the next card's edge is visible as a "swipe me" cue
+                    initial={isCompact ? false : { opacity: 0, y: 28, filter: "blur(6px)" }}
+                    whileInView={isCompact ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ duration: 0.9, ease: EASE_OUT, delay: Math.min(index, 3) * 0.08 }}
                   >
@@ -1516,9 +1546,11 @@ export default function Home() {
                               My Contribution
                             </button>
                           )}
-                          <button type="button" className={ui.btn} onClick={() => handleReadmeClick(project)}>
-                            Read README
-                          </button>
+                          {!isCompact && (
+                            <button type="button" className={ui.btn} onClick={() => handleReadmeClick(project)}>
+                              Read README
+                            </button>
+                          )}
                         </div>
                         <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className={ui.linkMono}>
                           {repoPath(project.repoUrl)}
@@ -1689,12 +1721,13 @@ export default function Home() {
         </motion.footer>
 
         {/* Smooth scrolling, custom scrollbar and our tour guide */}
+        {/* Phones/tablets keep native touch scrolling: no Lenis, no nav dock, no Doctor Livesey */}
         {hasMounted && (
           <>
-            <SmoothScroll />
+            {!isCompact && <SmoothScroll />}
             <ScrollRail />
-            <SectionNav />
-            <LiveseyGuide />
+            {!isCompact && <SectionNav />}
+            {!isCompact && <LiveseyGuide />}
           </>
         )}
       </div>

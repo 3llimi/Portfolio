@@ -599,40 +599,6 @@
   
 }
 
-/* --- HERO SECTION: Unify Social Links Styling for Mobile and Desktop --- */
-@media (max-width: 600px) {
-  .heroContent{
-    padding: 0 0.5rem !important;
-  }
-  .socialLinksContainer {
-    position: static !important;
-    left: unset !important;
-    right: unset !important;
-    bottom: unset !important;
-    margin: 1.2rem auto 0.5rem auto !important;
-    width: 90vw !important;
-    max-width: 400px !important;
-    box-sizing: border-box !important;
-    padding: 0.3rem 0.2rem !important;
-    border-radius: 40px !important;
-    background: rgba(20, 20, 20, 0.55) !important;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 4 !important;
-    display: flex;
-    justify-content: center;
-    box-shadow: none !important;
-  }
-  .socialLinks {
-    gap: clamp(10px, 2.67vw, 16px) !important;
-    padding: clamp(8px, 2.33vw, 17.5px) clamp(12px, 3.2vw, 36px) !important;
-    height: 100% !important;
-    justify-content: center;
-    width: 100% !important;
-    box-sizing: border-box;
-  }
-}
 
 /* --- Projects & Achievements Section --- */
 .projectsAchievementsSection {
@@ -734,39 +700,6 @@
   
   
 }
-@media (max-width: 600px) {
-  .projectsAchievementsSection {
-    padding: 1.2rem 0 1.2rem 0;
-    min-height: auto;
-  }
-  .paColumns2 {
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 0.2rem;
-  }
-  .paLeft2 {
-    margin-top: 0.5rem;
-  }
-  .paProjects {
-    font-size: 1.3rem;
-    text-align: center;
-    margin-bottom: 0.2rem;
-  }
-  .paAchievements {
-    font-size: 1rem;
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
-  
-  
-  
-  .verticalCarousel {
-    max-height: 320px;
-  }
-  .verticalCarouselTrack {
-    gap: 10px;
-  }
-}
 
 /* --- Redesigned Skills & Technologies Section --- */
 
@@ -807,140 +740,7 @@
   margin-top: 48px;
 }
 
-/* --- ABOUT SECTION: Mobile Improvements (continued) --- */
-@media (max-width: 600px) {
-  .aboutContainer {
-    flex-direction: column;
-    padding: 0 1rem;
-    gap: 1.2rem;
-    text-align: center;
-    align-items: center;
-  }
-  .aboutTitle h2 {
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-  }
-  .aboutContent {
-    padding: 1rem 0;
-  }
-  .aboutIntro {
-    font-size: 1.1rem;
-    margin-bottom: 0.7rem;
-  }
-  .aboutLocation {
-    font-size: 1rem;
-    margin-bottom: 1.1rem;
-  }
-  .aboutDescription {
-    font-size: 0.98rem;
-  }
-  .quoteTop, .quoteBottom {
-    display: none !important;
-  }
-  .aboutText {
-    padding: 0 !important;
-    text-align: center;
-  }
-}
 
-/* --- SKILLS SECTION: Mobile Improvements (continued) --- */
-
-/* --- FOOTER: Mobile Improvements --- */
-@media (max-width: 600px) {
-  .footer {
-    padding: 1.2rem 0 0.7rem 0;
-    margin-top: 1.2rem;
-  }
-  
-  
-  
-}
-
-@media (max-width: 600px) {
-  .hero {
-    width: 100vw;
-    min-height: 100vh;
-    height: auto;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    overflow: hidden;
-  }
-  .heroContent {
-    position: static;
-    width: 100vw;
-    min-height: 60vh;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 0.5rem;
-    z-index: 3;
-  }
-  .heroName {
-    font-size: 2.1rem;
-    line-height: 1.1;
-    text-align: center;
-    position: static;
-    margin: 0.2rem 0 0.1rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.05rem;
-    white-space: nowrap;
-  }
-  .firstName, .lastName {
-    position: static;
-    width: auto;
-    height: auto;
-    display: block;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    white-space: nowrap;
-  }
-  .heroTitle {
-    font-size: 1.1rem;
-    line-height: 1.2;
-    position: static;
-    width: auto;
-    height: auto;
-    text-align: center;
-    margin: 0 0 0.1rem 0;
-  }
-  .heroSubtitle {
-    font-size: 1rem;
-    line-height: 1.2;
-    position: static;
-    width: auto;
-    height: auto;
-    text-align: center;
-    margin: 0 0 0.1rem 0;
-  }
-  .heroImageContainer {
-    position: static;
-    width: 110px;
-    height: 110px;
-    margin: 0.7rem auto 0.3rem auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .profileImage {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-  }
-  .heroCaption {
-    display: none;
-  }
-}
 
 /* Custom cursor */
 .customCursorInvert {
@@ -1062,100 +862,8 @@
   }
 }
 
-/* Ensure content doesn't break on extreme zoom levels */
-@media (max-width: 320px) {
-  .hero {
-    min-height: 100vh;
-    height: auto;
-  }
 
-  .heroName {
-    font-size: clamp(28px, 8vw, 48px);
-  }
 
-  .heroTitle {
-    font-size: clamp(14px, 4vw, 24px);
-  }
-
-  .heroSubtitle {
-    font-size: clamp(12px, 3.5vw, 20px);
-  }
-
-  .aboutTitle h2 {
-    font-size: clamp(32px, 10vw, 60px);
-  }
-
-  .aboutIntro {
-    font-size: clamp(16px, 4vw, 28px);
-  }
-
-  .aboutLocation {
-    font-size: clamp(14px, 3.5vw, 22px);
-  }
-
-  .aboutDescription {
-    font-size: clamp(12px, 3vw, 16px);
-  }
-
-  
-
-  
-
-  
-
-  
-}
-
-/* High zoom level fixes */
-@media (max-width: 480px) and (max-height: 800px) {
-  .hero {
-    min-height: 100vh;
-    height: auto;
-  }
-
-  .heroContent {
-    padding: 10px;
-  }
-
-  .aboutContainer {
-    padding: 0 15px;
-    gap: 30px;
-  }
-
-  
-}
-
-/* Landscape orientation on mobile */
-@media (max-width: 896px) and (max-height: 414px) and (orientation: landscape) {
-  .hero {
-    height: 100vh;
-    min-height: 100vh;
-  }
-
-  .heroContent {
-    padding: 5px;
-  }
-
-  .heroName {
-    font-size: clamp(24px, 5vw, 36px);
-  }
-
-  .heroTitle,
-  .heroSubtitle {
-    font-size: clamp(12px, 2.5vw, 18px);
-  }
-
-  .heroImageContainer {
-    width: min(20vw, 60vh);
-    height: min(20vw, 60vh);
-  }
-
-  .socialLinksContainer {
-    width: 90vw;
-    height: auto;
-    min-height: 52px;
-  }
-}
 
 /* Ensure text remains readable at all zoom levels */
 
@@ -1437,48 +1145,6 @@
   color: rgba(255, 255, 255, 0.82);
 }
 
-@media (max-width: 640px) {
-  .githubProjectsSection {
-    padding: 44px 0;
-  }
-
-  .githubProjectsInner {
-    width: min(1380px, 94vw);
-  }
-
-  
-
-  
-
-  
-
-  
-
-  .githubReadmeOverlay {
-    padding: 10px;
-  }
-
-  .githubReadmePanel {
-    width: 100%;
-    max-height: 92vh;
-  }
-
-  .githubReadmeHeader {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .githubReadmeHeaderActions {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  
-
-  .githubReadmeContent img {
-    max-height: 42vh;
-  }
-}
 
 /* Final hero name positioning overrides */
 .hero .heroName {
@@ -1505,20 +1171,422 @@
   overflow: visible;
 }
 
-@media (max-width: 600px) {
-  .hero .heroName {
-    position: static !important;
-    left: auto;
-    top: auto;
-    z-index: 4;
-    margin: 0.2rem 0 0.1rem 0;
+/* Title + subtitle share one centre line (645px of the 1920px design), whatever their text length */
+.hero .heroTitle,
+.hero .heroSubtitle {
+  left: 33.6vw;
+  width: auto;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+/* Lift the handwritten title a touch so its descenders ("f", "g") clear the line below */
+.hero .heroTitle {
+  margin-top: -0.22em;
+}
+
+
+/* =====================================================================
+   Phones & tablets
+   One place for every small-screen rule. Two tiers:
+   - "stacked": phones, landscape phones and portrait tablets
+     (the absolute, 16:9-tuned desktop hero and the vw-scaled type stop working there)
+   - phones (<= 600px): tighter spacing, centred headings
+   ===================================================================== */
+
+/* Mobile hero scroll cue (only rendered in the stacked hero) */
+.scrollCue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 0;
+  background: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Satoshi', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.scrollCueLine {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 30px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent);
+}
+
+.scrollCueLine::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 100%;
+  height: 40%;
+  background: rgb(var(--gold-rgb));
+  animation: scrollCueDrop 2.2s var(--ease-out) infinite;
+}
+
+@keyframes scrollCueDrop {
+  0% { top: -40%; }
+  70%, 100% { top: 100%; }
+}
+
+.heroTitleSep {
+  color: rgb(var(--gold-rgb));
+}
+
+/* "Software Engineer": serif italic accent. Serif letters run smaller than Satoshi, hence the bump. */
+.heroTitle .heroAccent {
+  font-family: var(--font-hand), 'Segoe Script', 'Brush Script MT', cursive;
+  font-style: normal;
+  font-weight: 600;
+  /* Script letters run small next to Satoshi, hence the bump */
+  font-size: 1.22em;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  /* Room for the loops so the gold hover sweep paints them too; net layout size unchanged */
+  padding: 0.05em 0.25em 0.1em 0.15em;
+  margin: -0.05em -0.25em -0.1em -0.15em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollCueLine::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
+  /* ---------- Hero: full-screen, centred stack ---------- */
+  .hero {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    padding: calc(env(safe-area-inset-top) + 40px) var(--gutter) calc(env(safe-area-inset-bottom) + 18px);
+  }
+
+  .heroOverlay {
+    background:
+      radial-gradient(ellipse 90% 50% at 50% 45%, rgba(0, 0, 0, 0.3), transparent 70%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.5) 65%, #000 100%);
+  }
+
+  .heroContent {
+    flex: 1;
+    height: auto;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding-bottom: 72px;
     text-align: center;
   }
 
-  .hero .firstName,
+  .hero .heroImageContainer {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: clamp(148px, min(42vw, 30vh), 340px);
+    width: clamp(148px, min(42vw, 30svh), 340px);
+    height: auto;
+    margin: 0 0 24px;
+    box-shadow:
+      0 0 0 3px rgba(var(--gold-rgb), 0.55),
+      0 0 0 10px rgba(255, 255, 255, 0.05),
+      0 24px 60px rgba(0, 0, 0, 0.55);
+  }
+
+  .hero .heroName {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    font-size: inherit;
+    line-height: 1.05;
+    text-align: center;
+  }
+
+  /* The star hangs outside the word, so "Alimi" itself sits dead centre */
   .hero .lastName {
+    position: relative !important;
+    top: auto;
+    left: auto;
+    display: inline-block;
+    font-size: clamp(2.4rem, min(12vw, 9vh), 6.5rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .hero .lastName .rotatingStar {
+    position: absolute;
+    right: 100%;
+    top: 0;
+    margin-right: 0.16em;
+  }
+
+  .hero .firstName {
+    margin-top: 4px;
+    font-size: clamp(1.5rem, min(7.4vw, 5.6vh), 4rem);
+    font-weight: 500;
+  }
+
+  .hero .lastName,
+  .hero .firstName {
     text-align: center;
     white-space: nowrap;
+  }
+
+  .hero .heroTitle,
+  .hero .heroSubtitle {
+    position: static;
+    left: auto;
+    width: auto;
+    height: auto;
+    transform: none;
+    white-space: normal;
+    text-align: center;
+    cursor: default;
+  }
+
+  .hero .heroTitle {
+    margin: 16px 0 0;
+    font-size: clamp(1.1rem, 4.6vw, 1.8rem);
+    font-weight: 500;
+    line-height: 1.35;
+    color: #fff;
+  }
+
+  .hero .heroSubtitle {
+    margin: 4px 0 0;
+    font-size: clamp(0.92rem, 3.7vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .hero .socialLinksContainer {
+    position: static;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    margin-top: 28px;
+    border-radius: 999px;
+  }
+
+  .hero .socialLinks {
+    width: auto;
+    height: auto;
+    gap: 18px;
+    padding: 8px 14px;
+  }
+
+  .hero .socialLink {
+    width: 48px;
+    height: 48px;
+  }
+
+  .hero .socialIcon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ---------- About ---------- */
+  .aboutSection {
+    min-height: 0;
+    padding: 72px 0 64px;
+  }
+
+  .aboutContainer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 0 var(--gutter);
+  }
+
+  .aboutTitle {
+    margin-top: 0;
+  }
+
+  .aboutTitle h2 {
+    font-size: clamp(2.1rem, 7vw, 3.6rem);
+  }
+
+  .aboutContent {
+    max-width: 760px;
+    padding: 0;
+  }
+
+  .quoteTop,
+  .quoteBottom {
+    display: none;
+  }
+
+  .aboutText {
+    padding: 0;
+  }
+
+  .aboutIntro {
+    font-size: clamp(1.35rem, 4.2vw, 2rem);
+    margin: 0 0 10px;
+  }
+
+  .aboutLocation {
+    font-size: clamp(1.05rem, 3vw, 1.4rem);
+    margin: 0 0 20px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .aboutDescription {
+    font-size: clamp(1rem, 2.3vw, 1.15rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .aboutDescription p {
+    margin: 0 0 14px;
+  }
+
+  /* ---------- Projects & Achievements ---------- */
+  .projectsAchievementsSection {
+    width: 100%;
+    min-height: 0;
+    padding: 72px 0 64px;
+  }
+
+  .paColumns2 {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    max-width: none;
+    padding: 0 var(--gutter);
+  }
+
+  .paLeft2 {
+    margin: 0;
+    text-align: left;
+  }
+
+  .paCenter2 {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  .paProjects {
+    font-size: clamp(2.1rem, 7vw, 3.6rem);
+  }
+
+  .paAchievements {
+    margin: 4px 0 0;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+  }
+
+  /* ---------- GitHub ---------- */
+  .githubProjectsSection {
+    width: 100%;
+    padding: 72px 0 64px;
+  }
+
+  .githubProjectsInner {
+    width: 100%;
+    padding: 0 var(--gutter);
+  }
+}
+
+@media (max-width: 600px) {
+  .aboutSection,
+  .projectsAchievementsSection,
+  .githubProjectsSection {
+    padding: 56px 0 48px;
+  }
+
+  /* Phones: centred headings, like the rest of the mobile layout */
+  .aboutContainer {
+    gap: 14px;
+    text-align: center;
+  }
+
+  .aboutContent {
+    margin: 0 auto;
+  }
+
+  .aboutText {
+    text-align: center;
+  }
+
+  .paLeft2,
+  .paProjects,
+  .paAchievements {
+    text-align: center;
+  }
+
+  /* Both words are the same size on phones, so spell out the "&" between them */
+  .paAmp {
+    display: block;
+    margin: 2px 0;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1;
+    color: rgb(var(--gold-rgb));
+  }
+
+  .paColumns2 {
+    gap: 20px;
+  }
+
+  /* Contribution sheet slides up from the bottom */
+  .githubReadmeOverlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .githubReadmePanel {
+    width: 100%;
+    max-height: 88vh;
+    max-height: 88svh;
+    border-radius: 22px 22px 0 0;
+    border-bottom: none;
+  }
+
+  .githubReadmeHeader {
+    align-items: flex-start;
+    padding: 18px 18px 14px;
+  }
+
+  .githubReadmeTitle {
+    font-size: 22px;
+  }
+
+  .githubReadmeContent {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    padding: 16px 18px calc(24px + env(safe-area-inset-bottom));
+    font-size: 0.95rem;
+    line-height: 1.6;
+    overscroll-behavior: contain;
+  }
+
+  .githubReadmeContent img {
+    max-height: 42vh;
   }
 }

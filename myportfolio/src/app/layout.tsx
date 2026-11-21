@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Manrope } from "next/font/google";
+import { Geist, Geist_Mono, Dancing_Script, Manrope } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +19,13 @@ const cyrillic = Manrope({
   subsets: ["cyrillic"],
   weight: ["500", "700"],
   adjustFontFallback: false,
+});
+
+// Handwritten accent for the hero title ("Software Engineer"), like a signature next to Satoshi
+const handAccent = Dancing_Script({
+  variable: "--font-hand",
+  subsets: ["latin"],
+  weight: "600",
 });
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
@@ -55,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${cyrillic.variable}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${cyrillic.variable} ${handAccent.variable}`}
         style={{ overflow: "hidden" }}
       >
         {children}
