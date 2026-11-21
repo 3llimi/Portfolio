@@ -16,6 +16,7 @@ import {
 } from "framer-motion";
 import styles from "./SkillsSection.module.css";
 import { SectionBackdrop, ui, WaveText } from "@/components/ui/ui";
+import { reveal } from "@/components/ui/useScrollReveal";
 import { GITHUB_PROFILE, PROJECTS, SKILL_GROUPS, type Skill, type SkillGroup } from "@/data/skillsData";
 
 const getImagePath = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH || ""}${path}`;
@@ -80,32 +81,19 @@ function SkillCard({
     card.style.setProperty("--my", `${event.clientY - rect.top}px`);
   };
 
-  const cardVariants: Variants = {
-    hidden: { opacity: 0, y: 48, filter: reduceMotion ? "blur(0px)" : "blur(10px)" },
-    show: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.8, ease: EASE_OUT, when: "beforeChildren", staggerChildren: 0.05 },
-    },
-  };
-
-  const chipVariants: Variants = {
-    hidden: { opacity: 0, y: 14, scale: 0.9 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 260, damping: 20 } },
-  };
-
+  // Each card reveals as it scrolls in (CSS, see useScrollReveal); side-by-side cards are staggered.
+  // Its chips then pop in one after another (chipItem in the CSS module).
   return (
-    <motion.div className={`${styles.cardSlot} ${group.wide ? styles.cardWide : ""}`} variants={cardVariants}>
+    <div className={`${styles.cardSlot} ${group.wide ? styles.cardWide : ""}`} {...reveal((index % 2) * 0.12)}>
       <motion.article
         ref={cardRef}
-        className={`${styles.card} ${highlighted ? styles.cardHighlighted : ""}`}
+        className={`${styles.card} ${highlighted ? styles.cardHighlighted : ""} ${dimmed ? styles.cardDimmed : ""}`}
         data-perch="Skills"
         onPointerMove={handlePointerMove}
+        // Greyscale is a CSS class: a permanent `grayscale(0)` filter would still cost a render pass
         animate={{
           opacity: dimmed ? 0.28 : 1,
           scale: dimmed ? 0.97 : 1,
-          filter: dimmed ? "grayscale(1)" : "grayscale(0)",
         }}
         transition={{ duration: 0.45, ease: EASE_OUT }}
       >
@@ -126,8 +114,12 @@ function SkillCard({
           </div>
 
           <ul className={styles.chipList}>
-            {group.items.map((skill) => (
-              <motion.li key={skill.label} variants={chipVariants}>
+            {group.items.map((skill, chipIndex) => (
+              <li
+                key={skill.label}
+                className={styles.chipItem}
+                style={{ ["--ci" as string]: chipIndex } as React.CSSProperties}
+              >
                 <motion.button
                   type="button"
                   className={`${styles.chip} ${selectedLabel === skill.label ? styles.chipSelected : ""}`}
@@ -145,12 +137,12 @@ function SkillCard({
                   <span className={styles.chipLabel}>{skill.label}</span>
                   {skill.uses.length > 0 && <span className={styles.chipCount}>{skill.uses.length}</span>}
                 </motion.button>
-              </motion.li>
+              </li>
             ))}
           </ul>
         </div>
       </motion.article>
-    </motion.div>
+    </div>
   );
 }
 
@@ -484,11 +476,6 @@ export default function SkillsSection() {
     };
   }, [isOpen, closeSkill, navigate]);
 
-  const gridVariants: Variants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-  };
-
   const projectCount = new Set(FLAT_SKILLS.flatMap((s) => s.uses.map((u) => u.project))).size;
 
   return (
@@ -498,13 +485,7 @@ export default function SkillsSection() {
       <div className={styles.inner}>
         <div className={styles.layout}>
           {/* Cards */}
-          <motion.div
-            className={styles.grid}
-            variants={gridVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.15 }}
-          >
+          <div className={styles.grid}>
             {SKILL_GROUPS.map((group, index) => (
               <SkillCard
                 key={group.id}
@@ -517,18 +498,11 @@ export default function SkillsSection() {
                 onSelect={openSkill}
               />
             ))}
-          </motion.div>
+          </div>
 
           {/* Heading, stats and filters */}
           {/* data-perch-obstacle: when this stacks above the grid, Livesey won't stand in front of the filters */}
-          <motion.aside
-            className={styles.side}
-            data-perch-obstacle
-            initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.1 }}
-          >
+          <aside className={styles.side} data-perch-obstacle {...reveal(0.1)}>
             <h2 id="skills-heading" className={styles.titleBlock} data-perch="Skills" data-perch-surface="text">
               <span className={styles.titleMain}><WaveText text="SKILLS" /></span>
               <span className={styles.titleSub}><WaveText text="TECHNOLOGIES" /></span>
@@ -578,20 +552,14 @@ export default function SkillsSection() {
               <span className={ui.hintDot} aria-hidden="true" />
               Tap any tool to see where I&apos;ve used it
             </p>
-          </motion.aside>
+          </aside>
         </div>
 
         {/* Logo marquee */}
-        <motion.div
-          className={styles.marquee}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        >
+        <div className={styles.marquee} {...reveal(0, "fade")}>
           <MarqueeRow items={MARQUEE_ROWS[0]} />
           <MarqueeRow items={MARQUEE_ROWS[1]} reverse />
-        </motion.div>
+        </div>
       </div>
 
       {mounted &&

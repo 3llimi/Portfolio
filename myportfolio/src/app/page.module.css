@@ -32,6 +32,9 @@
 }
 
 .heroImage {
+  position: absolute;
+  inset: 0;
+  display: block;
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -1239,9 +1242,11 @@
   animation: scrollCueDrop 2.2s var(--ease-out) infinite;
 }
 
+/* Moves with transform (not `top`), so the endless loop never triggers layout.
+   350% of its own height = from 40% above the line to its bottom edge, as before. */
 @keyframes scrollCueDrop {
-  0% { top: -40%; }
-  70%, 100% { top: 100%; }
+  0% { transform: translateY(0); }
+  70%, 100% { transform: translateY(350%); }
 }
 
 .heroTitleSep {
@@ -1590,5 +1595,21 @@
 
   .githubReadmeContent img {
     max-height: 42vh;
+  }
+}
+
+/* Phones and tablets (same query as COMPACT_QUERY): no frosted glass. backdrop-filter re-blurs
+   whatever scrolls underneath on every frame, which mobile GPUs can't keep up with. */
+@media (hover: none) and (pointer: coarse), (max-width: 600px) {
+  .socialLinksContainer {
+    background: rgba(20, 20, 20, 0.82);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .githubReadmeOverlay {
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }

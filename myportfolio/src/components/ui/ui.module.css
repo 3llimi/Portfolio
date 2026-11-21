@@ -366,10 +366,11 @@
 
 .waveChar {
   display: inline-block;
-  will-change: transform;
 }
 
+/* will-change only while waving: on every letter all the time it kept ~100 GPU layers alive */
 .waveActive .waveChar {
+  will-change: transform;
   animation: charWave 0.95s both;
   animation-delay: calc(var(--i) * 32ms);
 }
@@ -469,6 +470,24 @@
 
   .grid {
     background-size: 44px 44px;
+  }
+}
+
+/* Phones and tablets (same query as COMPACT_QUERY): paint each glow as a soft radial gradient
+   instead of blurring a solid disc. Same look, but no 70–90px blur filter to rasterise for every
+   section while scrolling. `scale` grows the disc around its centre to match the blurred spread. */
+@media (hover: none) and (pointer: coarse), (max-width: 600px) {
+  .orb {
+    filter: none;
+    scale: 1.5;
+  }
+
+  .orbBlue {
+    background: radial-gradient(closest-side, rgb(var(--blue-rgb)) 0%, rgba(var(--blue-rgb), 0.55) 45%, rgba(var(--blue-rgb), 0) 100%);
+  }
+
+  .orbGold {
+    background: radial-gradient(closest-side, rgb(var(--gold-rgb)) 0%, rgba(var(--gold-rgb), 0.55) 45%, rgba(var(--gold-rgb), 0) 100%);
   }
 }
 

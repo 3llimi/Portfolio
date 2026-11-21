@@ -16,6 +16,7 @@ import ScrollRail from "@/components/scroll/ScrollRail";
 import SectionNav from "@/components/scroll/SectionNav";
 import LiveseyGuide from "@/components/livesey/LiveseyGuide";
 import { FINE_POINTER_QUERY, useIsCompact, useMediaQuery } from "@/components/ui/useMediaQuery";
+import { reveal, useScrollReveal } from "@/components/ui/useScrollReveal";
 
 // Helper function to get the correct image path for GitHub Pages
 const getImagePath = (path: string) => {
@@ -32,14 +33,21 @@ const SOCIAL_LINKS = [
 
 const pad2 = (n: number) => n.toString().padStart(2, "0");
 
-/** One consistent scroll-reveal for every section: soft rise + unblur, ease-out-expo. */
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const reveal = (delay = 0) => ({
-  initial: { opacity: 0, y: 28, filter: "blur(6px)" },
-  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
-  viewport: { once: true, amount: 0.25 },
-  transition: { duration: 0.9, ease: EASE_OUT, delay },
-});
+
+/** README / contribution dialogs: phones skip the blur, which is costly to animate on a big panel. */
+const DIALOG_PANEL_MOTION = {
+  full: {
+    initial: { opacity: 0, y: 24, scale: 0.92, filter: "blur(10px)" },
+    animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+    exit: { opacity: 0, y: 16, scale: 0.95, filter: "blur(6px)" },
+  },
+  lite: {
+    initial: { opacity: 0, y: 24, scale: 0.96 },
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: { opacity: 0, y: 16, scale: 0.97 },
+  },
+};
 
 /** Inline style that sets the hero entrance delay used by the CSS `.reveal` animation. */
 const delay = (seconds: number, extra: React.CSSProperties = {}) =>
@@ -115,9 +123,9 @@ type ReadmeUrlContext = {
 };
 
 const fallbackCovers = [
-  "/images/portfolio-1.jpg",
-  "/images/portfolio-2.jpg",
-  "/images/portfolio-3.jpg",
+  "/images/portfolio-1.webp",
+  "/images/portfolio-2.webp",
+  "/images/portfolio-3.webp",
 ];
 
 const fallbackGithubProjects: GitHubProjectCard[] = [
@@ -126,7 +134,7 @@ const fallbackGithubProjects: GitHubProjectCard[] = [
     title: "Portfolio Website",
     description:
       "Personal portfolio built with Next.js and Framer Motion with responsive sections, custom interactions, and GitHub Pages deployment.",
-    cover: "/images/portfolio-1.jpg",
+    cover: "/images/portfolio-1.webp",
     repoUrl: "https://github.com/3llimi/Portfolio",
   },
   {
@@ -134,7 +142,7 @@ const fallbackGithubProjects: GitHubProjectCard[] = [
     title: "InnoSync",
     description:
       "Team project where I led frontend implementation and design, focusing on clean UI structure and scalable component-driven development.",
-    cover: "/images/portfolio-2.jpg",
+    cover: "/images/portfolio-2.webp",
     repoUrl: "https://github.com/3llimi",
   },
   {
@@ -142,7 +150,7 @@ const fallbackGithubProjects: GitHubProjectCard[] = [
     title: "Hackathon Projects",
     description:
       "A collection of rapid prototypes and problem-solving builds from hackathons, with practical UI and backend integration work.",
-    cover: "/images/portfolio-3.jpg",
+    cover: "/images/portfolio-3.webp",
     repoUrl: "https://github.com/3llimi?tab=repositories",
   },
 ];
@@ -152,7 +160,7 @@ const fallbackGithubProjects: GitHubProjectCard[] = [
 const selectedRepos: SelectedRepoConfig[] = [
   {
     repoName: "GPTitorSWP",
-    cover: "/images/Gptitor.jpg",
+    cover: "/images/Gptitor.webp",
     contributionRole:
       `### GPTitor - AI Prompt Learning Platform
 
@@ -195,7 +203,7 @@ Delivered an intuitive EdTech platform while strengthening expertise in frontend
   },
   {
     repoName: "InnoSync-Capstone-Sum25",
-    cover: "/images/Innosync.jpg",
+    cover: "/images/Innosync.webp",
     contributionRole:
       `### Summer 2025 | Innopolis University
 
@@ -241,25 +249,25 @@ Demonstrated strong technical leadership, full-stack development, and product th
   },
   {
     repoName: "Compilers-Construction-Course-F25",
-    cover: "/images/compiler.png",
+    cover: "/images/compiler.webp",
     description:
       "A hands-on course repository covering core compiler design, from lexical analysis and parsing to semantic checks and code generation. The implementation was written in Rust.",
   },
   {
     repoName: "BookTrackerApp-SQRS-S26",
-    cover: "/images/BookTrackerApp.png",
+    cover: "/images/BookTrackerApp.webp",
     description:
       "A personal book collection tracker built with FastAPI, Streamlit, and the Open Library API. Part of the Software Quality, Reliability and Security (SQRS) course — Spring 2026 semester",
   },
   {
     repoName: "DevSecOps-Intro",
-    cover: "/images/devsecops.jpg",
+    cover: "/images/devsecops.webp",
     description:
       "An introductory repository that teaches how to integrate security into every stage of the DevOps lifecycle using practical workflows and tooling.",
   },
   {
     repoName: "ThreatHound",
-    cover: "/images/Threathound.jpg",
+    cover: "/images/Threathound.webp",
     description:
       "A threat-detection and analysis project focused on identifying, tracking, and responding to suspicious activity across systems and logs.",
     contributionRole:
@@ -308,13 +316,13 @@ Built a scalable, production-like security platform while gaining hands-on exper
   },
   {
     repoName: "DevOps-Core-Course",
-    cover: "/images/devops_loop.jpg",
+    cover: "/images/devops_loop.webp",
     description:
       "A foundational DevOps course repository focused on CI/CD, automation, infrastructure practices, and reliable software delivery.",
   },
   {
     repoName: "ACCPA",
-    cover: "/images/ACCPA.png",
+    cover: "/images/ACCPA.webp",
     description:
       "The Great Type Checker of STELLA: a Rust-built ACCPA implementation spanning three stages, with core and advanced language features, type reconstruction, universal types, and precise ERROR_* diagnostics.",
   },
@@ -476,6 +484,8 @@ export default function Home() {
   const [hasMounted, setHasMounted] = useState(false);
   // Phones/tablets: native swipe lists instead of auto-scrolling marquees, no Livesey/README/cursor
   const isCompact = useIsCompact();
+  const dialogPanelMotion = isCompact ? DIALOG_PANEL_MOTION.lite : DIALOG_PANEL_MOTION.full;
+  useScrollReveal();
   const [activeContribution, setActiveContribution] = useState<{
     title: string;
     content: string;
@@ -1225,13 +1235,23 @@ export default function Home() {
         <section className={styles.hero} data-section="Home">
           {/* Background Image */}
           <div className={`${styles.heroBackground} ${sx.heroBg}`}>
-            <Image
-              src={getImagePath("/images/hero-bg.jpg")}
-              alt="Hero background"
-              fill
-              className={styles.heroImage}
-              priority
-            />
+            {/* The original photo is 4092px wide (~45 MB once decoded): phones get a 2000px copy and
+                desktops a 2560px one, so the first paint and the entrance animation don't stall. */}
+            <picture>
+              <source
+                media="(max-width: 900px), (orientation: portrait) and (max-width: 1100px)"
+                srcSet={getImagePath("/images/hero-bg-mobile.webp")}
+                type="image/webp"
+              />
+              <source srcSet={getImagePath("/images/hero-bg.webp")} type="image/webp" />
+              <img
+                src={getImagePath("/images/hero-bg.jpg")}
+                alt=""
+                className={styles.heroImage}
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
             <div className={styles.heroOverlay}></div>
           </div>
           {/* Content: both layouts are rendered and CSS shows one, so server and client markup match */}
@@ -1325,19 +1345,19 @@ export default function Home() {
         </section>
 
         {/* About Me Section */}
-        <motion.section
+        <section
           className={`${styles.aboutSection} ${sx.shell}`}
           data-section="About"
         >
           <SectionBackdrop blue="bottom-left" gold="top-right" />
           <div className={styles.aboutContainer}>
             {/* Left Side - Title */}
-            <motion.div className={styles.aboutTitle} {...reveal(0.05)}>
+            <div className={styles.aboutTitle} {...reveal(0.05)}>
               <h2 className={sx.mobileTitle} data-perch="About" data-perch-surface="text"><WaveText text="ABOUT ME" /></h2>
-            </motion.div>
+            </div>
 
             {/* Right Side - Content */}
-            <motion.div className={styles.aboutContent} {...reveal(0.15)}>
+            <div className={styles.aboutContent} {...reveal(0.15)}>
               {/* Top Quote Mark */}
               <div className={styles.quoteTop} data-perch="About" data-perch-surface="text" data-perch-x="0.5">&ldquo;</div>
 
@@ -1373,22 +1393,22 @@ export default function Home() {
               </div>
               {/* Bottom Quote Mark */}
               <div className={styles.quoteBottom}>&rdquo;</div>
-            </motion.div>
+            </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* Skills & Technologies Section */}
         <SkillsSection />
 
         {/* Projects & Achievements Section - Screenshot Match */}
-        <motion.section
+        <section
           className={`${styles.projectsAchievementsSection} ${sx.shell}`}
           data-section="Projects"
         >
           <SectionBackdrop blue="top-left" gold="bottom-right" />
           <div className={styles.paColumns2}>
             {/* Left: Titles */}
-            <motion.div className={styles.paLeft2} {...reveal(0.05)}>
+            <div className={styles.paLeft2} {...reveal(0.05)}>
               <div className={`${styles.paProjects} ${sx.mobileTitle}`} data-perch="Projects" data-perch-surface="text"><WaveText text="PROJECTS" /></div>
               <div className={styles.paAmp}>&</div>
               <div className={`${styles.paAchievements} ${sx.mobileTitle}`}><WaveText text="ACHIEVEMENTS" /></div>
@@ -1398,9 +1418,9 @@ export default function Home() {
                   Hover to pause, scroll to browse
                 </p>
               </div>
-            </motion.div>
+            </div>
             {/* Center: Project Blocks Vertical Scrollable */}
-            <motion.div className={styles.paCenter2} {...reveal(0.15)}>
+            <div className={styles.paCenter2} {...reveal(0.15)}>
               {/* Touch screens: a plain list that scrolls with the page (the marquee would trap the swipe) */}
               {hasMounted && isCompact && (
                 <ol className={sx.achList}>
@@ -1460,24 +1480,24 @@ export default function Home() {
                   </div>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
-        </motion.section>
+        </section>
 
         {/* GitHub Projects Section */}
-        <motion.section
+        <section
           className={`${styles.githubProjectsSection} ${sx.shell}`}
           data-section="GitHub"
         >
           <SectionBackdrop blue="top-right" gold="bottom-left" />
           <div className={styles.githubProjectsInner}>
             <div className={sx.ghHeader}>
-              <motion.h2 className={sx.ghTitle} data-perch="GitHub" data-perch-surface="text" {...reveal(0.05)}>
+              <h2 className={sx.ghTitle} data-perch="GitHub" data-perch-surface="text" {...reveal(0.05)}>
                 <span className={ui.titleMain}><WaveText text="GITHUB" /></span>
                 <span className={ui.titleSub}><WaveText text="PROJECTS" /></span>
-              </motion.h2>
+              </h2>
 
-              <motion.div className={sx.ghIntro} {...reveal(0.15)}>
+              <div className={sx.ghIntro} {...reveal(0.15)}>
                 <p className={sx.ghSubtitle}>
                   A few repositories I&apos;m proud of, each with a visual preview and quick context.
                 </p>
@@ -1492,7 +1512,7 @@ export default function Home() {
                     Hover to pause, read a README without leaving
                   </p>
                 )}
-              </motion.div>
+              </div>
             </div>
 
             <div
@@ -1511,17 +1531,15 @@ export default function Home() {
             >
               <div ref={githubCarouselTrackRef} className={styles.githubCarouselTrack}>
                 {marqueeGithubProjects.map((project, index) => (
-                  <motion.article
+                  <article
                     key={`${project.id}-${index}`}
                     className={`${ui.card} ${sx.ghCard}`}
                     data-project-card
                     data-perch="GitHub"
                     onPointerMove={isCompact ? undefined : trackSpotlight}
-                    // Swipe list: no per-card reveal, so the next card's edge is visible as a "swipe me" cue
-                    initial={isCompact ? false : { opacity: 0, y: 28, filter: "blur(6px)" }}
-                    whileInView={isCompact ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{ duration: 0.9, ease: EASE_OUT, delay: Math.min(index, 3) * 0.08 }}
+                    // Swipe list (.ghScroller) turns the reveal off in CSS, so the next card's edge is
+                    // visible right away as a "swipe me" cue
+                    {...reveal(Math.min(index, 3) * 0.08)}
                   >
                     <div className={sx.ghCover}>
                       <Image
@@ -1558,13 +1576,13 @@ export default function Home() {
                         </a>
                       </div>
                     </div>
-                  </motion.article>
+                  </article>
                 ))}
               </div>
             </div>
 
           </div>
-        </motion.section>
+        </section>
 
         <AnimatePresence>
           {readmeTitle && (
@@ -1582,9 +1600,7 @@ export default function Home() {
               <motion.div
                 className={styles.githubReadmePanel}
                 onClick={(event) => event.stopPropagation()}
-                initial={{ opacity: 0, y: 24, scale: 0.92, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: 16, scale: 0.95, filter: "blur(6px)" }}
+                {...dialogPanelMotion}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 <div className={styles.githubReadmeHeader}>
@@ -1640,9 +1656,7 @@ export default function Home() {
               <motion.div
                 className={styles.githubReadmePanel}
                 onClick={(event) => event.stopPropagation()}
-                initial={{ opacity: 0, y: 24, scale: 0.92, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: 16, scale: 0.95, filter: "blur(6px)" }}
+                {...dialogPanelMotion}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 <div className={styles.githubReadmeHeader}>
@@ -1668,21 +1682,21 @@ export default function Home() {
         </AnimatePresence>
 
         {/* Footer */}
-        <motion.footer
+        <footer
           className={`${styles.footer} ${sx.shell} ${sx.footer}`}
           data-section="Contact"
         >
           <SectionBackdrop blue="none" gold="bottom-right" />
           <div className={sx.footerInner}>
             <div className={sx.footerTop}>
-              <motion.div {...reveal(0.05)}>
+              <div {...reveal(0.05)}>
                 <h2 className={`${ui.titleMain} ${sx.footerTitle}`} data-perch="Contact" data-perch-surface="text"><WaveText text="GET IN TOUCH" /></h2>
                 <p className={sx.footerLead}>Have a project or an opportunity in mind? Let&apos;s talk.</p>
-              </motion.div>
+              </div>
 
               <div className={sx.footerLinks}>
                 {SOCIAL_LINKS.map((social, index) => (
-                  <motion.a
+                  <a
                     key={social.platform}
                     href={social.href}
                     target="_blank"
@@ -1700,7 +1714,7 @@ export default function Home() {
                       <span className={sx.socialHandle}>{social.handle}</span>
                     </span>
                     <span className={ui.arrow} aria-hidden="true">↗</span>
-                  </motion.a>
+                  </a>
                 ))}
               </div>
             </div>
@@ -1718,7 +1732,7 @@ export default function Home() {
               </button>
             </div>
           </div>
-        </motion.footer>
+        </footer>
 
         {/* Smooth scrolling, custom scrollbar and our tour guide */}
         {/* Phones/tablets keep native touch scrolling: no Lenis, no nav dock, no Doctor Livesey */}

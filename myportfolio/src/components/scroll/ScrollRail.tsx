@@ -31,14 +31,22 @@ export default function ScrollRail() {
   const thumbY = useMotionValue(0);
   const thumbHeight = Math.max(36, railHeight * thumbRatio);
 
+  // Section tops and the scroll range only change with layout, so they're measured on resize
+  // and reused by the scroll handler instead of walking the offsetTop chain on every event.
+  const sectionTops = useRef<number[]>([]);
+  const scrollRange = useRef(1);
+
   const measure = useCallback(() => {
     const total = document.documentElement.scrollHeight;
+    const sections = getSections();
+    sectionTops.current = sections.map(sectionScrollTop);
+    scrollRange.current = maxScroll();
     setThumbRatio(Math.min(1, window.innerHeight / total));
     setRailHeight(railRef.current?.clientHeight ?? 0);
     setMarkers(
-      getSections().map((el) => ({
+      sections.map((el, i) => ({
         name: el.dataset.section ?? "",
-        ratio: Math.min(1, sectionScrollTop(el) / maxScroll()),
+        ratio: Math.min(1, sectionTops.current[i] / scrollRange.current),
       })),
     );
   }, []);
@@ -50,30 +58,39 @@ export default function ScrollRail() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => {
-      progress.set(window.scrollY / maxScroll());
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      progress.set(y / scrollRange.current);
       // Same section tops as the nav arrows (clamped, so the short footer still lights up at the end)
-      const probe = window.scrollY + window.innerHeight * 0.45;
+      const probe = y + window.innerHeight * 0.45;
       let index = 0;
-      getSections().forEach((el, i) => {
-        if (sectionScrollTop(el) <= probe) index = i;
+      sectionTops.current.forEach((top, i) => {
+        if (top <= probe) index = i;
       });
       setActive(index);
       wake();
     };
-    measure();
-    onScroll();
-    const observer = new ResizeObserver(() => {
+    // At most one update per frame: phones fire scroll events faster than they paint
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const onResize = () => {
       measure();
       onScroll();
-    });
+    };
+    measure();
+    update();
+    const observer = new ResizeObserver(onResize);
     observer.observe(document.body);
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", onResize);
     return () => {
+      if (frame) cancelAnimationFrame(frame);
       observer.disconnect();
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onResize);
       if (idleTimer.current) window.clearTimeout(idleTimer.current);
     };
   }, [measure, progress, wake]);
