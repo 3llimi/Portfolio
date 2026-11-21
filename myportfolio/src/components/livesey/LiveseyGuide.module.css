@@ -373,7 +373,7 @@
   transform: translate(0, -50%);
 }
 
-/* ---------- First-visit hint: "this button hides him" ---------- */
+/* ---------- On-load hint: "this button hides him" ---------- */
 
 /* gold rings ripple out of the button while the hint is up */
 .toggleCalling {

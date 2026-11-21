@@ -235,24 +235,9 @@ const saveEnabled = (on: boolean) => {
   }
 };
 
-/** the "you can hide him" hint shows on each visit until the visitor has used the toggle once */
-const HINT_KEY = "livesey-toggle-known";
+/** the "you can hide him" hint shows every time the page loads with him enabled */
 const HINT_DELAY_MS = 2600; // after he has flown out of the button and landed
 const HINT_MS = 7000;
-const readToggleKnown = () => {
-  try {
-    return window.localStorage.getItem(HINT_KEY) === "1";
-  } catch {
-    return false;
-  }
-};
-const saveToggleKnown = () => {
-  try {
-    window.localStorage.setItem(HINT_KEY, "1");
-  } catch {
-    /* fine: the hint just shows again next visit */
-  }
-};
 
 type Controller = { tap: () => void; summon: () => void; dismiss: () => void };
 
@@ -1840,8 +1825,8 @@ export default function LiveseyGuide() {
     const on = readEnabled();
     setEnabled(on);
     const intro = on ? window.setTimeout(summon, 1700) : 0;
-    // first visits: point out the corner button that hides him
-    const showHint = on && !readToggleKnown();
+    // on every page load: point out the corner button that hides him
+    const showHint = on;
     const hintIn = showHint ? window.setTimeout(() => setHint(window.matchMedia("(hover: none), (pointer: coarse)").matches ? "Tap" : "Click"), HINT_DELAY_MS) : 0;
     const hintOut = showHint ? window.setTimeout(() => setHint(null), HINT_DELAY_MS + HINT_MS) : 0;
 
@@ -1888,7 +1873,6 @@ export default function LiveseyGuide() {
     setEnabled(next);
     saveEnabled(next);
     setHint(null);
-    saveToggleKnown();
     if (next) controller.current?.summon();
     else controller.current?.dismiss();
   };
@@ -1908,7 +1892,7 @@ export default function LiveseyGuide() {
         <span className={styles.toggleTip}>{enabled ? "Hide Livesey" : "Bring Livesey back"}</span>
       </button>
 
-      {/* first-visit hint: the corner button hides him */}
+      {/* on-load hint: the corner button hides him */}
       <div className={styles.hintLive} role="status" aria-live="polite">
         <AnimatePresence>
           {hint && (
