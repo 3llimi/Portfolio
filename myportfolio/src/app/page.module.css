@@ -430,35 +430,52 @@
   transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* "Russia" turns into the flag on hover. The flag is a copy of the word (::after) laid exactly
+   over the white text and cross-faded in, because gradients can't be transitioned and
+   text-shadow would paint over a background-clip:text fill (washing the colors out); the glow
+   comes from drop-shadow instead. line-height: 1 makes the box exactly 1em tall so the bands
+   can be placed on Satoshi's glyphs: baseline at 88%, x-height top at 39%, so 55.5% / 72% split
+   the lowercase letters into even thirds. */
 .russiaText {
-  cursor: pointer;
-  transition: color 0.3s, background 0.5s cubic-bezier(0.4,0,0.2,1), text-shadow 0.5s cubic-bezier(0.4,0,0.2,1), -webkit-text-fill-color 0.5s cubic-bezier(0.4,0,0.2,1), background-clip 0.5s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  display: inline-block;
+  line-height: 1;
   color: #fff;
+  filter: drop-shadow(0 0 0 rgba(0, 57, 166, 0)) drop-shadow(0 0 0 rgba(213, 43, 30, 0));
+  /* leaving hover: bring the white back first, then drop the flag, so the word never dims */
+  transition: color 0.3s var(--ease-out), filter 0.45s var(--ease-out);
 }
 
-/* Russian flag gradient on hover */
-.aboutLocation:hover .russiaText {
+.russiaText::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
   background: linear-gradient(
     to bottom,
-    #fff 0%,
-    #fff 33%,
-    #0033a0 33%,
-    #0033a0 66%,
-    #d52b1e 66%,
-    #d52b1e 100%
+    #fff 0 55.5%,
+    #0039a6 55.5% 72%,
+    #d52b1e 72% 100%
   );
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
-  /* Glow behind the gradient text */
-  text-shadow:
-    0 0 16px rgba(255,255,255,0.7),
-    0 0 32px rgba(0,51,160,0.5),
-    0 0 48px rgba(213,43,30,0.5);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease-out) 0.15s;
 }
 
-/* Remove per-letter hover color rules */
+.aboutLocation:hover .russiaText {
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(0, 57, 166, 0.55)) drop-shadow(0 0 18px rgba(213, 43, 30, 0.35));
+  /* entering hover: flag in first, then hide the white underneath */
+  transition: color 0.3s var(--ease-out) 0.15s, filter 0.45s var(--ease-out);
+}
+
+.aboutLocation:hover .russiaText::after {
+  opacity: 1;
+  transition-delay: 0s;
+}
 
 .aboutDescription {
   font-family: 'Satoshi', sans-serif;

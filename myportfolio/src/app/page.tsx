@@ -1469,11 +1469,7 @@ export default function Home() {
 
                 <h4 className={styles.aboutLocation}>
                   Computer Science student at Innopolis University, based in{" "}
-                  <span className={styles.russiaText}>
-                    <span className={styles.russiaRu}>Ru</span>
-                    <span className={styles.russiaS}>ss</span>
-                    <span className={styles.russiaIa}>ia</span>
-                  </span>
+                  <span className={styles.russiaText} data-text="Russia">Russia</span>
                 </h4>
 
                 <div className={styles.aboutDescription}>
