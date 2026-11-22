@@ -328,6 +328,104 @@ Built a scalable, production-like security platform while gaining hands-on exper
   },
 ];
 
+type LiveDemo = {
+  repoName: string;
+  title: string;
+  tagline: string;
+  url: string;
+  cover: string;
+  stack: string[];
+  extraLinks?: { label: string; href: string }[];
+  /** "frontend": only the UI is still hosted (its servers are gone) */
+  status?: "live" | "frontend";
+  note?: string;
+  login?: { email: string; password: string };
+};
+
+// Deployed products, shown by the "Live demos" toggle in the GitHub section.
+// URLs come from each repo's homepage / README.
+const LIVE_DEMOS: LiveDemo[] = [
+  {
+    repoName: "InnoSync-Capstone-Sum25",
+    title: "InnoSync",
+    tagline: "AI-powered talent matching and collaborative project spaces for the Innopolis community.",
+    url: "https://inno-sync-capstone-sum25.vercel.app",
+    cover: "/images/Innosync.webp",
+    stack: ["Next.js", "Spring Boot", "PostgreSQL", "ML"],
+    extraLinks: [{ label: "API docs", href: "https://innosync-api-jju7.onrender.com/swagger-ui/index.html" }],
+    login: { email: "demo@example.com", password: "InnoSyncDemo2026" },
+  },
+  {
+    repoName: "GPTitorSWP",
+    title: "GPTitor",
+    tagline: "A sandbox for learning prompt engineering: write prompts, get graded feedback from LLMs.",
+    url: "https://3llimi.github.io/GPTitorSWP/",
+    cover: "/images/Gptitor.webp",
+    stack: ["React", "TypeScript", "Vite", "FastAPI"],
+    status: "frontend",
+    note: "Front end only: the app's servers have been shut down, so you can explore the interface, but features that need the back end won't respond.",
+  },
+  {
+    repoName: "BookTrackerApp-SQRS-S26",
+    title: "Book Tracker",
+    tagline: "A personal book collection tracker powered by the Open Library API.",
+    url: "https://bookstracker.streamlit.app/",
+    cover: "/images/BookTrackerApp.webp",
+    stack: ["FastAPI", "Streamlit", "Neon Postgres"],
+    extraLinks: [{ label: "API docs", href: "https://booktracker-api-3f3a.onrender.com/docs" }],
+    login: { email: "test@test.com", password: "test123" },
+  },
+];
+
+/** One credential row in a live demo card, with a copy-to-clipboard button. */
+function CopyField({ label, value }: { label: string; value: string }) {
+  const [copied, setCopied] = useState(false);
+  const resetRef = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (resetRef.current !== null) window.clearTimeout(resetRef.current);
+  }, []);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      if (resetRef.current !== null) window.clearTimeout(resetRef.current);
+      resetRef.current = window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // Clipboard blocked (e.g. insecure context): the value stays visible and selectable
+    }
+  };
+
+  return (
+    <div className={sx.liveCred}>
+      <dt className={sx.liveCredLabel}>{label}</dt>
+      <dd className={sx.liveCredValue}>
+        <code>{value}</code>
+        <button
+          type="button"
+          className={`${sx.liveCopy} ${copied ? sx.liveCopyDone : ""}`}
+          onClick={copy}
+          aria-label={copied ? `${label} copied` : `Copy ${label.toLowerCase()}`}
+        >
+          {copied ? "Copied" : "Copy"}
+        </button>
+      </dd>
+    </div>
+  );
+}
+
+const liveDemoByRepo = new Map(LIVE_DEMOS.map((demo) => [demo.repoName.toLowerCase(), demo]));
+
+const urlHost = (url: string) => {
+  try {
+    const { host, pathname } = new URL(url);
+    return `${host}${pathname.replace(/\/$/, "")}`;
+  } catch {
+    return url;
+  }
+};
+
 const slugifyHeading = (text: string) =>
   text
     .toLowerCase()
@@ -465,6 +563,7 @@ const resolveReadmeUrl = (
 export default function Home() {
   const [githubProjects, setGithubProjects] = useState<GitHubProjectCard[]>(fallbackGithubProjects);
   const [isGitHubCarouselPaused, setIsGitHubCarouselPaused] = useState(false);
+  const [showLiveDemos, setShowLiveDemos] = useState(false);
   const githubCarouselViewportRef = useRef<HTMLDivElement | null>(null);
   const githubCarouselTrackRef = useRef<HTMLDivElement | null>(null);
   const githubMarqueeOffsetRef = useRef(0);
@@ -719,7 +818,8 @@ export default function Home() {
 
   useEffect(() => {
     const track = githubCarouselTrackRef.current;
-    if (!track || githubProjects.length === 0 || isCompact) {
+    // The marquee unmounts while the live-demo grid shows, so re-measure when it comes back
+    if (!track || githubProjects.length === 0 || isCompact || showLiveDemos) {
       githubMarqueeOffsetRef.current = 0;
       githubMarqueeLoopWidthRef.current = 0;
       if (track) track.style.transform = "";
@@ -755,10 +855,10 @@ export default function Home() {
       resizeObserver.disconnect();
       window.removeEventListener("resize", updateLoopWidth);
     };
-  }, [githubProjects.length, marqueeGithubProjects.length, isCompact]);
+  }, [githubProjects.length, marqueeGithubProjects.length, isCompact, showLiveDemos]);
 
   useEffect(() => {
-    if (!hasMounted || isCompact) {
+    if (!hasMounted || isCompact || showLiveDemos) {
       return;
     }
 
@@ -787,10 +887,10 @@ export default function Home() {
     return () => {
       viewport.removeEventListener("wheel", handleWheel);
     };
-  }, [hasMounted, isCompact, setGitHubMarqueeOffset]);
+  }, [hasMounted, isCompact, showLiveDemos, setGitHubMarqueeOffset]);
 
   useEffect(() => {
-    if (githubProjects.length === 0 || isCompact) {
+    if (githubProjects.length === 0 || isCompact || showLiveDemos) {
       return;
     }
 
@@ -832,7 +932,7 @@ export default function Home() {
       githubMarqueeLastTimestampRef.current = null;
       githubMarqueeVelocityRef.current = 0;
     };
-  }, [githubProjects.length, isCompact, setGitHubMarqueeOffset]);
+  }, [githubProjects.length, isCompact, showLiveDemos, setGitHubMarqueeOffset]);
 
   const handleReadmeClick = async (project: GitHubProjectCard) => {
     const repoInfo = extractOwnerAndRepo(project.repoUrl);
@@ -1501,7 +1601,43 @@ export default function Home() {
                 <p className={sx.ghSubtitle}>
                   A few repositories I&apos;m proud of, each with a visual preview and quick context.
                 </p>
-                {isCompact ? (
+                <div className={sx.ghToggle} role="group" aria-label="Which projects to show">
+                  {[
+                    { live: false, label: "All repos" },
+                    { live: true, label: "Live demos" },
+                  ].map((option) => {
+                    const active = showLiveDemos === option.live;
+                    return (
+                      <button
+                        key={option.label}
+                        type="button"
+                        className={`${sx.ghToggleBtn} ${active ? sx.ghToggleBtnActive : ""}`}
+                        aria-pressed={active}
+                        onClick={() => {
+                          setIsGitHubCarouselPaused(false);
+                          setShowLiveDemos(option.live);
+                        }}
+                      >
+                        {active && (
+                          <motion.span
+                            layoutId="gh-toggle-pill"
+                            className={sx.ghTogglePill}
+                            transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                          />
+                        )}
+                        {option.live && <span className={sx.liveDot} aria-hidden="true" />}
+                        <span className={sx.ghToggleLabel}>{option.label}</span>
+                        {option.live && <span className={sx.ghToggleCount}>{LIVE_DEMOS.length}</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+                {showLiveDemos ? (
+                  <p className={`${ui.hint} ${sx.hintLive}`}>
+                    <span className={`${ui.hintDot} ${sx.hintDotLive}`} aria-hidden="true" />
+                    <span>Free-tier servers may take a moment to wake up.</span>
+                  </p>
+                ) : isCompact ? (
                   <p className={ui.hint}>
                     <span className={ui.hintDot} aria-hidden="true" />
                     Swipe to browse <span aria-hidden="true">→</span>
@@ -1515,6 +1651,128 @@ export default function Home() {
               </div>
             </div>
 
+            <AnimatePresence mode="wait" initial={false}>
+            {showLiveDemos ? (
+              <motion.div
+                key="live-demos"
+                className={sx.liveGrid}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.35, ease: EASE_OUT }}
+              >
+                {LIVE_DEMOS.map((demo, index) => {
+                  const repoUrl = `https://github.com/3llimi/${demo.repoName}`;
+                  const isFrontendOnly = demo.status === "frontend";
+                  return (
+                    <motion.article
+                      key={demo.repoName}
+                      className={`${ui.card} ${sx.liveCard}`}
+                      data-perch="GitHub"
+                      onPointerMove={isCompact ? undefined : trackSpotlight}
+                      initial={{ opacity: 0, y: 28, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ duration: 0.6, delay: 0.08 + index * 0.09, ease: EASE_OUT }}
+                    >
+                      {/* Browser-window chrome around the screenshot */}
+                      <div className={sx.liveChrome}>
+                        <span className={sx.liveLights} aria-hidden="true">
+                          <i /><i /><i />
+                        </span>
+                        <span className={sx.liveAddress}>
+                          <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                            <path
+                              fill="currentColor"
+                              d="M8 1a3.5 3.5 0 0 0-3.5 3.5V7H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-.5V4.5A3.5 3.5 0 0 0 8 1Zm2 6H6V4.5a2 2 0 1 1 4 0V7Z"
+                            />
+                          </svg>
+                          <span className={sx.liveAddressText}>{urlHost(demo.url)}</span>
+                        </span>
+                        <span className={`${sx.liveBadge} ${isFrontendOnly ? sx.liveBadgeFrontend : ""}`}>
+                          <span className={sx.liveDot} aria-hidden="true" />
+                          {isFrontendOnly ? "Front end" : "Live"}
+                        </span>
+                      </div>
+
+                      <a
+                        href={demo.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={sx.liveScreen}
+                        aria-label={`Open the ${demo.title} live demo`}
+                      >
+                        <Image src={getImagePath(demo.cover)} alt="" width={900} height={520} />
+                        <span className={sx.liveScreenCta} aria-hidden="true">
+                          Launch app <span className={ui.arrow}>↗</span>
+                        </span>
+                      </a>
+
+                      <div className={sx.liveBody}>
+                        <div className={sx.liveHead}>
+                          <span className={ui.cardIndex}>{pad2(index + 1)}</span>
+                          <h3 className={sx.ghCardTitle}>{demo.title}</h3>
+                        </div>
+                        <p className={sx.liveTagline}>{demo.tagline}</p>
+                        <ul className={sx.liveStack} aria-label="Tech stack">
+                          {demo.stack.map((tech) => (
+                            <li key={tech} className={ui.badge}>{tech}</li>
+                          ))}
+                        </ul>
+                        {demo.note && (
+                          <p className={sx.liveNote}>
+                            <span className={sx.liveNoteIcon} aria-hidden="true">i</span>
+                            {demo.note}
+                          </p>
+                        )}
+                        {demo.login && (
+                          <div className={sx.liveLogin}>
+                            <span className={sx.liveLoginTitle}>Demo login</span>
+                            <dl className={sx.liveCreds}>
+                              <CopyField label="Email" value={demo.login.email} />
+                              <CopyField label="Password" value={demo.login.password} />
+                            </dl>
+                          </div>
+                        )}
+                        <div className={sx.liveActions}>
+                          <div className={sx.ghButtons}>
+                            <a
+                              href={demo.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={`${ui.btn} ${ui.btnPrimary}`}
+                            >
+                              Open live demo <span className={ui.arrow} aria-hidden="true">↗</span>
+                            </a>
+                            {demo.extraLinks?.map((link) => (
+                              <a
+                                key={link.href}
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={ui.btn}
+                              >
+                                {link.label} <span className={ui.arrow} aria-hidden="true">↗</span>
+                              </a>
+                            ))}
+                          </div>
+                          <a href={repoUrl} target="_blank" rel="noopener noreferrer" className={ui.linkMono}>
+                            {repoPath(repoUrl)}
+                            <span className={ui.arrow} aria-hidden="true">↗</span>
+                          </a>
+                        </div>
+                      </div>
+                    </motion.article>
+                  );
+                })}
+              </motion.div>
+            ) : (
+            <motion.div
+              key="all-repos"
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35, ease: EASE_OUT }}
+            >
             <div
               ref={githubCarouselViewportRef}
               className={`${styles.githubCarouselViewport} ${isCompact ? sx.ghScroller : sx.fadeX}`}
@@ -1548,6 +1806,23 @@ export default function Home() {
                         width={900}
                         height={520}
                       />
+                      {(() => {
+                        const demo = liveDemoByRepo.get(project.title.toLowerCase());
+                        if (!demo) return null;
+                        const isFrontendOnly = demo.status === "frontend";
+                        return (
+                          <a
+                            href={demo.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`${sx.liveBadge} ${sx.ghCoverBadge} ${isFrontendOnly ? sx.liveBadgeFrontend : ""}`}
+                            aria-label={`Open the ${project.title} live demo`}
+                          >
+                            <span className={sx.liveDot} aria-hidden="true" />
+                            {isFrontendOnly ? "Front end" : "Live"} <span className={ui.arrow} aria-hidden="true">↗</span>
+                          </a>
+                        );
+                      })()}
                     </div>
 
                     <div className={sx.ghContent}>
@@ -1580,6 +1855,9 @@ export default function Home() {
                 ))}
               </div>
             </div>
+            </motion.div>
+            )}
+            </AnimatePresence>
 
           </div>
         </section>
