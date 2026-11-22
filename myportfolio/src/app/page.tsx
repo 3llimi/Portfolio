@@ -9,7 +9,8 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import SkillsSection from "@/components/skills/SkillsSection";
-import { SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "@/components/ui/ui";
+import { Flag, SectionBackdrop, Starred, trackSpotlight, ui, WaveText } from "@/components/ui/ui";
+import type { CountryCode } from "@/components/ui/ui";
 import sx from "@/styles/sections.module.css";
 import { SmoothScroll, scrollToSection, scrollToY } from "@/components/scroll/smoothScroll";
 import ScrollRail from "@/components/scroll/ScrollRail";
@@ -599,58 +600,67 @@ export default function Home() {
     isGitHubCarouselPausedRef.current = isGitHubCarouselPaused;
   }, [isGitHubCarouselPaused]);
 
-  const paData = [
+  const paData: { title: string; rightLabel: string; country: CountryCode; subtitle: string; scholarship: boolean }[] = [
     {
       title: "IoT4Tunisia Bootcamp",
       rightLabel: "MentorNations · 2020–2021",
+      country: "TN",
       subtitle: "DESIGNER & WEB DEVELOPER",
       scholarship: false,
     },
     {
       title: "HackUrWaste Hackathon",
       rightLabel: "MentorNations · 2022",
+      country: "TN",
       subtitle: "MENTOR",
       scholarship: false,
     },
     {
       title: "Tunisian National Olympiad in Informatics",
       rightLabel: "ITA · 2022",
+      country: "TN",
       subtitle: "Contestant",
       scholarship: false,
     },
     {
       title: "Upside Education Hackathon",
       rightLabel: "GOMYCODE · 2022",
+      country: "TN",
       subtitle: "DESIGNER & WEB DEVELOPER",
       scholarship: false,
     },
     {
       title: "Winner of the Full Russian Government Scholarship",
       rightLabel: "2023–2027",
+      country: "RU",
       subtitle: "CURRENTLY A COMPUTER SCIENCE STUDENT IN INNOPOLIS UNIVERSITY",
       scholarship: true,
     },
     {
       title: "Advanced Engineering School",
       rightLabel: "Jun–Dec 2024",
+      country: "RU",
       subtitle: "Junior GUI Developer",
       scholarship: false,
     },
     {
       title: "Kazan TechArena Hackathon",
       rightLabel: "Huawei · 2025",
+      country: "RU",
       subtitle: "Contestant",
       scholarship: false,
     },
     {
       title: "InnoSync",
       rightLabel: "Innopolis University · 2025",
+      country: "RU",
       subtitle: "Team Lead - Frontend Dev - Designer",
       scholarship: false,
     },
     {
       title: "Middle East Technical University",
       rightLabel: "Fall 2026",
+      country: "TR",
       subtitle: "Exchange Student - Computer Engineering Faculty",
       scholarship: false,
     },
@@ -1527,7 +1537,7 @@ export default function Home() {
                     >
                       <div className={sx.achTop}>
                         <span className={ui.cardIndex}>{pad2(idx + 1)}</span>
-                        <span className={ui.badge}>{item.rightLabel}</span>
+                        <span className={ui.badge}><Flag country={item.country} />{item.rightLabel}</span>
                       </div>
                       <h3 className={`${sx.achTitle} ${item.scholarship ? sx.achTitleGold : ""}`}>
                         <Starred>{item.title}</Starred>
@@ -1565,7 +1575,7 @@ export default function Home() {
                       >
                         <div className={sx.achTop}>
                           <span className={ui.cardIndex}>{pad2((idx % paData.length) + 1)}</span>
-                          <span className={ui.badge}>{item.rightLabel}</span>
+                          <span className={ui.badge}><Flag country={item.country} />{item.rightLabel}</span>
                         </div>
                         <h3 className={`${sx.achTitle} ${item.scholarship ? sx.achTitleGold : ""}`}>
                           <Starred>{item.title}</Starred>

@@ -248,6 +248,17 @@
   white-space: nowrap;
 }
 
+/* Country flag at the start of a badge (see Flag in ui.tsx) */
+.flag {
+  flex: none;
+  width: 15px;
+  height: 10px;
+  margin-right: 7px;
+  border-radius: 2px;
+  /* hairline edge so Russia's white stripe doesn't melt into the pill */
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.25);
+}
+
 .btn {
   appearance: none;
   display: inline-flex;
