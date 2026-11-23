@@ -36,7 +36,6 @@ const pad2 = (n: number) => n.toString().padStart(2, "0");
 
 const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-/** README / contribution dialogs: phones skip the blur, which is costly to animate on a big panel. */
 const DIALOG_PANEL_MOTION = {
   full: {
     initial: { opacity: 0, y: 24, scale: 0.92, filter: "blur(10px)" },
