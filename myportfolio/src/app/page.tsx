@@ -566,6 +566,13 @@ export default function Home() {
   const [showLiveDemos, setShowLiveDemos] = useState(false);
   const githubCarouselViewportRef = useRef<HTMLDivElement | null>(null);
   const githubCarouselTrackRef = useRef<HTMLDivElement | null>(null);
+  // AnimatePresence mounts the marquee only after the live grid's exit animation finishes,
+  // so effects key off this state (not showLiveDemos alone) to run once the track exists
+  const [githubTrackNode, setGithubTrackNode] = useState<HTMLDivElement | null>(null);
+  const githubTrackRefCallback = useCallback((node: HTMLDivElement | null) => {
+    githubCarouselTrackRef.current = node;
+    setGithubTrackNode(node);
+  }, []);
   const githubMarqueeOffsetRef = useRef(0);
   const githubMarqueeLoopWidthRef = useRef(0);
   const githubMarqueeRafRef = useRef<number | null>(null);
@@ -826,7 +833,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const track = githubCarouselTrackRef.current;
+    const track = githubTrackNode;
     // The marquee unmounts while the live-demo grid shows, so re-measure when it comes back
     if (!track || githubProjects.length === 0 || isCompact || showLiveDemos) {
       githubMarqueeOffsetRef.current = 0;
@@ -864,7 +871,7 @@ export default function Home() {
       resizeObserver.disconnect();
       window.removeEventListener("resize", updateLoopWidth);
     };
-  }, [githubProjects.length, marqueeGithubProjects.length, isCompact, showLiveDemos]);
+  }, [githubProjects.length, marqueeGithubProjects.length, isCompact, showLiveDemos, githubTrackNode]);
 
   useEffect(() => {
     if (!hasMounted || isCompact || showLiveDemos) {
@@ -896,7 +903,7 @@ export default function Home() {
     return () => {
       viewport.removeEventListener("wheel", handleWheel);
     };
-  }, [hasMounted, isCompact, showLiveDemos, setGitHubMarqueeOffset]);
+  }, [hasMounted, isCompact, showLiveDemos, setGitHubMarqueeOffset, githubTrackNode]);
 
   useEffect(() => {
     if (githubProjects.length === 0 || isCompact || showLiveDemos) {
@@ -1792,7 +1799,7 @@ export default function Home() {
               onTouchEnd={isCompact ? undefined : handleGitHubTouchEnd}
               onTouchCancel={isCompact ? undefined : handleGitHubTouchEnd}
             >
-              <div ref={githubCarouselTrackRef} className={styles.githubCarouselTrack}>
+              <div ref={githubTrackRefCallback} className={styles.githubCarouselTrack}>
                 {marqueeGithubProjects.map((project, index) => (
                   <article
                     key={`${project.id}-${index}`}
